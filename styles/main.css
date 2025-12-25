@@ -1,13 +1,20 @@
+/* Основные стили */
+:root {
+    --bg-color: #272B38;
+    --text-color: #fff;
+    --accent-color: #6A5ACD;
+    --button-bg: rgba(106, 90, 205, 0.7);
+    --button-hover: rgba(106, 90, 205, 0.9);
+}
 
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif;
-    color: #fff;
-    background-color: #272B38;
-    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    overflow-x: hidden;
 }
-
 
 #stars {
     position: fixed;
@@ -16,19 +23,168 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
+    pointer-events: none;
 }
 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
 
 header {
     text-align: center;
-    padding: 2rem;
-    font-size: 2rem;
+    margin-bottom: 2rem;
 }
 
+header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    margin: 0;
+    color: var(--accent-color);
+}
 
-main {
+header h1 span {
+    color: var(--text-color);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+}
+
+/* Раздел "О нас" */
+.about {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(106, 90, 205, 0.3);
+}
+
+.about h2 {
+    color: var(--accent-color);
+    margin-top: 0;
+}
+
+/* Раздел "Проекты" */
+.projects {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(106, 90, 205, 0.3);
+}
+
+.projects h2 {
+    color: var(--accent-color);
+    margin-top: 0;
+}
+
+.project-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.project-button {
+    display: block;
+    background: var(--button-bg);
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 1.5rem;
+    border-radius: 8px;
     text-align: center;
-    padding: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(106, 90, 205, 0.5);
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.project-button:hover {
+    background: var(--button-hover);
+    transform: translateY(-5px);
+}
+
+.button-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.button-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.button-desc {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Раздел "Цели" */
+.goals {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(106, 90, 205, 0.3);
+}
+
+.goals h2 {
+    color: var(--accent-color);
+    margin-top: 0;
+}
+
+.goals ul {
+    padding-left: 1.5rem;
+}
+
+.goals li {
+    margin-bottom: 0.5rem;
+}
+
+/* Раздел "Контакты" */
+.contact {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(106, 90, 205, 0.3);
+}
+
+.contact h2 {
+    color: var(--accent-color);
+    margin-top: 0;
+}
+
+.contact a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.contact a:hover {
+    text-decoration: underline;
+}
+
+/* Подвал */
+footer {
+    text-align: center;
+    padding: 1rem;
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
 }
