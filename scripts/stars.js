@@ -1,4 +1,4 @@
-// Функция для генерации случайного числа в диапазоне
+// Функция для генерации случайного числа
 function random(min, max) {
     return Math.random() * (max - min) + min;
 }
@@ -6,18 +6,19 @@ function random(min, max) {
 // Создаём звёзды
 function createStars() {
     const starsContainer = document.getElementById('stars');
-    const starCount = 100; // Количество звёзд
+    const starCount = 150; // Количество звёзд
 
     for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
         star.classList.add('star');
 
-        // Случайные параметры для каждой звезды
-        const size = random(1, 3); // Размер звезды (1-3 пикселя)
-        const x = random(0, 100); // Начальная позиция по X (%)
-        const y = random(0, 100); // Начальная позиция по Y (%)
-        const duration = random(10, 30); // Длительность анимации (секунды)
-        const delay = random(0, 10); // Задержка перед началом движения
+        // Случайные параметры
+        const size = random(1, 3);
+        const x = random(0, 100);
+        const y = random(0, 100);
+        const duration = random(20, 60);
+        const delay = random(0, 10);
+        const opacity = random(0.3, 0.8);
 
         // Применяем стили
         star.style.width = `${size}px`;
@@ -27,9 +28,9 @@ function createStars() {
         star.style.left = `${x}%`;
         star.style.top = `${y}%`;
         star.style.borderRadius = '50%';
+        star.style.opacity = opacity;
         star.style.animation = `moveStar ${duration}s linear ${delay}s infinite`;
 
-        // Добавляем звезду на страницу
         starsContainer.appendChild(star);
     }
 }
@@ -42,7 +43,7 @@ style.textContent = `
             transform: translate(0, 0);
         }
         100% {
-            transform: translate(${random(-50, 50)}vw, ${random(-50, 50)}vh);
+            transform: translate(${random(-30, 30)}vw, ${random(-30, 30)}vh);
         }
     }
 `;
