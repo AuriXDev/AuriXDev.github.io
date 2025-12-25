@@ -3,22 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuriX Dev - Космический истец</title>
+    <title>AuriX Dev | Космические технологии</title>
     <link rel="stylesheet" href="styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Фоновые звёзды -->
     <div id="stars"></div>
-    <header>
-        <h1>AuriX</h1>
-        <p>Команда без будущего</p>
-    </header>
 
-    <main>
-        <section>
-            <h2>Добро пожаловать в космос творчества</h2>
-            <p>Мы создаём уникальные проекты, которые меняют мир</p>
-        </section>
-    </main>
+    <!-- Основной контент -->
+    <div class="container">
+        <header>
+            <h1>AURI<span>X</span> DEV</h1>
+            <p class="subtitle">Разработка будущего сегодня</p>
+        </header>
+
+        <main>
+            <section class="about">
+                <h2>О нас</h2>
+                <p>
+                    Мы — команда из <strong>4 разработчиков</strong> из России, специализирующихся на создании инновационных решений.
+                    Наши проекты охватывают различные области: от кибербезопасности до игровых движков и искусственного интеллекта.
+                </p>
+                <p>
+                    <strong>Языки и технологии:</strong> JavaScript, Python, C#, Lua, Java.
+                </p>
+                <p>
+                    Наша миссия — делать технологии доступными, надёжными и красивыми.
+                </p>
+            </section>
+
+            <section class="projects">
+                <h2>Наши проекты</h2>
+                <div class="project-buttons">
+                    <a href="projects/magmaluncher.html" class="project-button">
+                        <span class="button-icon">🎮</span>
+                        <span class="button-text">MagmaLauncher</span>
+                        <span class="button-desc">Универсальный лаунчер для игр</span>
+                    </a>
+                    <a href="projects/sintax.html" class="project-button">
+                        <span class="button-icon">🛡️</span>
+                        <span class="button-text">SiNtax</span>
+                        <span class="button-desc">Антивирус нового поколения</span>
+                    </a>
+                    <a href="projects/cubikai.html" class="project-button">
+                        <span class="button-icon">🤖</span>
+                        <span class="button-text">CubikAI</span>
+                        <span class="button-desc">Искусственный интеллект для творчества</span>
+                    </a>
+                    <a href="projects/other.html" class="project-button">
+                        <span class="button-icon">⚡</span>
+                        <span class="button-text">Прочее</span>
+                        <span class="button-desc">Другие интересные проекты</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="goals">
+                <h2>Наши цели</h2>
+                <ul>
+                    <li>Создавать <strong>полезные</strong> и <strong>инновационные</strong> продукты.</li>
+                    <li>Делиться знаниями с сообществом (туториалы, открытый код).</li>
+                    <li>Развивать <strong>русскоязычное IT-сообщество</strong>.</li>
+                    <li>Сотрудничать с талантливыми людьми со всего мира.</li>
+                </ul>
+            </section>
+
+            <section class="contact">
+                <h2>Связь с нами</h2>
+                <p>
+                    Если у вас есть вопросы, предложения или вы хотите присоединиться к команде — пишите!
+                </p>
+                <div class="contact-info">
+                    <p>📧 Почта: <a href="mailto:contact@aurixdev.ru">contact@aurixdev.ru</a></p>
+                    <p>💬 Telegram: <a href="https://t.me/aurixdev">@aurixdev</a></p>
+                    <p>📱 Discord: <a href="https://discord.gg/aurixdev">AuriX Dev</a></p>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 AuriX Dev. Все права защищены.</p>
+            <p>Сайт сделан полностью благодаря CubikAI</p>
+        </footer>
+    </div>
+
+    <!-- Скрипт для звёзд -->
     <script src="scripts/stars.js"></script>
 </body>
 </html>
