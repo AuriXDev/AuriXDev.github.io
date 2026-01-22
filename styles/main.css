@@ -1,4 +1,4 @@
-/* Основные стили - обновлённая версия */
+/* Основные стили - обновлённая версия (минималистичная) */
 :root {
     --bg-color: #0A0E17;
     --bg-secondary: #151A28;
@@ -10,7 +10,6 @@
     --button-hover: rgba(106, 90, 205, 0.3);
     --border-color: rgba(106, 90, 205, 0.2);
     --glow: 0 0 20px rgba(106, 90, 205, 0.3);
-    --project-glow: 0 0 15px rgba(106, 90, 205, 0.2);
 }
 
 * {
@@ -148,12 +147,12 @@ section {
     opacity: 1;
 }
 
-/* Проекты - ОБНОВЛЁННЫЙ СТИЛЬ */
+/* Проекты - минималистичный стиль */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    gap: 1.5rem;
+    margin-top: 1rem;
 }
 
 .project-card {
@@ -162,115 +161,84 @@ section {
     align-items: center;
     text-decoration: none;
     color: inherit;
-    height: 320px;
+    height: 220px;
     position: relative;
-    padding: 2.5rem 2rem;
+    padding: 1.5rem;
 }
 
 .project-icon-container {
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     position: relative;
     transition: all 0.3s ease;
 }
 
 .project-icon {
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     object-fit: contain;
-    filter: drop-shadow(0 0 10px rgba(106, 90, 205, 0.3));
+    filter: drop-shadow(0 0 8px rgba(106, 90, 205, 0.3));
     transition: all 0.3s ease;
 }
 
 .project-card:hover .project-icon {
     transform: scale(1.1);
-    filter: drop-shadow(0 0 15px rgba(106, 90, 205, 0.5));
+    filter: drop-shadow(0 0 12px rgba(106, 90, 205, 0.5));
 }
 
 .project-icon-fallback {
-    width: 80px;
-    height: 80px;
-    border-radius: 16px;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
     background: var(--gradient);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: white;
     font-weight: bold;
 }
 
 .project-title {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.5rem;
     text-align: center;
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    position: relative;
-}
-
-.project-title::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 2px;
-    background: var(--gradient);
-    opacity: 0.5;
+    color: var(--accent-light);
 }
 
 .project-desc {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     text-align: center;
     opacity: 0.8;
-    line-height: 1.6;
+    line-height: 1.5;
     flex-grow: 1;
-    padding: 0 1rem;
-}
-
-.project-status {
-    margin-top: 1rem;
-    padding: 0.4rem 1rem;
-    background: rgba(106, 90, 205, 0.1);
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--accent-light);
-    border: 1px solid rgba(106, 90, 205, 0.3);
 }
 
 /* Особый стиль для карточки "Прочее" */
 .project-card.other {
     position: relative;
-    overflow: hidden;
 }
 
 .project-card.other::before {
-    content: '···';
+    content: '⋯';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 5rem;
+    font-size: 2.5rem;
     color: var(--accent-color);
     opacity: 0.2;
     font-weight: bold;
-    letter-spacing: 1rem;
+    letter-spacing: 0.5rem;
 }
 
 .project-card.other .project-icon-container {
-    opacity: 0.5;
+    opacity: 0.4;
 }
 
 .project-card.other .project-desc {
@@ -365,31 +333,6 @@ footer {
     }
 }
 
-@keyframes iconFloat {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-}
-
-.project-icon-container {
-    animation: iconFloat 3s ease-in-out infinite;
-}
-
-.project-card:nth-child(2) .project-icon-container {
-    animation-delay: 0.2s;
-}
-
-.project-card:nth-child(3) .project-icon-container {
-    animation-delay: 0.4s;
-}
-
-.project-card:nth-child(4) .project-icon-container {
-    animation-delay: 0.6s;
-}
-
 section {
     animation: fadeInUp 0.6s ease-out forwards;
 }
@@ -417,19 +360,8 @@ section:nth-child(4) { animation-delay: 0.3s; }
     }
     
     .project-card {
-        height: 300px;
-        padding: 2rem 1.5rem;
-    }
-    
-    .project-icon-container {
-        width: 80px;
-        height: 80px;
-    }
-    
-    .project-icon,
-    .project-icon-fallback {
-        width: 70px;
-        height: 70px;
+        height: 200px;
+        padding: 1.5rem;
     }
 }
 
@@ -444,14 +376,5 @@ section:nth-child(4) { animation-delay: 0.3s; }
     
     .card {
         padding: 1.5rem;
-    }
-    
-    .project-title {
-        font-size: 1.4rem;
-    }
-    
-    .project-desc {
-        font-size: 0.9rem;
-        padding: 0;
     }
 }
