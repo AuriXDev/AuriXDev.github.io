@@ -1,139 +1,160 @@
-document.addEventListener('DOMContentLoaded', function() {
+// Создание квадратных звёзд
+function createSquareStars() {
     const starsContainer = document.getElementById('square-stars');
+    const starCount = 50; // Меньше звёзд, но они больше
     
-    // Если контейнера нет - создаём
-    if (!starsContainer) {
-        console.warn('Элемент #square-stars не найден, создаю новый');
-        const newContainer = document.createElement('div');
-        newContainer.id = 'square-stars';
-        newContainer.style.position = 'fixed';
-        newContainer.style.top = '0';
-        newContainer.style.left = '0';
-        newContainer.style.width = '100%';
-        newContainer.style.height = '100%';
-        newContainer.style.zIndex = '-1';
-        newContainer.style.pointerEvents = 'none';
-        newContainer.style.overflow = 'hidden';
-        document.body.appendChild(newContainer);
-    }
-    
-    const container = starsContainer || document.getElementById('square-stars');
-    
-    // Количество звёзд в зависимости от размера экрана
-    const starCount = Math.min(Math.floor(window.innerWidth * window.innerHeight / 4000), 150);
-    
-    // Цвета звёзд - магма-тема
-    const colors = [
-        '#ff4500', // оранжево-красный
-        '#ff6a00', // ярко-оранжевый
-        '#ff8c00', // тёмно-оранжевый
-        '#ffaa00', // золотой
-        '#ff2200', // красный
-        '#ff5500', // огненный
-    ];
-    
-    // Создаём звёзды
     for (let i = 0; i < starCount; i++) {
-        createStar(container);
-    }
-    
-    // Создание одной звезды
-    function createStar(parent) {
         const star = document.createElement('div');
-        const size = Math.random() * 4 + 1; // 1-5px
-        const xPos = Math.random() * 100;
-        const yPos = Math.random() * 100;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const duration = Math.random() * 5 + 3; // 3-8 секунд
-        const delay = Math.random() * 5;
+        star.classList.add('square-star');
         
-        star.style.position = 'absolute';
+        // Случайные параметры
+        const size = random(10, 30); // Крупные квадраты
+        const x = random(0, 100);
+        const y = random(-20, 120); // Начинают за пределами экрана
+        const duration = random(30, 60);
+        const delay = random(0, 20);
+        const opacity = random(0.2, 0.6);
+        const rotation = random(0, 360);
+        
+        // Цвет из градиента
+        const gradientColors = [
+            '#75C892',
+            '#52B69A', 
+            '#34A0A3',
+            '#158AAD',
+            '#1A769F'
+        ];
+        const color = gradientColors[Math.floor(random(0, gradientColors.length))];
+        
+        // Применяем стили
         star.style.width = `${size}px`;
         star.style.height = `${size}px`;
-        star.style.left = `${xPos}%`;
-        star.style.top = `${yPos}%`;
         star.style.backgroundColor = color;
-        star.style.borderRadius = '50%';
-        star.style.boxShadow = `0 0 ${size * 2}px ${color}, 0 0 ${size * 4}px ${color}80`;
-        star.style.opacity = Math.random() * 0.7 + 0.3;
-        star.style.transition = `all ${duration}s ease-in-out ${delay}s`;
-        star.style.willChange = 'transform, opacity';
+        star.style.position = 'absolute';
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.opacity = opacity;
+        star.style.transform = `rotate(${rotation}deg)`;
+        star.style.animation = `floatSquare ${duration}s linear ${delay}s infinite`;
+        star.style.filter = 'blur(1px)';
         
-        // Добавляем мерцание
-        star.classList.add('star');
-        parent.appendChild(star);
-        
-        // Запускаем анимацию мерцания
-        animateStar(star, duration, delay);
+        starsContainer.appendChild(star);
     }
+}
+
+// Функция для генерации случайного числа
+function random(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+// Эффект разрыва пикселей
+function createPixelEffect() {
+    const container = document.querySelector('.crystal-overlay');
+    if (!container) return;
     
-    // Анимация мерцания звезды
-    function animateStar(star, duration, delay) {
-        function twinkle() {
-            const scale = Math.random() * 0.5 + 0.8; // 0.8-1.3
-            const opacity = Math.random() * 0.5 + 0.5; // 0.5-1.0
-            const brightness = Math.random() * 50 + 100; // 100-150%
-            
-            star.style.transform = `scale(${scale})`;
-            star.style.opacity = opacity;
-            star.style.filter = `brightness(${brightness}%)`;
-            
-            // Случайная задержка до следующего мерцания
-            const nextDelay = Math.random() * 2000 + 1000; // 1-3 секунды
-            
-            setTimeout(twinkle, nextDelay);
-        }
+    // Создаём пиксельные частицы
+    for (let i = 0; i < 100; i++) {
+        const pixel = document.createElement('div');
+        pixel.style.position = 'absolute';
+        pixel.style.width = '2px';
+        pixel.style.height = '2px';
+        pixel.style.backgroundColor = randomColor();
+        pixel.style.left = `${random(0, 100)}%`;
+        pixel.style.top = `${random(0, 100)}%`;
+        pixel.style.opacity = random(0.1, 0.3);
+        pixel.style.animation = `pixelFloat ${random(10, 30)}s linear infinite`;
         
-        // Начинаем анимацию после начальной задержки
-        setTimeout(twinkle, delay * 1000);
+        container.appendChild(pixel);
     }
+}
+
+function randomColor() {
+    const colors = ['#75C892', '#52B69A', '#34A0A3', '#158AAD', '#1A769F'];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+// Анимация загрузки
+function simulateLoading() {
+    const loadingScreen = document.querySelector('.loading-screen');
+    if (!loadingScreen) return;
     
-    // Обновляем звёзды при изменении размера окна
-    let resizeTimeout;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(function() {
-            // Удаляем старые звёзды
-            while (container.firstChild) {
-                container.removeChild(container.firstChild);
-            }
-            
-            // Создаём новые звёзды
-            const newStarCount = Math.min(Math.floor(window.innerWidth * window.innerHeight / 4000), 150);
-            for (let i = 0; i < newStarCount; i++) {
-                createStar(container);
-            }
-        }, 250);
-    });
-    
-    // Добавим интерактивность: звёзды реагируют на курсор
-    document.addEventListener('mousemove', function(e) {
-        const stars = document.querySelectorAll('#square-stars > div');
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
+    setTimeout(() => {
+        loadingScreen.classList.add('hidden');
         
-        stars.forEach(star => {
-            const starX = parseFloat(star.style.left) / 100;
-            const starY = parseFloat(star.style.top) / 100;
+        // Запускаем создание эффектов после загрузки
+        createSquareStars();
+        createPixelEffect();
+        
+        // Добавляем класс к body для дополнительных эффектов
+        document.body.classList.add('loaded');
+        
+        // Анимация появления элементов
+        const elements = document.querySelectorAll('.feature-card, .capability-item');
+        elements.forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
             
-            // Расстояние от курсора до звезды
-            const distance = Math.sqrt(
-                Math.pow(mouseX - starX, 2) + Math.pow(mouseY - starY, 2)
-            );
-            
-            if (distance < 0.1) { // Если курсор рядом
-                star.style.transform = 'scale(1.5)';
-                star.style.filter = 'brightness(200%)';
-                
-                // Возвращаем к нормальному состоянию
-                setTimeout(() => {
-                    star.style.transform = '';
-                    star.style.filter = '';
-                }, 300);
-            }
+            setTimeout(() => {
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 100 + index * 50);
+        });
+        
+    }, 1500);
+}
+
+// Запускаем всё при загрузке
+document.addEventListener('DOMContentLoaded', () => {
+    simulateLoading();
+    
+    // Добавляем эффект наведения на карточки
+    const cards = document.querySelectorAll('.feature-card');
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-5px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0) scale(1)';
         });
     });
-    
-    // Консольное сообщение об успешной загрузке
-    console.log(`Создано ${starCount} звёзд в магма-стиле`);
 });
+
+// Добавляем CSS для пиксельной анимации
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes pixelFloat {
+        0% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+            transform: translate(${random(-20, 20)}px, ${random(-20, 20)}px) rotate(90deg);
+        }
+        50% {
+            transform: translate(${random(-40, 40)}px, ${random(-40, 40)}px) rotate(180deg);
+        }
+        75% {
+            transform: translate(${random(-20, 20)}px, ${random(-20, 20)}px) rotate(270deg);
+        }
+        100% {
+            transform: translate(0, 0) rotate(360deg);
+        }
+    }
+    
+    .loaded .section {
+        animation: sectionReveal 0.8s ease-out;
+    }
+    
+    @keyframes sectionReveal {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+`;
+document.head.appendChild(style);
