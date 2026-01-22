@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiNtax Antivirus - AuriX Dev</title>
     <link rel="stylesheet" href="../styles/sintax.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Фоновые звёзды -->
@@ -20,35 +21,40 @@
 
         <nav>
             <ul>
-                <li><a href="../index.html">Главная</a></li>
-                <li><a href="../about.html">О нас</a></li>
-                <li><a href="../contact.html">Контакты</a></li>
+                <li><a href="../index.html">← На главную</a></li>
+                <li><a href="../projects/magmaluncher.html">MagmaLauncher</a></li>
+                <li><a href="../projects/cubikai.html">CubikAI</a></li>
             </ul>
         </nav>
 
         <main>
             <section class="project-hero">
-                <img href="../images/logo.jpg" alt="SiNtax Antivirus" width="500">
-                <p>
-                    SiNtax — это бесплатный антивирус для Windows, разработанный для защиты вашей системы от современных угроз.
-                    Он сочетает в себе мощные функции мониторинга, сканирования и восстановления, оставаясь лёгким и быстрым.
-                </p>
+                <div class="card">
+                    <p>
+                        <strong>SiNtax</strong> — это передовой антивирус для Windows, разработанный для защиты от современных киберугроз.
+                        Сочетает мощный мониторинг, интеллектуальное сканирование и эффективное восстановление системы,
+                        оставаясь легковесным и быстрым решением.
+                    </p>
+                </div>
             </section>
 
             <section class="features">
-                <h2>Основные функции</h2>
+                <div class="section-header">
+                    <h2>Основные функции</h2>
+                    <div class="section-line"></div>
+                </div>
                 <div class="feature-grid">
-                    <div class="feature-card">
+                    <div class="feature-card card">
                         <h3>🖥️ Системный мониторинг</h3>
                         <ul>
                             <li>Мониторинг процессов в реальном времени</li>
-                            <li>Скрытый мониторинг (даже если Task Manager закрыт)</li>
+                            <li>Скрытый мониторинг (работает в фоне)</li>
                             <li>Детектор маскирующихся процессов</li>
-                            <li>Потребление CPU/GPU/RAM и температура компонентов</li>
+                            <li>Анализ потребления CPU/GPU/RAM</li>
                         </ul>
                     </div>
 
-                    <div class="feature-card">
+                    <div class="feature-card card">
                         <h3>🔍 Сканирование</h3>
                         <ul>
                             <li>Быстрое и полное сканирование системы</li>
@@ -58,7 +64,7 @@
                         </ul>
                     </div>
 
-                    <div class="feature-card">
+                    <div class="feature-card card">
                         <h3>🛡️ Детекторы угроз</h3>
                         <ul>
                             <li>Криптомайнеры (CPU/GPU аномалии)</li>
@@ -68,7 +74,7 @@
                         </ul>
                     </div>
 
-                    <div class="feature-card">
+                    <div class="feature-card card">
                         <h3>🚀 Восстановление</h3>
                         <ul>
                             <li>Восстановление системных файлов</li>
@@ -81,38 +87,115 @@
             </section>
 
             <section class="download">
-                <h2>Скачать SiNtax</h2>
-                <p>
-                    Последняя версия SiNtax доступна для бесплатного скачивания.
-                    Поддерживаются Windows 10 и Windows 11 (x64).
-                </p>
-                <a href="https://github.com/AuriXDev/SiNtaxreleases" class="download-button">
-                    Скачать SiNtax
-                </a>
-                <div class="system-req">
-                    <h3>Системные требования:</h3>
-                    <ul>
-                        <li>Операционная система: Windows 10/11 (x64)</li>
-                        <li>Оперативная память: 2 ГБ (рекомендуется 4 ГБ)</li>
-                        <li>Свободное место на диске: +400 МБ</li>
-                    </ul>
+                <div class="section-header">
+                    <h2>Выберите версию</h2>
+                    <div class="section-line"></div>
+                </div>
+                
+                <div class="version-selector">
+                    <div class="version-cards">
+                        <div class="version-card">
+                            <div class="version-badge">Lite</div>
+                            <h3 class="version-title">Для слабых ПК</h3>
+                            <p style="opacity: 0.8; margin-bottom: 1.5rem;">Минимальная защита, максимальная производительность</p>
+                            
+                            <ul class="version-specs">
+                                <li>
+                                    <span class="spec-label">Вес</span>
+                                    <span class="spec-value">20 МБ</span>
+                                </li>
+                                <li>
+                                    <span class="spec-label">ОЗУ</span>
+                                    <span class="spec-value">100 МБ</span>
+                                </li>
+                                <li>
+                                    <span class="spec-label">Процессор</span>
+                                    <span class="spec-value">Potato</span>
+                                </li>
+                                <li>
+                                    <span class="spec-label">Функции</span>
+                                    <span class="spec-value">Базовые</span>
+                                </li>
+                            </ul>
+                            
+                            <a href="https://github.com/AuriXDev/SiNtax/releases/lite" class="download-button">
+                                Скачать Lite
+                            </a>
+                        </div>
+
+                        <div class="version-card featured">
+                            <div class="version-badge">Full</div>
+                            <h3 class="version-title">Полная защита</h3>
+                            <p style="opacity: 0.8; margin-bottom: 1.5rem;">Все функции для максимальной безопасности</p>
+                            
+                            <ul class="version-specs">
+                                <li>
+                                    <span class="spec-label">Вес</span>
+                                    <span class="spec-value">80 МБ</span>
+                                </li>
+                                <li>
+                                    <span class="spec-label">ОЗУ</span>
+                                    <span class="spec-value">300 МБ</span>
+                                </li>
+                                <li>
+                                    <span class="spec-label">Процессор</span>
+                                    <span class="spec-value">2+ ядра</span>
+                                </li>
+                                <li>
+                                    <span class="spec-label">Функции</span>
+                                    <span class="spec-value">Все</span>
+                                </li>
+                            </ul>
+                            
+                            <a href="https://github.com/AuriXDev/SiNtax/releases/full" class="download-button">
+                                Скачать Full
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="system-req">
+                        <h3>Системные требования (Full версия):</h3>
+                        <ul>
+                            <li>Операционная система: Windows 10/11 (x64)</li>
+                            <li>Оперативная память: 2 ГБ (рекомендуется 4 ГБ)</li>
+                            <li>Свободное место на диске: 400 МБ</li>
+                            <li>Процессор: 2+ ядра, 1.5 ГГц</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
             <section class="contact-project">
-                <h2>Поддержка и вопросы</h2>
-                <p>
-                    Если у вас есть вопросы или предложения по SiNtax, пишите нам:
-                </p>
-                <div class="contact-info">
-                    <p>📧 Почта: <a href="mailto:aurixhelp@gmail.com">aurixhelp@gmail.com</a></p>
-                    <p>💬 Telegram: <a href="https://t.me/AuriX_Dev">@AuriX_Dev</a></p>
+                <div class="section-header">
+                    <h2>Поддержка и вопросы</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="card">
+                    <p style="margin-bottom: 2rem;">
+                        Если у вас есть вопросы, предложения или вы обнаружили проблему с SiNtax — пишите нам.
+                        Мы всегда готовы помочь и улучшить наш продукт.
+                    </p>
+                    <div class="contact-grid">
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <a href="mailto:aurixhelp@gmail.com" class="contact-link">aurixhelp@gmail.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">💬</span>
+                            <a href="https://t.me/AuriX_Dev" class="contact-link">@AuriX_Dev</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon"><i class="fab fa-github"></i></span>
+                            <a href="https://github.com/AuriXDev/SiNtax" class="contact-link">GitHub репозиторий</a>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
 
         <footer>
-            <p>&copy; 2025 AuriX Dev. Все права защищены.</p>
+            <p>&copy; 2025 AuriX Dev. SiNtax Antivirus.</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.5;">Защитите свою систему сегодня</p>
         </footer>
     </div>
 
