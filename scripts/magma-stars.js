@@ -1,20 +1,20 @@
-// Создание квадратных звёзд
+// Обновлённая функция для создания эффектов
 function createSquareStars() {
     const starsContainer = document.getElementById('square-stars');
-    const starCount = 50; // Меньше звёзд, но они больше
+    const starCount = 67; // ЫЫЫ СИКССЕВЕН
     
     for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
         star.classList.add('square-star');
         
         // Случайные параметры
-        const size = random(10, 30); // Крупные квадраты
+        const size = Math.random() > 0.7 ? random(15, 30) : random(8, 15);
         const x = random(0, 100);
-        const y = random(-20, 120); // Начинают за пределами экрана
-        const duration = random(30, 60);
-        const delay = random(0, 20);
-        const opacity = random(0.2, 0.6);
-        const rotation = random(0, 360);
+        const y = random(-10, 110);
+        const duration = random(25, 50);
+        const delay = random(0, 15);
+        const opacity = random(0.15, 0.4);
+        const rotation = random(0, 45);
         
         // Цвет из градиента
         const gradientColors = [
@@ -24,11 +24,17 @@ function createSquareStars() {
             '#158AAD',
             '#1A769F'
         ];
-        const color = gradientColors[Math.floor(random(0, gradientColors.length))];
+        const colorIndex = Math.floor(random(0, gradientColors.length));
+        const color = gradientColors[colorIndex];
+        
+        // Форма (квадрат или прямоугольник)
+        const isSquare = Math.random() > 0.3;
+        const width = isSquare ? size : size * random(1.5, 3);
+        const height = isSquare ? size : size / random(1.5, 3);
         
         // Применяем стили
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
+        star.style.width = `${width}px`;
+        star.style.height = `${height}px`;
         star.style.backgroundColor = color;
         star.style.position = 'absolute';
         star.style.left = `${x}%`;
@@ -36,44 +42,44 @@ function createSquareStars() {
         star.style.opacity = opacity;
         star.style.transform = `rotate(${rotation}deg)`;
         star.style.animation = `floatSquare ${duration}s linear ${delay}s infinite`;
-        star.style.filter = 'blur(1px)';
+        star.style.filter = 'blur(0.5px)';
+        star.style.borderRadius = Math.random() > 0.8 ? '4px' : '2px';
+        star.style.zIndex = '-1';
+        
+        // Добавляем внутреннее свечение
+        star.style.boxShadow = `inset 0 0 ${size/2}px ${color}`;
         
         starsContainer.appendChild(star);
     }
 }
 
-// Функция для генерации случайного числа
-function random(min, max) {
-    return Math.random() * (max - min) + min;
-}
+// Остальной код остаётся прежним...
 
-// Эффект разрыва пикселей
-function createPixelEffect() {
-    const container = document.querySelector('.crystal-overlay');
-    if (!container) return;
+// Анимация для карточек при скролле
+function initScrollAnimations() {
+    const cards = document.querySelectorAll('.feature-card, .req-card');
     
-    // Создаём пиксельные частицы
-    for (let i = 0; i < 100; i++) {
-        const pixel = document.createElement('div');
-        pixel.style.position = 'absolute';
-        pixel.style.width = '2px';
-        pixel.style.height = '2px';
-        pixel.style.backgroundColor = randomColor();
-        pixel.style.left = `${random(0, 100)}%`;
-        pixel.style.top = `${random(0, 100)}%`;
-        pixel.style.opacity = random(0.1, 0.3);
-        pixel.style.animation = `pixelFloat ${random(10, 30)}s linear infinite`;
-        
-        container.appendChild(pixel);
-    }
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    cards.forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
 }
 
-function randomColor() {
-    const colors = ['#75C892', '#52B69A', '#34A0A3', '#158AAD', '#1A769F'];
-    return colors[Math.floor(Math.random() * colors.length)];
-}
-
-// Анимация загрузки
+// Обновляем simulateLoading
 function simulateLoading() {
     const loadingScreen = document.querySelector('.loading-screen');
     if (!loadingScreen) return;
@@ -81,80 +87,24 @@ function simulateLoading() {
     setTimeout(() => {
         loadingScreen.classList.add('hidden');
         
-        // Запускаем создание эффектов после загрузки
+        // Запускаем создание эффектов
         createSquareStars();
-        createPixelEffect();
         
-        // Добавляем класс к body для дополнительных эффектов
-        document.body.classList.add('loaded');
+        // Инициализируем анимации скролла
+        setTimeout(initScrollAnimations, 500);
         
-        // Анимация появления элементов
-        const elements = document.querySelectorAll('.feature-card, .capability-item');
-        elements.forEach((el, index) => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
+        // Анимация появления секций
+        const sections = document.querySelectorAll('.section, .download-section');
+        sections.forEach((section, index) => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
             
             setTimeout(() => {
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            }, 100 + index * 50);
+                section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }, 200 + index * 150);
         });
         
-    }, 1500);
+    }, 1200);
 }
-
-// Запускаем всё при загрузке
-document.addEventListener('DOMContentLoaded', () => {
-    simulateLoading();
-    
-    // Добавляем эффект наведения на карточки
-    const cards = document.querySelectorAll('.feature-card');
-    cards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-5px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-});
-
-// Добавляем CSS для пиксельной анимации
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes pixelFloat {
-        0% {
-            transform: translate(0, 0) rotate(0deg);
-        }
-        25% {
-            transform: translate(${random(-20, 20)}px, ${random(-20, 20)}px) rotate(90deg);
-        }
-        50% {
-            transform: translate(${random(-40, 40)}px, ${random(-40, 40)}px) rotate(180deg);
-        }
-        75% {
-            transform: translate(${random(-20, 20)}px, ${random(-20, 20)}px) rotate(270deg);
-        }
-        100% {
-            transform: translate(0, 0) rotate(360deg);
-        }
-    }
-    
-    .loaded .section {
-        animation: sectionReveal 0.8s ease-out;
-    }
-    
-    @keyframes sectionReveal {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-`;
-document.head.appendChild(style);
