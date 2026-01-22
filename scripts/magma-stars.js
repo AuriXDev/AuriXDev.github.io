@@ -14,7 +14,7 @@ function createSquareStars() {
     starsContainer.innerHTML = '';
     
     // МЕНЬШЕ звёзд, но они БОЛЬШИЕ
-    const starCount = 15;
+    const starCount = 100;
     
     for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
