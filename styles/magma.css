@@ -283,7 +283,7 @@ nav a:hover::before {
     background: var(--gradient-horizontal);
 }
 
-/* Сетка возможностей */
+/* Сетка возможностей - ИСПРАВЛЕННЫЕ ОТСТУПЫ */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -291,18 +291,18 @@ nav a:hover::before {
     margin-top: 2rem;
 }
 
-/* (ПРЕДЫДУЩИЙ КОД ОСТАЁТСЯ БЕЗ ИЗМЕНЕНИЙ ДО СЕКЦИИ .feature-card) */
-
-/* Исправленные карточки возможностей с отступами 5px */
 .feature-card {
     background: rgba(0, 58, 88, 0.6);
     backdrop-filter: var(--blur-effect);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 1.5rem; /* Уменьшен паддинг */
+    padding: 1.5rem; /* Уменьшен padding */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .feature-card::before {
@@ -329,61 +329,64 @@ nav a:hover::before {
 }
 
 .feature-icon {
-    font-size: 2.2rem; /* Немного уменьшен */
-    margin-bottom: 0.8rem; /* Уменьшен отступ */
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
     display: block;
     opacity: 0.9;
 }
 
 .feature-title {
-    font-size: 1.3rem; /* Немного уменьшен */
+    font-size: 1.4rem;
     font-weight: 600;
-    margin-bottom: 0.8rem; /* Уменьшен отступ */
+    margin-bottom: 1rem;
     color: var(--text-accent);
-    padding: 0; /* Убираем паддинг */
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
+/* Улучшенные списки с отступами */
 .feature-list {
     list-style: none;
-    margin: 0; /* Убираем внешние отступы */
-    padding: 0; /* Убираем внутренние отступы */
+    margin: 0;
+    padding: 0;
+    flex-grow: 1; /* Растягиваем список для равной высоты карточек */
 }
 
 .feature-list li {
-    padding: 0.4rem 0; /* Уменьшен вертикальный отступ между пунктами */
+    padding: 0.6rem 0; /* Увеличен вертикальный отступ */
     position: relative;
-    padding-left: 1.2rem; /* Уменьшен отступ слева */
+    padding-left: 1.2rem; /* Уменьшен левый отступ */
     opacity: 0.9;
-    margin: 0; /* Убираем марджин */
-    border-bottom: 1px solid rgba(117, 200, 146, 0.1); /* Легкая разделительная линия */
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border-bottom: 1px solid rgba(117, 200, 146, 0.1); /* Тонкая разделительная линия */
 }
 
 .feature-list li:last-child {
-    border-bottom: none; /* У последнего пункта убираем линию */
+    border-bottom: none; /* Убираем линию у последнего элемента */
 }
 
 .feature-list li::before {
     content: '▸';
     position: absolute;
-    left: 0.2rem; /* Сдвигаем ближе к краю */
+    left: 0; /* Прижимаем к левому краю */
     color: var(--gradient-2);
     font-weight: bold;
-    font-size: 0.9rem;
 }
 
-/* Исправленные карточки возможностей в сетке */
+/* Списки возможностей - ИСПРАВЛЕННЫЕ ОТСТУПЫ */
 .capabilities-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.2rem; /* Уменьшен gap между карточками */
-    margin-top: 1.5rem;
+    gap: 1.5rem;
+    margin-top: 2rem;
 }
 
 .capability-item {
     display: flex;
     align-items: flex-start;
-    gap: 0.8rem; /* Уменьшен gap между иконкой и текстом */
-    padding: 1rem; /* Уменьшен паддинг */
+    gap: 1rem;
+    padding: 1.2rem; /* Уменьшен padding */
     background: rgba(0, 58, 88, 0.4);
     border-radius: 6px;
     border: 1px solid transparent;
@@ -398,160 +401,111 @@ nav a:hover::before {
 }
 
 .capability-icon {
-    font-size: 1.6rem; /* Немного уменьшен */
+    font-size: 1.8rem;
     color: var(--gradient-3);
     flex-shrink: 0;
-    margin-top: 0.1rem; /* Уменьшен отступ сверху */
-    padding: 0.2rem; /* Добавим немного паддинга для иконки */
+    margin-top: 0.2rem;
 }
 
 .capability-content {
     flex: 1;
-    margin: 0; /* Убираем марджин */
-    padding: 0; /* Убираем паддинг */
 }
 
 .capability-content h4 {
-    font-size: 1rem; /* Немного уменьшен */
-    margin-bottom: 0.4rem; /* Уменьшен отступ снизу */
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
     color: var(--text-accent);
-    padding: 0; /* Убираем паддинг */
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .capability-content ul {
     list-style: none;
-    margin: 0; /* Убираем внешние отступы */
-    padding: 0; /* Убираем внутренние отступы */
+    padding-left: 0;
+    margin: 0;
 }
 
 .capability-content li {
-    padding: 0.25rem 0; /* Уменьшен вертикальный отступ */
+    padding: 0.5rem 0; /* Увеличен вертикальный отступ */
     opacity: 0.9;
-    font-size: 0.9rem; /* Немного уменьшен */
+    font-size: 0.92rem;
     position: relative;
-    padding-left: 1rem; /* Уменьшен отступ слева */
-    margin: 0; /* Убираем марджин */
-    border-bottom: 1px solid rgba(117, 200, 146, 0.05); /* Очень легкая линия */
-}
-
-.capability-content li:last-child {
-    border-bottom: none; /* У последнего пункта убираем линию */
+    padding-left: 1rem; /* Уменьшен левый отступ */
+    line-height: 1.4;
 }
 
 .capability-content li::before {
     content: '■';
     position: absolute;
-    left: 0.1rem; /* Сдвигаем ближе к краю */
+    left: 0; /* Прижимаем к левому краю */
     color: var(--gradient-1);
-    font-size: 0.7rem; /* Немного уменьшен */
-    top: 0.35rem; /* Выравниваем по вертикали */
+    font-size: 0.7rem;
+    top: 0.6rem;
 }
 
-/* Уникальные функции - карточки с текстом */
-.feature-card p {
-    margin: 0.8rem 0 0 0; /* Отступ только сверху */
-    padding: 0;
+/* Блоки с деталями - ИСПРАВЛЕННЫЕ ОТСТУПЫ */
+.detail-block {
+    background: rgba(0, 58, 88, 0.6);
+    backdrop-filter: var(--blur-effect);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem; /* Уменьшен padding */
+    margin-bottom: 1.5rem;
+}
+
+.detail-block h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--gradient-2);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.detail-block p {
+    margin-bottom: 0.8rem; /* Увеличен отступ между параграфами */
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+.detail-block ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0.8rem 0; /* Отступ сверху и снизу списка */
+}
+
+.detail-block li {
+    padding: 0.5rem 0; /* Увеличен вертикальный отступ */
+    position: relative;
+    padding-left: 1.2rem; /* Уменьшен левый отступ */
     opacity: 0.9;
     line-height: 1.5;
+    border-bottom: 1px solid rgba(117, 200, 146, 0.1);
 }
 
-/* Системные требования - карточки */
-.feature-card .feature-list {
-    margin-top: 0.5rem; /* Небольшой отступ сверху для списка */
+.detail-block li:last-child {
+    border-bottom: none;
 }
 
-/* Секция с уникальными функциями - исправленные отступы */
-.section > div > .feature-card {
-    margin: 0; /* Убираем марджин */
-}
-
-/* Исправленный заголовок секции */
-.section-header {
-    margin-bottom: 1.5rem; /* Уменьшен отступ снизу */
-    position: relative;
-    padding: 0.8rem 0; /* Уменьшен вертикальный паддинг */
-}
-
-.section-header h2 {
-    font-family: 'Orbitron', 'JetBrains Mono', monospace;
-    font-size: 2rem; /* Немного уменьшен */
-    font-weight: 700;
-    background: var(--gradient-main);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-transform: uppercase;
-    letter-spacing: 1px; /* Уменьшен межбуквенный интервал */
-    position: relative;
-    display: inline-block;
-    margin: 0; /* Убираем марджин */
-    padding: 0; /* Убираем паддинг */
-}
-
-.section-header h2::after {
-    content: '';
+.detail-block li::before {
+    content: '•';
     position: absolute;
-    bottom: -8px; /* Поднимаем линию ближе к тексту */
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: var(--gradient-horizontal);
+    left: 0; /* Прижимаем к левому краю */
+    color: var(--gradient-3);
+    font-size: 1.2rem;
+    top: 0.4rem;
 }
 
-/* Загрузочный экран - исправленные отступы */
-.loader-section {
-    text-align: center;
-    padding: 3rem 0; /* Уменьшен вертикальный паддинг */
-    position: relative;
-}
-
-.loader-container {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 1.5rem; /* Уменьшен отступ снизу */
-}
-
-.pixel-loader {
-    width: 60px; /* Немного уменьшен */
-    height: 60px; /* Немного уменьшен */
-    border: 3px solid transparent; /* Уменьшена толщина границы */
-    border-top: 3px solid var(--gradient-1);
-    border-right: 3px solid var(--gradient-3);
-    border-bottom: 3px solid var(--gradient-5);
-    border-left: 3px solid var(--gradient-2);
-    border-radius: 6px; /* Немного уменьшен радиус */
-    animation: spin 2s linear infinite;
-}
-
-.loader-text {
-    font-size: 1rem; /* Немного уменьшен */
-    color: var(--gradient-2);
-    text-transform: uppercase;
-    letter-spacing: 1px; /* Уменьшен межбуквенный интервал */
-    margin-top: 0.8rem; /* Уменьшен отступ сверху */
-    animation: pulse 2s ease-in-out infinite;
-}
-
-/* Главный призыв - исправленные отступы */
-.section > p {
-    font-size: 1.1rem; /* Немного уменьшен */
-    max-width: 800px;
-    margin: 0 auto 1.5rem; /* Уменьшен отступ снизу */
-    opacity: 0.9;
-    padding: 0 1rem; /* Добавляем боковые паддинги на мобильных */
-}
-
-/* CTA кнопки - исправленные отступы */
+/* Кнопки */
 .cta-buttons {
     display: flex;
-    gap: 1rem; /* Уменьшен gap между кнопками */
+    gap: 1.5rem;
     justify-content: center;
-    margin: 2rem 0; /* Уменьшены вертикальные отступы */
+    margin: 3rem 0;
     flex-wrap: wrap;
 }
 
 .primary-button {
-    padding: 0.9rem 2rem; /* Уменьшен паддинг */
+    padding: 1rem 2.5rem;
     background: var(--gradient-main);
     color: var(--bg-primary);
     text-decoration: none;
@@ -562,14 +516,19 @@ nav a:hover::before {
     transition: all 0.3s ease;
     border: none;
     cursor: pointer;
-    font-size: 0.9rem; /* Немного уменьшен */
+    font-size: 1rem;
     position: relative;
     overflow: hidden;
     font-family: 'JetBrains Mono', monospace;
 }
 
+.primary-button:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--glow);
+}
+
 .secondary-button {
-    padding: 0.9rem 2rem; /* Уменьшен паддинг */
+    padding: 1rem 2.5rem;
     background: transparent;
     color: var(--text-accent);
     text-decoration: none;
@@ -580,54 +539,72 @@ nav a:hover::before {
     transition: all 0.3s ease;
     border: 2px solid var(--gradient-3);
     cursor: pointer;
-    font-size: 0.9rem; /* Немного уменьшен */
+    font-size: 1rem;
     position: relative;
     overflow: hidden;
     font-family: 'JetBrains Mono', monospace;
 }
 
-/* Секция скачивания - исправленные отступы */
+.secondary-button:hover {
+    background: rgba(117, 200, 146, 0.1);
+    border-color: var(--gradient-1);
+    transform: translateY(-3px);
+}
+
+/* Секция скачивания - ИСПРАВЛЕННЫЕ ОТСТУПЫ */
 .download-section {
     background: rgba(0, 58, 88, 0.8);
     border-radius: 12px;
-    padding: 2rem; /* Уменьшен паддинг */
-    margin: 2rem 0; /* Уменьшен марджин */
+    padding: 2rem; /* Уменьшен padding */
+    margin: 3rem 0;
     text-align: center;
     border: 2px solid var(--border-color);
     position: relative;
     overflow: hidden;
 }
 
+.download-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-horizontal);
+}
+
 .download-title {
-    font-size: 1.8rem; /* Немного уменьшен */
-    margin-bottom: 0.8rem; /* Уменьшен отступ */
+    font-size: 2rem;
+    margin-bottom: 1rem;
     color: var(--text-primary);
+    padding: 0 1rem; /* Отступы по бокам */
 }
 
 .download-subtitle {
-    font-size: 1rem; /* Немного уменьшен */
+    font-size: 1.1rem;
     opacity: 0.8;
     margin-bottom: 1.5rem; /* Уменьшен отступ */
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    padding: 0 1rem; /* Добавляем боковые паддинги */
+    padding: 0 1rem; /* Отступы по бокам */
 }
 
 .download-stats {
     display: flex;
     justify-content: center;
     gap: 2rem; /* Уменьшен gap */
-    margin: 1.5rem 0; /* Уменьшены вертикальные отступы */
+    margin: 1.5rem 0; /* Уменьшен margin */
     flex-wrap: wrap;
 }
 
 .stat-item {
     text-align: center;
+    padding: 0.5rem; /* Добавлен padding */
 }
 
 .stat-value {
-    font-size: 2rem; /* Немного уменьшен */
+    font-size: 2.2rem; /* Уменьшен размер */
     font-weight: 700;
     color: var(--gradient-1);
     display: block;
@@ -635,112 +612,229 @@ nav a:hover::before {
 }
 
 .stat-label {
-    font-size: 0.8rem; /* Немного уменьшен */
+    font-size: 0.9rem;
     opacity: 0.7;
     text-transform: uppercase;
-    letter-spacing: 0.5px; /* Уменьшен межбуквенный интервал */
-    margin-top: 0.3rem; /* Уменьшен отступ сверху */
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
 }
 
-/* Подвал - исправленные отступы */
+/* Подвал */
 footer {
     text-align: center;
-    padding: 2rem 0; /* Уменьшен вертикальный паддинг */
-    margin-top: 3rem; /* Уменьшен отступ сверху */
+    padding: 2rem 0; /* Уменьшен padding */
+    margin-top: 3rem; /* Уменьшен margin */
     border-top: 1px solid var(--border-color);
     position: relative;
 }
 
+footer::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--gradient-horizontal);
+    opacity: 0.3;
+}
+
 .footer-text {
     opacity: 0.6;
-    font-size: 0.8rem; /* Немного уменьшен */
-    margin-bottom: 0.5rem; /* Добавляем небольшой отступ снизу */
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem; /* Добавлен отступ */
 }
 
 .footer-links {
     display: flex;
     justify-content: center;
-    gap: 1.5rem; /* Уменьшен gap между ссылками */
-    margin-top: 0.8rem; /* Уменьшен отступ сверху */
+    gap: 1.5rem; /* Уменьшен gap */
+    margin-top: 0.8rem; /* Уменьшен margin */
 }
 
-/* Уменьшаем отступы для мобильных устройств */
+.footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem; /* Уменьшен размер шрифта */
+    transition: color 0.3s ease;
+    padding: 0.2rem 0; /* Добавлен вертикальный padding */
+}
+
+.footer-links a:hover {
+    color: var(--gradient-1);
+}
+
+/* Пиксельные эффекты */
+.pixel-border {
+    position: relative;
+}
+
+.pixel-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid;
+    border-image: var(--gradient-main) 1;
+    pointer-events: none;
+    border-radius: 2px;
+}
+
+/* Анимации для плавного появления */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-card, .capability-item, .detail-block {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Задержки для анимации появления */
+.feature-card:nth-child(1) { animation-delay: 0.1s; }
+.feature-card:nth-child(2) { animation-delay: 0.2s; }
+.feature-card:nth-child(3) { animation-delay: 0.3s; }
+
+.capability-item:nth-child(1) { animation-delay: 0.4s; }
+.capability-item:nth-child(2) { animation-delay: 0.5s; }
+.capability-item:nth-child(3) { animation-delay: 0.6s; }
+.capability-item:nth-child(4) { animation-delay: 0.7s; }
+
+/* Адаптивность */
 @media (max-width: 768px) {
-    .feature-card {
-        padding: 1.2rem; /* Ещё меньше на мобильных */
+    .container {
+        padding: 1rem;
     }
     
-    .feature-list li {
-        padding: 0.3rem 0; /* Ещё меньше на мобильных */
-        padding-left: 1rem;
+    nav ul {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    .logo-container img {
+        max-width: 300px;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem; /* Уменьшен gap */
+    }
+    
+    .feature-card {
+        padding: 1.2rem; /* Уменьшен padding для мобильных */
+    }
+    
+    .capabilities-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem; /* Уменьшен gap */
     }
     
     .capability-item {
-        padding: 0.8rem; /* Ещё меньше на мобильных */
-        gap: 0.6rem;
+        padding: 1rem; /* Уменьшен padding для мобильных */
     }
     
-    .capability-content li {
-        padding: 0.2rem 0; /* Ещё меньше на мобильных */
-        padding-left: 0.8rem;
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem; /* Уменьшен gap */
+        margin: 2rem 0; /* Уменьшен margin */
     }
     
-    .section-header {
-        margin-bottom: 1rem;
-        padding: 0.5rem 0;
-    }
-    
-    .section-header h2 {
-        font-size: 1.6rem;
-    }
-    
-    .download-section {
-        padding: 1.5rem 1rem;
-        margin: 1.5rem 0;
+    .primary-button, .secondary-button {
+        padding: 0.8rem 2rem; /* Уменьшен padding */
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
     }
     
     .download-stats {
-        gap: 1rem;
-        margin: 1rem 0;
+        gap: 1rem; /* Уменьшен gap */
+        margin: 1rem 0; /* Уменьшен margin */
+    }
+    
+    .stat-item {
+        padding: 0.3rem; /* Уменьшен padding */
     }
     
     .stat-value {
-        font-size: 1.6rem;
+        font-size: 1.8rem; /* Уменьшен размер */
+    }
+    
+    .download-section {
+        padding: 1.5rem 1rem; /* Уменьшен padding */
+        margin: 2rem 0; /* Уменьшен margin */
+    }
+    
+    .download-title {
+        font-size: 1.6rem; /* Уменьшен размер */
+    }
+    
+    .download-subtitle {
+        font-size: 1rem; /* Уменьшен размер */
+    }
+    
+    .footer-links {
+        flex-wrap: wrap;
+        gap: 1rem; /* Уменьшен gap */
+    }
+    
+    .footer-links a {
+        font-size: 0.85rem; /* Уменьшен размер */
     }
 }
 
 @media (max-width: 480px) {
-    .feature-card {
-        padding: 1rem;
+    .header-logo {
+        padding: 2rem 0;
     }
     
-    .feature-icon {
+    .logo-container img {
+        max-width: 250px;
+    }
+    
+    .section-header h2 {
         font-size: 1.8rem;
-        margin-bottom: 0.5rem;
     }
     
     .feature-title {
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
+        font-size: 1.2rem; /* Уменьшен размер */
     }
     
-    .capability-item {
-        padding: 0.6rem;
+    .feature-list li {
+        font-size: 0.9rem; /* Уменьшен размер */
+        padding: 0.5rem 0; /* Уменьшен padding */
+        padding-left: 1rem; /* Уменьшен левый отступ */
     }
     
-    .capability-icon {
-        font-size: 1.3rem;
+    .capability-content h4 {
+        font-size: 1rem; /* Уменьшен размер */
     }
     
-    .cta-buttons {
-        gap: 0.8rem;
-        margin: 1.5rem 0;
+    .capability-content li {
+        font-size: 0.85rem; /* Уменьшен размер */
+        padding: 0.4rem 0; /* Уменьшен padding */
+        padding-left: 0.8rem; /* Уменьшен левый отступ */
     }
     
-    .primary-button,
-    .secondary-button {
-        padding: 0.7rem 1.5rem;
-        font-size: 0.8rem;
+    .stat-value {
+        font-size: 1.6rem; /* Уменьшен размер */
+    }
+    
+    .stat-label {
+        font-size: 0.8rem; /* Уменьшен размер */
     }
 }
+
+/* Убираем загрузочный экран */
+.loading-screen {
+    display: none !important;
 }
