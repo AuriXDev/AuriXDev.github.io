@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuriX Dev | Космические технологии</title>
     <link rel="stylesheet" href="styles/main.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <!-- Фоновые звёзды -->
@@ -14,76 +15,100 @@
     <!-- Основной контент -->
     <div class="container">
         <header>
-            <h1>AURI<span>X</span> DEV</h1>
+            <h1>AURI<span style="color: #8A7BFF">X</span> DEV</h1>
             <p class="subtitle">Разработка будущего сегодня</p>
         </header>
 
         <main>
             <section class="about">
-                <h2>О нас</h2>
-                <p>
-                    Мы — команда из <strong>4 разработчиков</strong> из России, специализирующихся на создании инновационных решений.
-                    Наши проекты охватывают различные области: от кибербезопасности до игровых движков и искусственного интеллекта.
-                </p>
-                <p>
-                    <strong>Языки и технологии:</strong> JavaScript, Python, C#, Lua, Java.
-                </p>
-                <p>
-                    Наша миссия — делать технологии доступными, надёжными и красивыми.
-                </p>
+                <div class="section-header">
+                    <h2>О нас</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="card">
+                    <p>
+                        Мы — команда из <strong>4 разработчиков</strong> из России, специализирующихся на создании инновационных решений.
+                        Наши проекты охватывают различные области: от кибербезопасности до игровых движков и искусственного интеллекта.
+                    </p>
+                    <p style="margin-top: 1rem;">
+                        <strong>Языки и технологии:</strong> JavaScript, Python, C#, Lua, Java
+                    </p>
+                    <p style="margin-top: 1rem; opacity: 0.8;">
+                        Наша миссия — делать технологии доступными, надёжными и красивыми.
+                    </p>
+                </div>
             </section>
 
             <section class="projects">
-                <h2>Наши проекты</h2>
-                <div class="project-buttons">
-                    <a href="projects/magmaluncher.html" class="project-button">
-                        <span class="button-icon">🎮</span>
-                        <span class="button-text">MagmaLauncher</span>
-                        <span class="button-desc">Универсальный лаунчер Minecraft</span>
+                <div class="section-header">
+                    <h2>Наши проекты</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="project-grid">
+                    <a href="projects/magmaluncher.html" class="project-card card">
+                        <span class="project-icon">🎮</span>
+                        <span class="project-title">MagmaLauncher</span>
+                        <span class="project-desc">Универсальный лаунчер Minecraft с современным интерфейсом и расширенными возможностями</span>
                     </a>
-                    <a href="projects/sintax.html" class="project-button">
-                        <span class="button-icon">🛡️</span>
-                        <span class="button-text">SiNtax</span>
-                        <span class="button-desc">Антивирус нового поколения</span>
+                    <a href="projects/sintax.html" class="project-card card">
+                        <span class="project-icon">🛡️</span>
+                        <span class="project-title">SiNtax</span>
+                        <span class="project-desc">Антивирус нового поколения с использованием машинного обучения</span>
                     </a>
-                    <a href="projects/cubikai.html" class="project-button">
-                        <span class="button-icon">🤖</span>
-                        <span class="button-text">CubikAI</span>
-                        <span class="button-desc">Искусственный интеллект для творчества</span>
+                    <a href="projects/cubikai.html" class="project-card card">
+                        <span class="project-icon">🤖</span>
+                        <span class="project-title">CubikAI</span>
+                        <span class="project-desc">Искусственный интеллект для творчества и генерации контента</span>
                     </a>
-                    <a href="projects/other.html" class="project-button">
-                        <span class="button-icon">⚡</span>
-                        <span class="button-text">Прочее</span>
-                        <span class="button-desc">Другие интересные проекты</span>
+                    <a href="projects/other.html" class="project-card card">
+                        <span class="project-icon">⚡</span>
+                        <span class="project-title">Прочее</span>
+                        <span class="project-desc">Другие интересные проекты и экспериментальные разработки</span>
                     </a>
                 </div>
             </section>
 
             <section class="goals">
-                <h2>Наши цели</h2>
-                <ul>
-                    <li>Создавать <strong>полезные</strong> и <strong>инновационные</strong> продукты.</li>
-                    <li>Делиться знаниями с сообществом (туториалы, открытый код).</li>
-                    <li>Развивать <strong>русскоязычное IT-сообщество</strong>.</li>
-                    <li>Сотрудничать с талантливыми людьми со всего мира.</li>
-                </ul>
+                <div class="section-header">
+                    <h2>Наши цели</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="card">
+                    <ul class="goals-list">
+                        <li>Создавать <strong>полезные</strong> и <strong>инновационные</strong> продукты</li>
+                        <li>Делиться знаниями с сообществом через туториалы и открытый код</li>
+                        <li>Развивать <strong>русскоязычное IT-сообщество</strong></li>
+                        <li>Сотрудничать с талантливыми людьми со всего мира</li>
+                    </ul>
+                </div>
             </section>
 
             <section class="contact">
-                <h2>Связь с нами</h2>
-                <p>
-                    Если у вас есть вопросы, предложения или вы хотите присоединиться к команде — пишите!
-                </p>
-                <div class="contact-info">
-                    <p>📧 Почта: <a href="mailto:aurixhelp@gmail.com">aurixhelp@gmail.com</a></p>
-                    <p>💬 Telegram: <a href="https://t.me/aurix_dev">@aurixdev</a></p>
+                <div class="section-header">
+                    <h2>Связь с нами</h2>
+                    <div class="section-line"></div>
+                </div>
+                <div class="card">
+                    <p style="margin-bottom: 1.5rem;">
+                        Если у вас есть вопросы, предложения или вы хотите присоединиться к команде — пишите!
+                    </p>
+                    <div class="contact-grid">
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <a href="mailto:aurixhelp@gmail.com" class="contact-link">aurixhelp@gmail.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">💬</span>
+                            <a href="https://t.me/aurix_dev" class="contact-link">@aurix_dev</a>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
 
         <footer>
             <p>&copy; 2025 AuriX Dev. Все права защищены.</p>
-            <p>Сайт сделан полностью благодаря CubikAI 2.6-ultra</p>
+            <p class="footer-ai">Сайт сделан полностью благодаря CubikAI 2.6-ultra</p>
         </footer>
     </div>
 
