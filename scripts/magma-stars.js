@@ -1,20 +1,25 @@
 // Создание квадратных звёзд
 function createSquareStars() {
     const starsContainer = document.getElementById('square-stars');
-    const starCount = 50; // Меньше звёзд, но они больше
+    if (!starsContainer) return;
+    
+    const starCount = 67; // ЫЫЫ СЫКССЕВЕН
+    
+    // Очищаем контейнер на всякий случай
+    starsContainer.innerHTML = '';
     
     for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
         star.classList.add('square-star');
         
         // Случайные параметры
-        const size = random(10, 30); // Крупные квадраты
-        const x = random(0, 100);
-        const y = random(-20, 120); // Начинают за пределами экрана
-        const duration = random(30, 60);
-        const delay = random(0, 20);
-        const opacity = random(0.2, 0.6);
-        const rotation = random(0, 360);
+        const size = random(15, 35); // Крупные квадраты
+        const x = random(-10, 110); // За пределами экрана для плавного входа
+        const y = random(100, 120); // Начинают снизу экрана
+        const duration = random(20, 40);
+        const delay = random(0, 15);
+        const opacity = random(0.3, 0.8);
+        const rotation = random(0, 45); // Меньше вращение
         
         // Цвет из градиента
         const gradientColors = [
@@ -37,6 +42,7 @@ function createSquareStars() {
         star.style.transform = `rotate(${rotation}deg)`;
         star.style.animation = `floatSquare ${duration}s linear ${delay}s infinite`;
         star.style.filter = 'blur(1px)';
+        star.style.zIndex = '-2';
         
         starsContainer.appendChild(star);
     }
@@ -47,22 +53,27 @@ function random(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-// Эффект разрыва пикселей
+// Эффект пикселей для crystal-overlay
 function createPixelEffect() {
     const container = document.querySelector('.crystal-overlay');
     if (!container) return;
     
+    // Очищаем старые пиксели
+    container.innerHTML = '';
+    
     // Создаём пиксельные частицы
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 80; i++) {
         const pixel = document.createElement('div');
         pixel.style.position = 'absolute';
-        pixel.style.width = '2px';
-        pixel.style.height = '2px';
+        pixel.style.width = '3px';
+        pixel.style.height = '3px';
         pixel.style.backgroundColor = randomColor();
         pixel.style.left = `${random(0, 100)}%`;
         pixel.style.top = `${random(0, 100)}%`;
-        pixel.style.opacity = random(0.1, 0.3);
-        pixel.style.animation = `pixelFloat ${random(10, 30)}s linear infinite`;
+        pixel.style.opacity = random(0.1, 0.4);
+        pixel.style.animation = `pixelFloat ${random(15, 25)}s linear infinite`;
+        pixel.style.zIndex = '-1';
+        pixel.style.borderRadius = '1px';
         
         container.appendChild(pixel);
     }
@@ -73,88 +84,115 @@ function randomColor() {
     return colors[Math.floor(Math.random() * colors.length)];
 }
 
-// Анимация загрузки
-function simulateLoading() {
-    const loadingScreen = document.querySelector('.loading-screen');
-    if (!loadingScreen) return;
+// Анимация появления контента
+function animateContent() {
+    // Анимация появления элементов
+    const elements = document.querySelectorAll('.feature-card, .capability-item, .req-card');
+    elements.forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, 300 + index * 100);
+    });
     
-    setTimeout(() => {
-        loadingScreen.classList.add('hidden');
+    // Анимация для секций
+    const sections = document.querySelectorAll('.section, .download-section');
+    sections.forEach((section, index) => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(40px)';
         
-        // Запускаем создание эффектов после загрузки
-        createSquareStars();
-        createPixelEffect();
-        
-        // Добавляем класс к body для дополнительных эффектов
-        document.body.classList.add('loaded');
-        
-        // Анимация появления элементов
-        const elements = document.querySelectorAll('.feature-card, .capability-item');
-        elements.forEach((el, index) => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            
-            setTimeout(() => {
-                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-            }, 100 + index * 50);
-        });
-        
-    }, 1500);
+        setTimeout(() => {
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0)';
+        }, 100 + index * 150);
+    });
 }
 
-// Запускаем всё при загрузке
-document.addEventListener('DOMContentLoaded', () => {
-    simulateLoading();
-    
-    // Добавляем эффект наведения на карточки
-    const cards = document.querySelectorAll('.feature-card');
+// Добавляем эффект наведения на карточки
+function addHoverEffects() {
+    const cards = document.querySelectorAll('.feature-card, .req-card');
     cards.forEach(card => {
         card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-5px) scale(1.02)';
+            card.style.transform = 'translateY(-8px) scale(1.02)';
         });
         
         card.addEventListener('mouseleave', () => {
             card.style.transform = 'translateY(0) scale(1)';
         });
     });
-});
+    
+    // Для capability-item
+    const capabilityItems = document.querySelectorAll('.capability-item');
+    capabilityItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            item.style.transform = 'translateX(8px)';
+        });
+        
+        item.addEventListener('mouseleave', () => {
+            item.style.transform = 'translateX(0)';
+        });
+    });
+}
 
 // Добавляем CSS для пиксельной анимации
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes pixelFloat {
-        0% {
-            transform: translate(0, 0) rotate(0deg);
-        }
-        25% {
-            transform: translate(${random(-20, 20)}px, ${random(-20, 20)}px) rotate(90deg);
-        }
-        50% {
-            transform: translate(${random(-40, 40)}px, ${random(-40, 40)}px) rotate(180deg);
-        }
-        75% {
-            transform: translate(${random(-20, 20)}px, ${random(-20, 20)}px) rotate(270deg);
-        }
-        100% {
-            transform: translate(0, 0) rotate(360deg);
-        }
-    }
+function addPixelAnimationStyles() {
+    if (document.querySelector('#pixel-animation-styles')) return;
     
-    .loaded .section {
-        animation: sectionReveal 0.8s ease-out;
-    }
+    const style = document.createElement('style');
+    style.id = 'pixel-animation-styles';
+    style.textContent = `
+        @keyframes pixelFloat {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0.1;
+            }
+            25% {
+                transform: translate(${random(-30, 30)}px, ${random(-30, 30)}px) rotate(90deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: translate(${random(-50, 50)}px, ${random(-50, 50)}px) rotate(180deg);
+                opacity: 0.2;
+            }
+            75% {
+                transform: translate(${random(-30, 30)}px, ${random(-30, 30)}px) rotate(270deg);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+                opacity: 0.1;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// Запускаем всё при загрузке
+document.addEventListener('DOMContentLoaded', () => {
+    // Сначала добавляем стили для анимации
+    addPixelAnimationStyles();
     
-    @keyframes sectionReveal {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-`;
-document.head.appendChild(style);
+    // Создаём звёзды и эффекты
+    createSquareStars();
+    createPixelEffect();
+    
+    // Анимируем контент
+    setTimeout(() => {
+        animateContent();
+        addHoverEffects();
+    }, 500);
+    
+    // Добавляем класс для плавного появления body
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+        document.body.style.transition = 'opacity 0.5s ease';
+    }, 100);
+});
+
+// Инициализируем opacity body
+document.body.style.opacity = '0';
