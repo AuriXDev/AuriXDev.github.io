@@ -20,18 +20,14 @@ function createSquareStars() {
         const star = document.createElement('div');
         star.className = 'square-star';
         
-        // БОЛЬШИЕ размеры: 40-80px
-        const size = Math.random() * 40 + 40;
+        const size = Math.random() * 100 + 40;
         
-        // Позиция
         const x = Math.random() * 110 - 5;
         const y = Math.random() * 120 + 100;
         
-        // Разная скорость
         const duration = Math.random() * 30 + 20;
         const delay = Math.random() * 10;
         
-        // Цвета
         const colors = [
             'linear-gradient(135deg, #75C892 0%, #52B69A 50%, #34A0A3 100%)',
             'linear-gradient(135deg, #52B69A 0%, #34A0A3 50%, #158AAD 100%)',
@@ -40,7 +36,6 @@ function createSquareStars() {
         ];
         const color = colors[Math.floor(Math.random() * colors.length)];
         
-        // Стили для БОЛЬШОЙ КВАДРАТНОЙ звезды
         Object.assign(star.style, {
             width: `${size}px`,
             height: `${size}px`,
