@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Купить SiNtax Premium - AuriX Dev</title>
+    <link rel="stylesheet" href="../styles/buysintax.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Фоновые звёзды -->
+    <div id="stars"></div>
+
+    <!-- Модальное окно для покупки -->
+    <div id="buyModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h3 class="modal-title">Переход в Telegram</h3>
+            <p class="modal-text">
+                Вы будете перенаправлены в Telegram-бота для оформления подписки.<br>
+                Бот автоматически определит выбранный тариф по указанной цене.
+            </p>
+            <a id="telegramLink" class="modal-button" target="_blank">
+                Перейти в Telegram
+            </a>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="../../index.html">← На главную</a></li>
+                <li><a href="../../projects/sintax.html">О SiNtax</a></li>
+                <li><a href="../../contact.html">Поддержка</a></li>
+            </ul>
+        </nav>
+
+        <header>
+            <h1>SiNtax Premium</h1>
+            <p class="subtitle">Выберите подходящий тариф</p>
+        </header>
+
+        <div class="info-banner">
+            <p><strong>Внимание:</strong> Все цены указаны с учётом комиссий платёжных систем. Все комиссии покрываются нами.</p>
+        </div>
+
+        <section class="pricing-section">
+            <div class="section-header">
+                <h2>Тарифные планы</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="pricing-table">
+                <!-- Бесплатный тариф -->
+                <div class="pricing-card free">
+                    <div class="plan-badge">Basic</div>
+                    <h3 class="plan-name">Бесплатно</h3>
+                    <p class="plan-description">Базовая защита для частных пользователей</p>
+                    
+                    <div class="price-container">
+                        <div class="price-monthly">
+                            <span class="price-amount">0 ₽</span>
+                            <span class="price-period">/ месяц</span>
+                        </div>
+                        <div class="price-yearly">
+                            <span class="price-amount">0 ₽</span>
+                            <span class="price-period">/ год</span>
+                        </div>
+                    </div>
+
+                    <ul style="margin: 1.5rem 0; padding-left: 1.5rem; opacity: 0.9;">
+                        <li style="margin-bottom: 0.5rem;">✓ Базовая защита в реальном времени</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Быстрое сканирование системы</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Обновления сигнатур вирусов</li>
+                        <li>✓ Поддержка сообщества</li>
+                    </ul>
+
+                    <a href="../../projects/sintax.html" class="buy-button">
+                        Использовать бесплатно
+                    </a>
+                </div>
+
+                <!-- Premium тариф -->
+                <div class="pricing-card popular">
+                    <div class="plan-badge">Популярный</div>
+                    <h3 class="plan-name">Premium</h3>
+                    <p class="plan-description">Для продвинутых пользователей</p>
+                    
+                    <div class="price-container">
+                        <div class="price-monthly">
+                            <span class="price-amount">299 ₽</span>
+                            <span class="price-period">/ месяц</span>
+                        </div>
+                        <div class="price-yearly">
+                            <span class="price-amount">2 399 ₽</span>
+                            <span class="price-period">/ год</span>
+                            <span class="discount-badge">-20%</span>
+                        </div>
+                        <div class="saving">Экономия 1 189 ₽ в год</div>
+                    </div>
+
+                    <ul style="margin: 1.5rem 0; padding-left: 1.5rem; opacity: 0.9;">
+                        <li style="margin-bottom: 0.5rem;">✓ Все функции Basic</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Расширенная защита в реальном времени</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Автоматические обновления</li>
+                        <li>✓ Приоритетная поддержка</li>
+                    </ul>
+
+                    <button class="buy-button" data-plan="Premium" data-price="299">
+                        Выбрать Premium
+                    </button>
+                </div>
+
+                <!-- Family тариф -->
+                <div class="pricing-card">
+                    <div class="plan-badge">Семейный</div>
+                    <h3 class="plan-name">Family</h3>
+                    <p class="plan-description">Для семей и небольших команд</p>
+                    
+                    <div class="price-container">
+                        <div class="price-monthly">
+                            <span class="price-amount">499 ₽</span>
+                            <span class="price-period">/ месяц</span>
+                        </div>
+                        <div class="price-yearly">
+                            <span class="price-amount">3 999 ₽</span>
+                            <span class="price-period">/ год</span>
+                            <span class="discount-badge">-20%</span>
+                        </div>
+                        <div class="saving">Экономия 1 989 ₽ в год</div>
+                    </div>
+
+                    <ul style="margin: 1.5rem 0; padding-left: 1.5rem; opacity: 0.9;">
+                        <li style="margin-bottom: 0.5rem;">✓ Все функции Premium</li>
+                        <li style="margin-bottom: 0.5rem;">✓ 3 устройства одновременно</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Централизованное управление</li>
+                        <li>✓ Расширенная статистика</li>
+                    </ul>
+
+                    <button class="buy-button" data-plan="Family" data-price="499">
+                        Выбрать Family
+                    </button>
+                </div>
+
+                <!-- Business тариф -->
+                <div class="pricing-card">
+                    <div class="plan-badge">Бизнес</div>
+                    <h3 class="plan-name">Business</h3>
+                    <p class="plan-description">Для малого бизнеса и офисов</p>
+                    
+                    <div class="price-container">
+                        <div class="price-monthly">
+                            <span class="price-amount">999 ₽</span>
+                            <span class="price-period">/ месяц</span>
+                        </div>
+                        <div class="price-yearly">
+                            <span class="price-amount">7 999 ₽</span>
+                            <span class="price-period">/ год</span>
+                            <span class="discount-badge">-20%</span>
+                        </div>
+                        <div class="saving">Экономия 3 989 ₽ в год</div>
+                    </div>
+
+                    <ul style="margin: 1.5rem 0; padding-left: 1.5rem; opacity: 0.9;">
+                        <li style="margin-bottom: 0.5rem;">✓ Все функции Family</li>
+                        <li style="margin-bottom: 0.5rem;">✓ 5 устройств одновременно</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Корпоративная поддержка</li>
+                        <li>✓ Детальная аналитика</li>
+                    </ul>
+
+                    <button class="buy-button" data-plan="Business" data-price="999">
+                        Выбрать Business
+                    </button>
+                </div>
+            </div>
+
+            <div class="commission-note">
+                <p><i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i> Все цены указаны с учётом комиссий платёжных систем. Все комиссии покрываются продавцом.</p>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <div class="section-header">
+                <h2>Что входит в Premium</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🛡️</div>
+                    <div class="feature-text">
+                        <h4>Улучшенная защита</h4>
+                        <p>Расширенная база сигнатур, поведенческий анализ и защита от zero-day атак</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">
+                        <h4>Автоматизация</h4>
+                        <p>Автоматические обновления, сканирование по расписанию и умные уведомления</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">🔧</div>
+                    <div class="feature-text">
+                        <h4>Дополнительные инструменты</h4>
+                        <p>Менеджер паролей, VPN, защита веб-камеры и файрвол</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">👨‍💻</div>
+                    <div class="feature-text">
+                        <h4>Приоритетная поддержка</h4>
+                        <p>Ответ в течение 2 часов, персональный менеджер и удалённая помощь</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="faq-section">
+            <div class="section-header">
+                <h2>Частые вопросы</h2>
+                <div class="section-line"></div>
+            </div>
+
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">Как происходит оплата?</div>
+                    <div class="faq-answer">
+                        Оплата осуществляется через Telegram-бота @sintax_ebot. Бот автоматически определяет тариф по цене и предоставляет доступ после успешной оплаты.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Можно ли изменить тариф позже?</div>
+                    <div class="faq-answer">
+                        Да, вы можете в любой момент изменить тариф через Telegram-бота. Разница в стоимости будет учтена при переходе.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Есть ли пробный период?</div>
+                    <div class="faq-answer">
+                        Для Premium, Family и Business тарифов доступен 7-дневный пробный период. Для активации обратитесь в поддержку.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Как отменить подписку?</div>
+                    <div class="faq-answer">
+                        Подписку можно отменить в любой момент через Telegram-бота. Доступ к функциям Premium сохранится до конца оплаченного периода.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 AuriX Dev. SiNtax Antivirus.</p>
+            <p class="footer-note">Защитите свою цифровую жизнь уже сегодня</p>
+        </footer>
+    </div>
+
+    <!-- Скрипт для покупки -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('buyModal');
+            const telegramLink = document.getElementById('telegramLink');
+            const closeModal = document.querySelector('.modal-close');
+            const buyButtons = document.querySelectorAll('.buy-button[data-price]');
+            
+            // Обработка кнопок покупки
+            buyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const plan = this.getAttribute('data-plan');
+                    const price = this.getAttribute('data-price');
+                    
+                    // Формируем ссылку на Telegram бота с командой
+                    const telegramBotUrl = `https://t.me/sintax_ebot?start=/buy_${price}`;
+                    
+                    // Обновляем ссылку в модальном окне
+                    telegramLink.href = telegramBotUrl;
+                    
+                    // Показываем модальное окно
+                    modal.style.display = 'flex';
+                });
+            });
+            
+            // Закрытие модального окна
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Закрытие по клику вне модального окна
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Закрытие по ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modal.style.display = 'none';
+                }
+            });
+            
+            // Автоматическое открытие модального окна при переходе с параметром
+            const urlParams = new URLSearchParams(window.location.search);
+            const planParam = urlParams.get('plan');
+            
+            if (planParam) {
+                const button = document.querySelector(`.buy-button[data-plan="${planParam}"]`);
+                if (button) {
+                    setTimeout(() => {
+                        button.click();
+                    }, 1000);
+                }
+            }
+        });
+    </script>
+    
+    <!-- Скрипт для звёзд -->
+    <script src="../../scripts/stars.js"></script>
+</body>
+  </html>
