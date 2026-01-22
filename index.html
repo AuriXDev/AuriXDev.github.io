@@ -51,12 +51,8 @@
                             <img src="assets/magma.png" alt="Magma Launcher" class="project-icon"
                                  onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\"project-icon-fallback\">M</div>'">
                         </div>
-                        <h3 class="project-title">Magma Launcher</h3>
-                        <p class="project-desc">
-                            Универсальный лаунчер Minecraft с современным интерфейсом, 
-                            автоматической установкой и оптимизацией под любой ПК.
-                        </p>
-                        <div class="project-status">Стабильная версия</div>
+                        <h3 class="project-title">MagmaLauncher</h3>
+                        <p class="project-desc">Универсальный лаунчер Minecraft</p>
                     </a>
 
                     <!-- SiNtax -->
@@ -66,11 +62,7 @@
                                  onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\"project-icon-fallback\">S</div>'">
                         </div>
                         <h3 class="project-title">SiNtax</h3>
-                        <p class="project-desc">
-                            Антивирус нового поколения с использованием машинного обучения, 
-                            поведенческим анализом и защитой в реальном времени.
-                        </p>
-                        <div class="project-status">В активной разработке</div>
+                        <p class="project-desc">Антивирус нового поколения</p>
                     </a>
 
                     <!-- CubikAI -->
@@ -80,11 +72,7 @@
                                  onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\"project-icon-fallback\">C</div>'">
                         </div>
                         <h3 class="project-title">CubikAI</h3>
-                        <p class="project-desc">
-                            Искусственный интеллект для творчества, генерации контента 
-                            и помощи разработчикам. Этот сайт создан с его помощью.
-                        </p>
-                        <div class="project-status">Версия 2.6</div>
+                        <p class="project-desc">Искусственный интеллект для творчества</p>
                     </a>
 
                     <!-- Прочее -->
@@ -93,11 +81,7 @@
                             <div class="project-icon-fallback">···</div>
                         </div>
                         <h3 class="project-title">Прочее</h3>
-                        <p class="project-desc">
-                            Другие интересные проекты, экспериментальные разработки, 
-                            утилиты и библиотеки с открытым исходным кодом.
-                        </p>
-                        <div class="project-status">Разное</div>
+                        <p class="project-desc">Другие интересные проекты</p>
                     </a>
                 </div>
             </section>
@@ -133,7 +117,7 @@
                         </div>
                         <div class="contact-item">
                             <span class="contact-icon">💬</span>
-                            <a href="https://t.me/aurix_dev" class="contact-link">@aurix_dev</a>
+                            <a href="https://t.me/aurix_dev" class="contact-link">Telegram</a>
                         </div>
                         <div class="contact-item">
                             <span class="contact-icon"><i class="fab fa-github"></i></span>
@@ -153,30 +137,9 @@
     <!-- Скрипт для звёзд -->
     <script src="scripts/stars.js"></script>
     
-    <!-- Скрипт для анимации иконок -->
+    <!-- Простой скрипт для обработки ошибок иконок -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Добавляем эффект наведения на иконки
-            const projectCards = document.querySelectorAll('.project-card');
-            
-            projectCards.forEach(card => {
-                const iconContainer = card.querySelector('.project-icon-container');
-                
-                card.addEventListener('mouseenter', () => {
-                    if (iconContainer) {
-                        iconContainer.style.animation = 'none';
-                        iconContainer.style.transform = 'scale(1.1)';
-                    }
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    if (iconContainer) {
-                        iconContainer.style.animation = 'iconFloat 3s ease-in-out infinite';
-                        iconContainer.style.transform = 'scale(1)';
-                    }
-                });
-            });
-            
             // Проверяем загрузку иконок
             const icons = document.querySelectorAll('.project-icon');
             icons.forEach(icon => {
