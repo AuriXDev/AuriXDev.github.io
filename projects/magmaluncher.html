@@ -30,18 +30,18 @@
         <header class="header-logo">
             <div class="logo-container">
                 <img src="../assets/mgllogo.png" alt="Magma Launcher" 
-                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"150\"><text x=\"50%\" y=\"50%\" font-family=\"Orbitron\" font-size=\"60\" fill=\"%2375C892\" text-anchor=\"middle\" dy=\".3em\"></text></svg>
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"150\"><text x=\"50%\" y=\"50%\" font-family=\"Orbitron\" font-size=\"60\" fill=\"%2375C892\" text-anchor=\"middle\" dy=\".3em\">MAGMA</text></svg>'">
             </div>
             <p class="logo-subtitle">Разрыв реальности Minecraft</p>
         </header>
 
         <main>
             <!-- Главный призыв -->
-            <section class="section" style="text-align: center; padding: 4rem 2rem;">
+            <section class="section" style="text-align: center;">
                 <div class="section-header">
                     <h2>Новый уровень игры</h2>
                 </div>
-                <p style="font-size: 1.2rem; max-width: 800px; margin: 0 auto 2rem; opacity: 0.9;">
+                <p class="section-description">
                     Magma Launcher — это не просто лаунчер. Это портал в мир Minecraft без ограничений. 
                     Автоматическая установка, оптимизация под любую систему и уникальный интерфейс.
                 </p>
@@ -63,38 +63,44 @@
                 
                 <div class="features-grid">
                     <div class="feature-card">
-                        <span class="feature-icon">🚀</span>
-                        <h3 class="feature-title">Запуск Minecraft</h3>
-                        <ul class="feature-list">
-                            <li>Автоустановка версий</li>
-                            <li>Модлоадеры в один клик</li>
-                            <li>Умный запуск</li>
-                        </ul>
+                        <div class="feature-card-inner">
+                            <span class="feature-icon">🚀</span>
+                            <h3 class="feature-title">Запуск Minecraft</h3>
+                            <ul class="feature-list">
+                                <li>Автоустановка версий</li>
+                                <li>Модлоадеры в один клик</li>
+                                <li>Умный запуск</li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="feature-card">
-                        <span class="feature-icon">📦</span>
-                        <h3 class="feature-title">Менеджер версий</h3>
-                        <ul class="feature-list">
-                            <li>Безлимитная библиотека</li>
-                            <li>Официальные сервера</li>
-                            <li>Уведомления об обновлениях</li>
-                        </ul>
+                        <div class="feature-card-inner">
+                            <span class="feature-icon">📦</span>
+                            <h3 class="feature-title">Менеджер версий</h3>
+                            <ul class="feature-list">
+                                <li>Безлимитная библиотека</li>
+                                <li>Официальные сервера</li>
+                                <li>Уведомления об обновлениях</li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="feature-card">
-                        <span class="feature-icon">⚡</span>
-                        <h3 class="feature-title">Производительность</h3>
-                        <ul class="feature-list">
-                            <li>Оптимизация RAM</li>
-                            <li>Фоновые загрузки</li>
-                            <li>Быстрый запуск</li>
-                        </ul>
+                        <div class="feature-card-inner">
+                            <span class="feature-icon">⚡</span>
+                            <h3 class="feature-title">Производительность</h3>
+                            <ul class="feature-list">
+                                <li>Оптимизация RAM</li>
+                                <li>Фоновые загрузки</li>
+                                <li>Быстрый запуск</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Подробные возможности -->
-                <div class="capabilities-grid" style="margin-top: 3rem;">
+                <div class="capabilities-grid">
                     <div class="capability-item">
                         <div class="capability-icon">🎨</div>
                         <div class="capability-content">
@@ -151,32 +157,38 @@
                     <h2>Уникальные функции</h2>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                    <div class="feature-card">
-                        <span class="feature-icon">🌐</span>
-                        <h3 class="feature-title">Встроенный браузер</h3>
-                        <p style="opacity: 0.9; margin-top: 1rem;">
-                            Ищите сервера, моды и ресурсы прямо в лаунчере. 
-                            Один клик — и всё установлено.
-                        </p>
+                <div class="unique-features-grid">
+                    <div class="feature-card unique-feature-card">
+                        <div class="feature-card-inner">
+                            <span class="feature-icon">🌐</span>
+                            <h3 class="feature-title">Встроенный браузер</h3>
+                            <p>
+                                Ищите сервера, моды и ресурсы прямо в лаунчере. 
+                                Один клик — и всё установлено.
+                            </p>
+                        </div>
                     </div>
 
-                    <div class="feature-card">
-                        <span class="feature-icon">💾</span>
-                        <h3 class="feature-title">Авто-бэкапы</h3>
-                        <p style="opacity: 0.9; margin-top: 1rem;">
-                            Magma автоматически создаёт бэкапы миров и настроек. 
-                            Никогда не теряйте прогресс.
-                        </p>
+                    <div class="feature-card unique-feature-card">
+                        <div class="feature-card-inner">
+                            <span class="feature-icon">💾</span>
+                            <h3 class="feature-title">Авто-бэкапы</h3>
+                            <p>
+                                Magma автоматически создаёт бэкапы миров и настроек. 
+                                Никогда не теряйте прогресс.
+                            </p>
+                        </div>
                     </div>
 
-                    <div class="feature-card">
-                        <span class="feature-icon">🎯</span>
-                        <h3 class="feature-title">Умная оптимизация</h3>
-                        <p style="opacity: 0.9; margin-top: 1rem;">
-                            Лаунчер анализирует ваш ПК и настраивает Minecraft 
-                            для максимальной производительности.
-                        </p>
+                    <div class="feature-card unique-feature-card">
+                        <div class="feature-card-inner">
+                            <span class="feature-icon">🎯</span>
+                            <h3 class="feature-title">Умная оптимизация</h3>
+                            <p>
+                                Лаунчер анализирует ваш ПК и настраивает Minecraft 
+                                для максимальной производительности.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -205,7 +217,7 @@
                 
                 <div class="cta-buttons">
                     <a href="https://github.com/AuriXDev/MagmaLauncher/releases" 
-                       class="primary-button" style="font-size: 1.1rem; padding: 1.2rem 3rem;">
+                       class="primary-button download-button">
                         <i class="fab fa-windows" style="margin-right: 0.5rem;"></i>Скачать для Windows
                     </a>
                     <a href="https://github.com/AuriXDev/MagmaLauncher" 
@@ -214,7 +226,7 @@
                     </a>
                 </div>
                 
-                <p style="margin-top: 2rem; opacity: 0.7; font-size: 0.9rem;">
+                <p class="download-disclaimer">
                     🔒 Безопасно проверено • 🆓 Полностью бесплатно • 🔄 Автоматические обновления
                 </p>
             </section>
@@ -225,34 +237,34 @@
                     <h2>Системные требования</h2>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
-                    <div class="feature-card" style="text-align: center;">
-                        <h3 class="feature-title">Минимальные</h3>
-                        <ul class="feature-list" style="text-align: left;">
-                            <li>Windows 10/11 (64-bit)</li>
-                            <li>4 ГБ ОЗУ</li>
-                            <li>2 ГБ свободного места</li>
-                            <li>DirectX 11</li>
+                <div class="requirements-grid">
+                    <div class="req-card">
+                        <h3>Минимальные</h3>
+                        <ul>
+                            <li><strong>Windows:</strong> 10/11 (64-bit)</li>
+                            <li><strong>ОЗУ:</strong> 4 ГБ</li>
+                            <li><strong>Место:</strong> 2 ГБ свободного</li>
+                            <li><strong>DirectX:</strong> 11</li>
                         </ul>
                     </div>
                     
-                    <div class="feature-card" style="text-align: center; border-color: var(--gradient-3);">
-                        <h3 class="feature-title" style="color: var(--gradient-3);">Рекомендуемые</h3>
-                        <ul class="feature-list" style="text-align: left;">
-                            <li>Windows 10/11 (64-bit)</li>
-                            <li>8 ГБ ОЗУ</li>
-                            <li>10 ГБ свободного места</li>
-                            <li>DirectX 12</li>
+                    <div class="req-card recommended">
+                        <h3>Рекомендуемые</h3>
+                        <ul>
+                            <li><strong>Windows:</strong> 10/11 (64-bit)</li>
+                            <li><strong>ОЗУ:</strong> 8 ГБ</li>
+                            <li><strong>Место:</strong> 10 ГБ свободного</li>
+                            <li><strong>DirectX:</strong> 12</li>
                         </ul>
                     </div>
                     
-                    <div class="feature-card" style="text-align: center;">
-                        <h3 class="feature-title">Поддержка Minecraft</h3>
-                        <ul class="feature-list" style="text-align: left;">
-                            <li>1.0 - 1.21+ версии</li>
-                            <li>Vanilla/Forge/Fabric</li>
-                            <li>OptiFine и шейдеры</li>
-                            <li>Все модлоадеры</li>
+                    <div class="req-card">
+                        <h3>Поддержка Minecraft</h3>
+                        <ul>
+                            <li><strong>Версии:</strong> 1.0 - 1.21+</li>
+                            <li><strong>Модлоадеры:</strong> Forge/Fabric</li>
+                            <li><strong>Графика:</strong> OptiFine, шейдеры</li>
+                            <li><strong>Стабильность:</strong> Все модлоадеры</li>
                         </ul>
                     </div>
                 </div>
@@ -261,14 +273,15 @@
 
         <footer>
             <p class="footer-text">&copy; 2025 AuriX Dev. Magma Launcher.</p>
-            <p style="margin-top: 0.5rem; opacity: 0.5; font-size: 0.8rem;">
+            <p class="footer-disclaimer">
+                <i class="fas fa-exclamation-circle"></i>
                 Minecraft — торговая марка Mojang Studios. Мы не аффилированы с Mojang/Microsoft.
             </p>
             <div class="footer-links">
-                <a href="https://github.com/AuriXDev/MagmaLauncher">GitHub</a>
-                <a href="https://t.me/aurix_dev">Поддержка</a>
-                <a href="../index.html">AuriX Dev</a>
-                <a href="sintax.html">SiNtax</a>
+                <a href="https://github.com/AuriXDev/MagmaLauncher"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://t.me/aurix_dev"><i class="fab fa-telegram"></i> Поддержка</a>
+                <a href="../index.html"><i class="fas fa-home"></i> AuriX Dev</a>
+                <a href="sintax.html"><i class="fas fa-code"></i> SiNtax</a>
             </div>
         </footer>
     </div>
