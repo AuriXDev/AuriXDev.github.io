@@ -54,7 +54,17 @@ body {
     font-weight: 300;
     min-height: 100vh;
     position: relative;
+    opacity: 0;
+    animation: fadeInBody 1s ease-out forwards;
 }
+
+@keyframes fadeInBody {
+    to {
+        opacity: 1;
+    }
+}
+
+/* ===== ЭФФЕКТЫ ФОНА ===== */
 
 /* Эффект разрыва реальности */
 .reality-break {
@@ -63,7 +73,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -3;
+    z-index: -1000;
     pointer-events: none;
     background: 
         repeating-linear-gradient(
@@ -80,7 +90,7 @@ body {
         );
 }
 
-/* Квадратные звёзды */
+/* Контейнер для БОЛЬШИХ квадратных звёзд */
 #square-stars {
     position: fixed;
     top: 0;
@@ -92,30 +102,84 @@ body {
     overflow: hidden;
 }
 
-#square-stars .square-star {
-    position: absolute;
-    background: var(--gradient-main);
-    border-radius: 4px;
-    animation: floatSquare 30s infinite linear;
-    pointer-events: none;
-    filter: blur(1px);
+/* Стили для БОЛЬШИХ КВАДРАТНЫХ звёзд */
+.square-star {
+    position: absolute !important;
+    background: linear-gradient(135deg, 
+        rgba(117, 200, 146, 0.9) 0%, 
+        rgba(82, 182, 154, 0.9) 33%, 
+        rgba(52, 160, 163, 0.9) 66%, 
+        rgba(21, 138, 173, 0.9) 100%
+    ) !important;
+    border-radius: 6px !important;
+    box-shadow: 
+        0 0 25px rgba(117, 200, 146, 0.8),
+        0 0 50px rgba(117, 200, 146, 0.4),
+        inset 0 0 15px rgba(255, 255, 255, 0.3) !important;
+    animation: floatBigSquare 25s linear infinite !important;
+    filter: blur(0.5px) !important;
+    z-index: -2 !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    transform-origin: center !important;
 }
 
-@keyframes floatSquare {
+/* Анимация для БОЛЬШИХ квадратных звёзд */
+@keyframes floatBigSquare {
     0% {
-        transform: translateY(100vh) rotate(0deg) scale(0.8);
+        transform: translateY(120vh) rotate(0deg) scale(0.7);
         opacity: 0;
     }
     10% {
-        opacity: 0.6;
+        opacity: 0.9;
+        transform: translateY(90vh) rotate(90deg) scale(1);
+    }
+    30% {
+        opacity: 1;
+        transform: translateY(60vh) rotate(180deg) scale(1.1);
+        filter: blur(0px) brightness(1.5);
+    }
+    60% {
+        opacity: 0.9;
+        transform: translateY(30vh) rotate(270deg) scale(1);
+        filter: blur(0.5px) brightness(1.2);
     }
     90% {
-        opacity: 0.6;
+        opacity: 0.8;
+        transform: translateY(0vh) rotate(360deg) scale(0.9);
+        filter: blur(1px) brightness(1);
     }
     100% {
-        transform: translateY(-100px) rotate(360deg) scale(1.2);
+        transform: translateY(-100px) rotate(450deg) scale(0.7);
         opacity: 0;
     }
+}
+
+/* Дополнительное свечение для звёзд */
+.square-star::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    background: inherit;
+    filter: blur(20px);
+    opacity: 0.3;
+    border-radius: 10px;
+    z-index: -1;
+}
+
+.square-star::after {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    z-index: -1;
 }
 
 /* Кристаллический эффект */
@@ -138,13 +202,31 @@ body {
     mask-image: radial-gradient(circle at center, black 30%, transparent 70%);
 }
 
+/* Анимация для пикселей в crystal-overlay */
+@keyframes pixelFloat {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0.2;
+    }
+    50% {
+        transform: translate(var(--pixel-x), var(--pixel-y)) rotate(180deg);
+        opacity: 0.4;
+    }
+    100% {
+        transform: translate(0, 0) rotate(360deg);
+        opacity: 0.2;
+    }
+}
+
+/* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+
 /* Контейнер */
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: var(--spacing-lg);
     position: relative;
-    z-index: 1;
+    z-index: 10;
 }
 
 /* Навигация */
@@ -273,6 +355,24 @@ section {
     background: rgba(0, 58, 88, 0.2);
     border-radius: 16px;
     border: 1px solid var(--border-color);
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.section:nth-child(1) { animation-delay: 0.1s; }
+.section:nth-child(2) { animation-delay: 0.2s; }
+.section:nth-child(3) { animation-delay: 0.3s; }
+.section:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .section::before {
@@ -352,6 +452,23 @@ section {
     display: flex;
     flex-direction: column;
     margin: var(--spacing-xs);
+    opacity: 0;
+    animation: cardReveal 0.6s ease-out forwards;
+}
+
+.feature-card:nth-child(1) { animation-delay: 0.3s; }
+.feature-card:nth-child(2) { animation-delay: 0.4s; }
+.feature-card:nth-child(3) { animation-delay: 0.5s; }
+
+@keyframes cardReveal {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .feature-card::before {
@@ -368,7 +485,7 @@ section {
 }
 
 .feature-card:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-10px) scale(1.03);
     border-color: var(--gradient-1);
     box-shadow: var(--glow);
 }
@@ -419,7 +536,7 @@ section {
     opacity: 0.9;
     line-height: 1.5;
     border-left: 2px solid transparent;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
     margin-left: var(--spacing-sm);
     font-size: 1.05rem;
 }
@@ -427,6 +544,7 @@ section {
 .feature-list li:hover {
     border-left-color: var(--gradient-2);
     padding-left: calc(var(--spacing-xl) + 4px);
+    background: rgba(117, 200, 146, 0.05);
 }
 
 .feature-list li::before {
@@ -436,6 +554,11 @@ section {
     color: var(--gradient-2);
     font-weight: bold;
     font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.feature-list li:hover::before {
+    transform: translateX(3px);
 }
 
 /* Подробные возможности (capabilities) */
@@ -458,13 +581,21 @@ section {
     transition: all 0.3s ease;
     backdrop-filter: var(--blur-effect);
     margin: var(--spacing-xs);
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
 }
+
+.capability-item:nth-child(1) { animation-delay: 0.4s; }
+.capability-item:nth-child(2) { animation-delay: 0.5s; }
+.capability-item:nth-child(3) { animation-delay: 0.6s; }
+.capability-item:nth-child(4) { animation-delay: 0.7s; }
 
 .capability-item:hover {
     border-color: var(--gradient-2);
     background: rgba(0, 58, 88, 0.6);
-    transform: translateX(8px);
-    padding-left: calc(var(--spacing-lg) + 8px);
+    transform: translateX(10px);
+    padding-left: calc(var(--spacing-lg) + 10px);
+    box-shadow: 0 0 20px rgba(117, 200, 146, 0.2);
 }
 
 .capability-icon {
@@ -477,6 +608,12 @@ section {
     min-width: 70px;
     text-align: center;
     margin-top: var(--spacing-xs);
+    transition: all 0.3s ease;
+}
+
+.capability-item:hover .capability-icon {
+    background: rgba(117, 200, 146, 0.2);
+    transform: scale(1.1);
 }
 
 .capability-content {
@@ -490,6 +627,11 @@ section {
     color: var(--text-accent);
     padding-bottom: var(--spacing-xs);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.capability-item:hover .capability-content h4 {
+    color: var(--gradient-1);
 }
 
 .capability-content ul {
@@ -509,11 +651,13 @@ section {
     padding-left: var(--spacing-xl);
     line-height: 1.5;
     border-left: 2px solid transparent;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .capability-content li:hover {
     border-left-color: var(--gradient-1);
+    padding-left: calc(var(--spacing-xl) + 5px);
+    background: rgba(117, 200, 146, 0.05);
 }
 
 .capability-content li::before {
@@ -523,6 +667,12 @@ section {
     color: var(--gradient-1);
     font-size: 1rem;
     top: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.capability-content li:hover::before {
+    color: var(--gradient-2);
+    transform: scale(1.2);
 }
 
 /* Уникальные функции - специальная сетка */
@@ -551,6 +701,13 @@ section {
     border-left: 4px solid var(--gradient-2);
     margin-top: var(--spacing-sm);
     font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.unique-feature-card:hover p {
+    border-left-color: var(--gradient-1);
+    background: rgba(0, 0, 0, 0.2);
+    transform: translateX(5px);
 }
 
 /* Кнопки */
@@ -582,7 +739,12 @@ section {
     align-items: center;
     justify-content: center;
     min-width: 220px;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
 }
+
+.cta-buttons .primary-button { animation-delay: 0.2s; }
+.cta-buttons .secondary-button { animation-delay: 0.3s; }
 
 .primary-button {
     background: var(--gradient-main);
@@ -590,9 +752,11 @@ section {
 }
 
 .primary-button:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--glow);
-    padding: var(--spacing-md) calc(var(--spacing-xl) + 4px);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 10px 30px rgba(117, 200, 146, 0.4),
+        0 0 50px rgba(117, 200, 146, 0.2);
+    padding: var(--spacing-md) calc(var(--spacing-xl) + 10px);
 }
 
 .secondary-button {
@@ -604,8 +768,9 @@ section {
 .secondary-button:hover {
     background: rgba(117, 200, 146, 0.1);
     border-color: var(--gradient-1);
-    transform: translateY(-5px);
-    padding: var(--spacing-md) calc(var(--spacing-xl) + 4px);
+    transform: translateY(-5px) scale(1.05);
+    padding: var(--spacing-md) calc(var(--spacing-xl) + 10px);
+    box-shadow: 0 10px 20px rgba(117, 200, 146, 0.2);
 }
 
 .download-button {
@@ -624,6 +789,9 @@ section {
     border: 2px solid var(--border-color);
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: 0.4s;
 }
 
 .download-section::before {
@@ -671,6 +839,20 @@ section {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 12px;
     border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.stat-item:nth-child(1) { animation-delay: 0.5s; }
+.stat-item:nth-child(2) { animation-delay: 0.6s; }
+.stat-item:nth-child(3) { animation-delay: 0.7s; }
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--gradient-1);
+    background: rgba(117, 200, 146, 0.1);
+    box-shadow: 0 10px 20px rgba(117, 200, 146, 0.2);
 }
 
 .stat-value {
@@ -698,6 +880,9 @@ section {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     display: inline-block;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+    animation-delay: 0.8s;
 }
 
 /* Системные требования */
@@ -718,10 +903,16 @@ section {
     display: flex;
     flex-direction: column;
     margin: var(--spacing-xs);
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
 }
 
+.req-card:nth-child(1) { animation-delay: 0.3s; }
+.req-card:nth-child(2) { animation-delay: 0.4s; }
+.req-card:nth-child(3) { animation-delay: 0.5s; }
+
 .req-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-8px) scale(1.02);
     border-color: var(--gradient-2);
     box-shadow: var(--glow);
     padding: calc(var(--spacing-xl) + 4px) var(--spacing-xl);
@@ -734,6 +925,10 @@ section {
 
 .req-card.recommended h3 {
     color: var(--gradient-3) !important;
+}
+
+.req-card.recommended:hover {
+    border-color: var(--gradient-2);
 }
 
 .req-card h3 {
@@ -766,6 +961,13 @@ section {
     justify-content: space-between;
     align-items: center;
     font-size: 1.05rem;
+    transition: all 0.3s ease;
+}
+
+.req-card li:hover {
+    border-bottom-color: var(--gradient-2);
+    padding-left: var(--spacing-xs);
+    background: rgba(117, 200, 146, 0.05);
 }
 
 .req-card li:last-child {
@@ -792,6 +994,9 @@ footer {
     margin-top: var(--spacing-xxl);
     border-top: 1px solid var(--border-color);
     position: relative;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out forwards;
+    animation-delay: 0.5s;
 }
 
 footer::before {
@@ -860,35 +1065,6 @@ footer::before {
     font-size: 1.2rem;
 }
 
-/* Анимации */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes cardReveal {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.feature-card,
-.capability-item,
-.req-card {
-    animation: cardReveal 0.6s ease-out forwards;
-}
-
 /* Адаптивность */
 @media (max-width: 1200px) {
     .features-grid {
@@ -920,6 +1096,10 @@ footer::before {
     
     .features-grid {
         gap: var(--spacing-md);
+    }
+    
+    .logo-container img {
+        max-width: 350px;
     }
 }
 
@@ -954,6 +1134,11 @@ footer::before {
         flex-direction: column;
         text-align: center;
         gap: var(--spacing-md);
+    }
+    
+    .capability-item:hover {
+        transform: translateY(-5px);
+        padding-left: var(--spacing-lg);
     }
     
     .capability-icon {
@@ -1067,4 +1252,96 @@ footer::before {
         padding: var(--spacing-sm);
         font-size: 0.95rem;
     }
+    
+    /* Уменьшаем звёзды на мобильных */
+    .square-star {
+        width: 20px !important;
+        height: 20px !important;
+        box-shadow: 
+            0 0 10px rgba(117, 200, 146, 0.8),
+            0 0 20px rgba(117, 200, 146, 0.4),
+            inset 0 0 5px rgba(255, 255, 255, 0.3) !important;
+    }
+}
+
+/* Утилиты */
+.text-center {
+    text-align: center;
+}
+
+.mt-1 { margin-top: var(--spacing-xs); }
+.mt-2 { margin-top: var(--spacing-sm); }
+.mt-3 { margin-top: var(--spacing-md); }
+.mt-4 { margin-top: var(--spacing-lg); }
+.mt-5 { margin-top: var(--spacing-xl); }
+
+.mb-1 { margin-bottom: var(--spacing-xs); }
+.mb-2 { margin-bottom: var(--spacing-sm); }
+.mb-3 { margin-bottom: var(--spacing-md); }
+.mb-4 { margin-bottom: var(--spacing-lg); }
+.mb-5 { margin-bottom: var(--spacing-xl); }
+
+.p-1 { padding: var(--spacing-xs); }
+.p-2 { padding: var(--spacing-sm); }
+.p-3 { padding: var(--spacing-md); }
+.p-4 { padding: var(--spacing-lg); }
+.p-5 { padding: var(--spacing-xl); }
+
+.gap-1 { gap: var(--spacing-xs); }
+.gap-2 { gap: var(--spacing-sm); }
+.gap-3 { gap: var(--spacing-md); }
+.gap-4 { gap: var(--spacing-lg); }
+.gap-5 { gap: var(--spacing-xl); }
+
+/* Эффект загрузки (опционально) */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loader {
+    width: 80px;
+    height: 80px;
+    border: 4px solid transparent;
+    border-top: 4px solid var(--gradient-1);
+    border-right: 4px solid var(--gradient-3);
+    border-bottom: 4px solid var(--gradient-5);
+    border-left: 4px solid var(--gradient-2);
+    border-radius: 12px;
+    animation: spin 1.5s linear infinite;
+    box-shadow: 0 0 20px rgba(117, 200, 146, 0.3);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-text {
+    margin-top: var(--spacing-md);
+    color: var(--gradient-2);
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
 }
