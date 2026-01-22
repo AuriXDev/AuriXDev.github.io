@@ -3,119 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuriX Dev | Космические технологии</title>
+    <title>AuriX Dev | Космические технологии будущего</title>
     <link rel="stylesheet" href="styles/main.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 </head>
 <body>
-    <!-- Фоновые звёзды -->
+    <!-- Фоновые эффекты -->
     <div id="stars"></div>
+    <div class="nebula"></div>
 
-    <!-- Основной контент -->
-    <div class="container">
-        <header>
-            <h1>AURI<span style="color: #8A7BFF">X</span> DEV</h1>
-            <p class="subtitle">Разработка будущего сегодня</p>
-        </header>
+    <!-- Фиксированная навигация -->
+    <nav class="main-nav">
+        <a href="#projects">Проекты</a>
+        <a href="#about">О команде</a>
+        <a href="#goals">Цели</a>
+        <a href="#contact">Контакты</a>
+    </nav>
 
-        <main>
-            <section class="about">
-                <div class="section-header">
-                    <h2>О нас</h2>
-                    <div class="section-line"></div>
-                </div>
-                <div class="card">
-                    <p>
-                        Мы — команда из <strong>4 разработчиков</strong> из России, специализирующихся на создании инновационных решений.
-                        Наши проекты охватывают различные области: от кибербезопасности до игровых движков и искусственного интеллекта.
+    <!-- Герой-секция -->
+    <section class="hero">
+        <div class="container">
+            <div class="logo reveal">
+                <h1>AURI<span>X</span> DEV</h1>
+                <div class="accent"></div>
+            </div>
+            
+            <p class="tagline reveal">РАЗРАБОТКА БУДУЩЕГО СЕГОДНЯ</p>
+            
+            <p class="hero-description reveal">
+                Мы — команда разработчиков из России, создающая инновационные решения на стыке технологий и искусства.
+                Наша миссия — делать сложные технологии доступными, надёжными и красивыми.
+            </p>
+            
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down" style="font-size: 1.5rem; opacity: 0.5;"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Проекты -->
+    <section id="projects" class="projects-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>НАШИ ПРОЕКТЫ</h2>
+                <p>Инновационные решения, которые меняют представление о возможностях</p>
+            </div>
+
+            <div class="projects-grid">
+                <!-- Magma Launcher -->
+                <a href="projects/magmaluncher.html" class="project-card reveal">
+                    <span class="project-icon">🎮</span>
+                    <h3 class="project-title">Magma Launcher</h3>
+                    <p class="project-description">
+                        Ультрасовременный лаунчер Minecraft с искусственным интеллектом,
+                        автоматической оптимизацией и уникальным интерфейсом.
                     </p>
-                    <p style="margin-top: 1rem;">
-                        <strong>Языки и технологии:</strong> JavaScript, Python, C#, Lua, Java
-                    </p>
-                    <p style="margin-top: 1rem; opacity: 0.8;">
-                        Наша миссия — делать технологии доступными, надёжными и красивыми.
-                    </p>
-                </div>
-            </section>
-
-            <section class="projects">
-                <div class="section-header">
-                    <h2>Наши проекты</h2>
-                    <div class="section-line"></div>
-                </div>
-                <div class="project-grid">
-                    <a href="projects/magmaluncher.html" class="project-card card">
-                        <img src="../assets/magma.png" alt="Magma Launcher" 
-                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"150\"><text x=\"50%\" y=\"50%\" font-family=\"Orbitron\" font-size=\"60\" fill=\"%2375C892\" text-anchor=\"middle\" dy=\".3em\"></text></svg>
-
-                        <span class="project-icon">🎮</span>
-                        <span class="project-title">MagmaLauncher</span>
-                        <span class="project-desc">Универсальный лаунчер Minecraft с современным интерфейсом и расширенными возможностями</span>
-                    </a>
-                    <a href="projects/sintax.html" class="project-card card">
-                        <span class="project-icon">🛡️</span>
-                        <span class="project-title">SiNtax</span>
-                        <span class="project-desc">Антивирус нового поколения с использованием машинного обучения</span>
-                    </a>
-                    <a href="projects/cubikai.html" class="project-card card">
-                        <span class="project-icon">🤖</span>
-                        <span class="project-title">CubikAI</span>
-                        <span class="project-desc">Искусственный интеллект для творчества и генерации контента</span>
-                    </a>
-                    <a href="projects/other.html" class="project-card card">
-                        <span class="project-icon">⚡</span>
-                        <span class="project-title">Прочее</span>
-                        <span class="project-desc">Другие интересные проекты и экспериментальные разработки</span>
-                    </a>
-                </div>
-            </section>
-
-            <section class="goals">
-                <div class="section-header">
-                    <h2>Наши цели</h2>
-                    <div class="section-line"></div>
-                </div>
-                <div class="card">
-                    <ul class="goals-list">
-                        <li>Создавать <strong>полезные</strong> и <strong>инновационные</strong> продукты</li>
-                        <li>Делиться знаниями с сообществом через туториалы и открытый код</li>
-                        <li>Развивать <strong>русскоязычное IT-сообщество</strong></li>
-                        <li>Сотрудничать с талантливыми людьми со всего мира</li>
+                    <ul class="project-features">
+                        <li>Автоустановка версий и модлоадеров</li>
+                        <li>Умная оптимизация производительности</li>
+                        <li>Встроенный AI-ассистент</li>
+                        <li>Кроссплатформенность</li>
                     </ul>
-                </div>
-            </section>
+                    <span class="project-link">
+                        Узнать больше <i class="fas fa-arrow-right"></i>
+                    </span>
+                </a>
 
-            <section class="contact">
-                <div class="section-header">
-                    <h2>Связь с нами</h2>
-                    <div class="section-line"></div>
-                </div>
-                <div class="card">
-                    <p style="margin-bottom: 1.5rem;">
-                        Если у вас есть вопросы, предложения или вы хотите присоединиться к команде — пишите!
+                <!-- SiNtax Antivirus -->
+                <a href="projects/sintax.html" class="project-card reveal">
+                    <span class="project-icon">🛡️</span>
+                    <h3 class="project-title">SiNtax Antivirus</h3>
+                    <p class="project-description">
+                        Антивирус нового поколения с поведенческим анализом,
+                        машинным обучением и активной защитой от zero-day угроз.
                     </p>
-                    <div class="contact-grid">
-                        <div class="contact-item">
-                            <span class="contact-icon">📧</span>
-                            <a href="mailto:aurixhelp@gmail.com" class="contact-link">aurixhelp@gmail.com</a>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">💬</span>
-                            <a href="https://t.me/aurix_dev" class="contact-link">@aurix_dev</a>
-                        </div>
-                    </div>
+                    <ul class="project-features">
+                        <li>AI-детекция неизвестных угроз</li>
+                        <li>Режим гибернации для игр</li>
+                        <li>Защита от криптомайнеров</li>
+                        <li>Минимальное потребление ресурсов</li>
+                    </ul>
+                    <span class="project-link">
+                        Защитить систему <i class="fas fa-arrow-right"></i>
+                    </span>
+                </a>
+
+                <!-- CubikAI -->
+                <a href="projects/cubikai.html" class="project-card reveal">
+                    <span class="project-icon">🤖</span>
+                    <h3 class="project-title">CubikAI</h3>
+                    <p class="project-description">
+                        Многофункциональная нейросеть для творчества, анализа данных
+                        и автоматизации задач с открытым API.
+                    </p>
+                    <ul class="project-features">
+                        <li>Генерация кода и контента</li>
+                        <li>Анализ и обработка данных</li>
+                        <li>Интеграция с популярными сервисами</li>
+                        <li>Обучение на пользовательских данных</li>
+                    </ul>
+                    <span class="project-link">
+                        Попробовать AI <i class="fas fa-arrow-right"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- О команде -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>О КОМАНДЕ</h2>
+                <p>4 разработчика, объединённых страстью к инновациям</p>
+            </div>
+
+            <div class="team-section reveal">
+                <p class="team-description">
+                    Мы — команда из России, специализирующаяся на создании программного обеспечения,
+                    которое сочетает в себе мощь современных технологий, элегантность дизайна и практическую пользу.
+                    Каждый наш проект — это ответ на вызовы современного цифрового мира.
+                </p>
+
+                <div class="tech-stack">
+                    <span class="tech-item">JavaScript/TypeScript</span>
+                    <span class="tech-item">Python</span>
+                    <span class="tech-item">C#/.NET</span>
+                    <span class="tech-item">Java</span>
+                    <span class="tech-item">Lua</span>
+                    <span class="tech-item">Rust</span>
+                    <span class="tech-item">AI/ML</span>
+                    <span class="tech-item">Cloud</span>
                 </div>
-            </section>
-        </main>
+            </div>
+        </div>
+    </section>
 
-        <footer>
-            <p>&copy; 2025 AuriX Dev. Все права защищены.</p>
-            <p class="footer-ai">Сайт сделан полностью благодаря CubikAI 2.6-ultra</p>
-        </footer>
-    </div>
+    <!-- Цели -->
+    <section id="goals" class="goals-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>НАШИ ЦЕЛИ</h2>
+                <p>Принципы, которые направляют нашу работу</p>
+            </div>
 
-    <!-- Скрипт для звёзд -->
+            <div class="goals-list">
+                <div class="goal-item reveal">
+                    <span class="goal-icon">🚀</span>
+                    <h3 class="goal-title">Инновации</h3>
+                    <p class="goal-description">
+                        Создавать продукты, которые опережают время и задают новые стандарты в индустрии.
+                    </p>
+                </div>
+
+                <div class="goal-item reveal">
+                    <span class="goal-icon">👥</span>
+                    <h3 class="goal-title">Сообщество</h3>
+                    <p class="goal-description">
+                        Развивать русскоязычное IT-сообщество через открытый код, туториалы и поддержку.
+                    </p>
+                </div>
+
+                <div class="goal-item reveal">
+                    <span class="goal-icon">🔓</span>
+                    <h3 class="goal-title">Доступность</h3>
+                    <p class="goal-description">
+                        Делать передовые технологии доступными каждому, независимо от опыта или бюджета.
+                    </p>
+                </div>
+
+                <div class="goal-item reveal">
+                    <span class="goal-icon">🌍</span>
+                    <h3 class="goal-title">Коллаборация</h3>
+                    <p class="goal-description">
+                        Сотрудничать с талантливыми разработчиками со всего мира для создания лучших решений.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>СВЯЗЬ С НАМИ</h2>
+                <p>Готовы обсудить сотрудничество или просто пообщаться о технологиях</p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-card reveal">
+                    <span class="contact-icon">📧</span>
+                    <h3 class="contact-title">Почта</h3>
+                    <a href="mailto:aurixhelp@gmail.com" class="contact-link">aurixhelp@gmail.com</a>
+                    <p style="opacity: 0.7; margin-top: 0.5rem; font-size: 0.9rem;">Ответ в течение 24 часов</p>
+                </div>
+
+                <div class="contact-card reveal">
+                    <span class="contact-icon">💬</span>
+                    <h3 class="contact-title">Telegram</h3>
+                    <a href="https://t.me/aurix_dev" target="_blank" class="contact-link">@aurix_dev</a>
+                    <p style="opacity: 0.7; margin-top: 0.5rem; font-size: 0.9rem;">Основной канал связи</p>
+                </div>
+
+                <div class="contact-card reveal">
+                    <span class="contact-icon"><i class="fab fa-github"></i></span>
+                    <h3 class="contact-title">GitHub</h3>
+                    <a href="https://github.com/AuriXDev" target="_blank" class="contact-link">AuriXDev</a>
+                    <p style="opacity: 0.7; margin-top: 0.5rem; font-size: 0.9rem;">Открытые проекты</p>
+                </div>
+
+                <div class="contact-card reveal">
+                    <span class="contact-icon">🤝</span>
+                    <h3 class="contact-title">Сотрудничество</h3>
+                    <a href="mailto:aurix.partners@gmail.com" class="contact-link">Партнёрство</a>
+                    <p style="opacity: 0.7; margin-top: 0.5rem; font-size: 0.9rem;">Коммерческие проекты</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="container">
+            <p class="copyright">© 2025 AuriX Dev. Все права защищены.</p>
+            <p class="credits">Сделано с космической энергией где-то в России</p>
+        </div>
+    </footer>
+
+    <!-- Скрипты -->
+    <script>
+        // Анимация появления элементов при скролле
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll(); // Инициализация при загрузке
+        
+        // Создание звёздного неба
+        function createStars() {
+            const container = document.getElementById('stars');
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                const size = Math.random() * 2 + 1;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const duration = Math.random() * 5 + 3;
+                const delay = Math.random() * 5;
+                
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.opacity = Math.random() * 0.5 + 0.3;
+                star.style.animationDuration = `${duration}s`;
+                star.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(star);
+            }
+        }
+        
+        // Создание эффекта туманности
+        function createNebula() {
+            const container = document.querySelector('.nebula');
+            if (!container) return;
+            
+            // Добавляем мерцающие частицы
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('star');
+                
+                const size = Math.random() * 4 + 1;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const duration = Math.random() * 7 + 5;
+                const delay = Math.random() * 3;
+                const colors = ['#8A2BE2', '#00D4FF', '#FF00AA'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${x}%`;
+                particle.style.top = `${y}%`;
+                particle.style.backgroundColor = color;
+                particle.style.opacity = Math.random() * 0.3 + 0.1;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.filter = 'blur(1px)';
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createNebula();
+            
+            // Плавный скролл для навигации
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <!-- Скрипт для звёзд (старый, для совместимости) -->
     <script src="scripts/stars.js"></script>
 </body>
 </html>
