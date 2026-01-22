@@ -1,4 +1,4 @@
-/* Основные переменные и стили */
+/* Основные стили для Magma Launcher - разрыв реальности */
 :root {
     --bg-primary: #002F49;
     --bg-secondary: #003A58;
@@ -8,18 +8,20 @@
     --gradient-3: #34A0A3;
     --gradient-4: #158AAD;
     --gradient-5: #1A769F;
-    --gradient-main: linear-gradient(135deg,
-        #75C892 0%,
-        #52B69A 25%,
-        #34A0A3 50%,
-        #158AAD 75%,
-        #1A769F 100%);
+    --gradient-main: linear-gradient(135deg, 
+        #75C892 0%, 
+        #52B69A 25%, 
+        #34A0A3 50%, 
+        #158AAD 75%, 
+        #1A769F 100%
+    );
     --gradient-horizontal: linear-gradient(90deg,
         var(--gradient-1) 0%,
         var(--gradient-2) 25%,
         var(--gradient-3) 50%,
         var(--gradient-4) 75%,
-        var(--gradient-5) 100%);
+        var(--gradient-5) 100%
+    );
     --text-primary: #E8F4F8;
     --text-secondary: #A8D0E6;
     --text-accent: #75C892;
@@ -27,7 +29,6 @@
     --glow: 0 0 30px rgba(117, 200, 146, 0.4);
     --pixel-border: 2px;
     --blur-effect: blur(2px);
-    --spacing-unit: 1rem; /* Базовая единица отступов */
 }
 
 * {
@@ -56,7 +57,7 @@ body {
     height: 100%;
     z-index: -2;
     pointer-events: none;
-    background:
+    background: 
         repeating-linear-gradient(
             0deg,
             transparent,
@@ -113,7 +114,7 @@ body {
     height: 100%;
     z-index: -1;
     pointer-events: none;
-    background:
+    background: 
         repeating-linear-gradient(
             45deg,
             transparent,
@@ -124,21 +125,20 @@ body {
     mask-image: radial-gradient(circle at center, black 30%, transparent 70%);
 }
 
-/* Контейнер */
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: calc(2 * var(--spacing-unit));
+    padding: 2rem;
     position: relative;
     z-index: 1;
 }
 
 /* Навигация */
 nav {
-    margin: calc(2 * var(--spacing-unit)) 0 calc(3 * var(--spacing-unit));
+    margin: 2rem 0 3rem;
     position: relative;
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: calc(1 * var(--spacing-unit));
+    padding-bottom: 1rem;
 }
 
 nav::after {
@@ -154,7 +154,7 @@ nav::after {
 
 nav ul {
     display: flex;
-    gap: calc(2.5 * var(--spacing-unit));
+    gap: 2.5rem;
     list-style: none;
     justify-content: center;
 }
@@ -163,7 +163,7 @@ nav a {
     color: var(--text-secondary);
     text-decoration: none;
     font-weight: 500;
-    padding: calc(0.5 * var(--spacing-unit)) calc(1 * var(--spacing-unit));
+    padding: 0.5rem 1rem;
     position: relative;
     transition: all 0.3s ease;
     text-transform: uppercase;
@@ -194,14 +194,14 @@ nav a:hover::before {
 /* Заголовок с лого */
 .header-logo {
     text-align: center;
-    padding: calc(3 * var(--spacing-unit)) 0;
+    padding: 3rem 0;
     position: relative;
 }
 
 .logo-container {
     position: relative;
     display: inline-block;
-    margin-bottom: calc(2 * var(--spacing-unit));
+    margin-bottom: 2rem;
 }
 
 .logo-container img {
@@ -226,7 +226,7 @@ nav a:hover::before {
     font-weight: 300;
     letter-spacing: 3px;
     text-transform: uppercase;
-    margin-top: calc(1 * var(--spacing-unit));
+    margin-top: 1rem;
     background: var(--gradient-main);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -235,7 +235,7 @@ nav a:hover::before {
 
 /* Разделы с пиксельным эффектом */
 .section {
-    margin-bottom: calc(4 * var(--spacing-unit));
+    margin-bottom: 4rem;
     position: relative;
 }
 
@@ -254,9 +254,9 @@ nav a:hover::before {
 }
 
 .section-header {
-    margin-bottom: calc(2.5 * var(--spacing-unit));
+    margin-bottom: 2.5rem;
     position: relative;
-    padding: calc(1 * var(--spacing-unit)) 0;
+    padding: 1rem 0;
 }
 
 .section-header h2 {
@@ -287,8 +287,8 @@ nav a:hover::before {
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: calc(2 * var(--spacing-unit));
-    margin-top: calc(2 * var(--spacing-unit));
+    gap: 2rem;
+    margin-top: 2rem;
 }
 
 .feature-card {
@@ -296,13 +296,10 @@ nav a:hover::before {
     backdrop-filter: var(--blur-effect);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: calc(2 * var(--spacing-unit)); /* Увеличенные отступы */
+    padding: 2rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
 }
 
 .feature-card::before {
@@ -330,7 +327,7 @@ nav a:hover::before {
 
 .feature-icon {
     font-size: 2.5rem;
-    margin-bottom: calc(1 * var(--spacing-unit));
+    margin-bottom: 1rem;
     display: block;
     opacity: 0.9;
 }
@@ -338,32 +335,19 @@ nav a:hover::before {
 .feature-title {
     font-size: 1.4rem;
     font-weight: 600;
-    margin-bottom: calc(1 * var(--spacing-unit));
+    margin-bottom: 1rem;
     color: var(--text-accent);
-    padding-bottom: calc(0.5 * var(--spacing-unit));
-    border-bottom: 1px solid var(--border-color);
 }
 
-/* Списки возможностей */
 .feature-list {
     list-style: none;
-    margin: 0;
-    padding: 0;
-    flex-grow: 1;
 }
 
 .feature-list li {
-    padding: calc(0.8 * var(--spacing-unit)) 0; /* Увеличенные отступы */
+    padding: 0.5rem 0;
     position: relative;
-    padding-left: calc(1.5 * var(--spacing-unit)); /* Увеличенные отступы */
+    padding-left: 1.5rem;
     opacity: 0.9;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    border-bottom: 1px solid rgba(117, 200, 146, 0.1);
-}
-
-.feature-list li:last-child {
-    border-bottom: none;
 }
 
 .feature-list li::before {
@@ -374,138 +358,17 @@ nav a:hover::before {
     font-weight: bold;
 }
 
-/* Списки возможностей */
-.capabilities-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: calc(1.5 * var(--spacing-unit));
-    margin-top: calc(2 * var(--spacing-unit));
-}
-
-.capability-item {
-    display: flex;
-    align-items: flex-start;
-    gap: calc(1 * var(--spacing-unit));
-    padding: calc(1.5 * var(--spacing-unit)); /* Увеличенные отступы */
-    background: rgba(0, 58, 88, 0.4);
-    border-radius: 6px;
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-    backdrop-filter: var(--blur-effect);
-}
-
-.capability-item:hover {
-    border-color: var(--gradient-2);
-    background: rgba(0, 58, 88, 0.6);
-    transform: translateX(5px);
-}
-
-.capability-icon {
-    font-size: 1.8rem;
-    color: var(--gradient-3);
-    flex-shrink: 0;
-    margin-top: 0.2rem;
-}
-
-.capability-content {
-    flex: 1;
-}
-
-.capability-content h4 {
-    font-size: 1.1rem;
-    margin-bottom: calc(0.8 * var(--spacing-unit));
-    color: var(--text-accent);
-    padding-bottom: calc(0.3 * var(--spacing-unit));
-    border-bottom: 1px solid var(--border-color);
-}
-
-.capability-content ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
-
-.capability-content li {
-    padding: calc(0.7 * var(--spacing-unit)) 0; /* Увеличенные отступы */
-    opacity: 0.9;
-    font-size: 0.92rem;
-    position: relative;
-    padding-left: calc(1.3 * var(--spacing-unit)); /* Увеличенные отступы */
-    line-height: 1.4;
-}
-
-.capability-content li::before {
-    content: '■';
-    position: absolute;
-    left: 0;
-    color: var(--gradient-1);
-    font-size: 0.7rem;
-    top: 0.6rem;
-}
-
-/* Блоки с деталями */
-.detail-block {
-    background: rgba(0, 58, 88, 0.6);
-    backdrop-filter: var(--blur-effect);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: calc(2 * var(--spacing-unit)); /* Увеличенные отступы */
-    margin-bottom: calc(1.5 * var(--spacing-unit));
-}
-
-.detail-block h3 {
-    font-size: 1.3rem;
-    margin-bottom: calc(1 * var(--spacing-unit));
-    color: var(--gradient-2);
-    padding-bottom: calc(0.5 * var(--spacing-unit));
-    border-bottom: 1px solid var(--border-color);
-}
-
-.detail-block p {
-    margin-bottom: calc(0.8 * var(--spacing-unit));
-    line-height: 1.6;
-    opacity: 0.9;
-}
-
-.detail-block ul {
-    list-style: none;
-    padding-left: 0;
-    margin: calc(0.8 * var(--spacing-unit)) 0;
-}
-
-.detail-block li {
-    padding: calc(0.7 * var(--spacing-unit)) 0; /* Увеличенные отступы */
-    position: relative;
-    padding-left: calc(1.5 * var(--spacing-unit)); /* Увеличенные отступы */
-    opacity: 0.9;
-    line-height: 1.5;
-    border-bottom: 1px solid rgba(117, 200, 146, 0.1);
-}
-
-.detail-block li:last-child {
-    border-bottom: none;
-}
-
-.detail-block li::before {
-    content: '•';
-    position: absolute;
-    left: 0;
-    color: var(--gradient-3);
-    font-size: 1.2rem;
-    top: 0.4rem;
-}
-
 /* Кнопки */
 .cta-buttons {
     display: flex;
-    gap: calc(1.5 * var(--spacing-unit));
+    gap: 1.5rem;
     justify-content: center;
-    margin: calc(3 * var(--spacing-unit)) 0;
+    margin: 3rem 0;
     flex-wrap: wrap;
 }
 
 .primary-button {
-    padding: calc(1 * var(--spacing-unit)) calc(2.5 * var(--spacing-unit));
+    padding: 1rem 2.5rem;
     background: var(--gradient-main);
     color: var(--bg-primary);
     text-decoration: none;
@@ -528,7 +391,7 @@ nav a:hover::before {
 }
 
 .secondary-button {
-    padding: calc(1 * var(--spacing-unit)) calc(2.5 * var(--spacing-unit));
+    padding: 1rem 2.5rem;
     background: transparent;
     color: var(--text-accent);
     text-decoration: none;
@@ -551,12 +414,122 @@ nav a:hover::before {
     transform: translateY(-3px);
 }
 
-/* Секция скачивания */
+/* Списки возможностей */
+.capabilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.capability-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: rgba(0, 58, 88, 0.4);
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    backdrop-filter: var(--blur-effect);
+}
+
+.capability-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.8rem;
+    background: rgba(0, 58, 88, 0.4);
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+    backdrop-filter: var(--blur-effect);
+}
+
+.capability-icon {
+    font-size: 1.8rem;
+    color: var(--gradient-3);
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+}
+
+.capability-content h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-accent);
+}
+
+.capability-content ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.capability-content li {
+    padding: 0.25rem 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+    position: relative;
+    padding-left: 1.2rem;
+}
+
+.capability-content li::before {
+    content: '■';
+    position: absolute;
+    left: 0;
+    color: var(--gradient-1);
+    font-size: 0.8rem;
+}
+
+/* Загрузочный экран */
+.loader-section {
+    text-align: center;
+    padding: 4rem 0;
+    position: relative;
+}
+
+.loader-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 2rem;
+}
+
+.pixel-loader {
+    width: 80px;
+    height: 80px;
+    border: 4px solid transparent;
+    border-top: 4px solid var(--gradient-1);
+    border-right: 4px solid var(--gradient-3);
+    border-bottom: 4px solid var(--gradient-5);
+    border-left: 4px solid var(--gradient-2);
+    border-radius: 8px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loader-text {
+    font-size: 1.2rem;
+    color: var(--gradient-2);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 1rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Скачивание */
 .download-section {
     background: rgba(0, 58, 88, 0.8);
     border-radius: 12px;
-    padding: calc(2.5 * var(--spacing-unit)); /* Увеличенные отступы */
-    margin: calc(3 * var(--spacing-unit)) 0;
+    padding: 3rem;
+    margin: 3rem 0;
     text-align: center;
     border: 2px solid var(--border-color);
     position: relative;
@@ -575,36 +548,33 @@ nav a:hover::before {
 
 .download-title {
     font-size: 2rem;
-    margin-bottom: calc(1 * var(--spacing-unit));
+    margin-bottom: 1rem;
     color: var(--text-primary);
-    padding: 0 calc(1 * var(--spacing-unit));
 }
 
 .download-subtitle {
     font-size: 1.1rem;
     opacity: 0.8;
-    margin-bottom: calc(1.5 * var(--spacing-unit));
+    margin-bottom: 2rem;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    padding: 0 calc(1 * var(--spacing-unit));
 }
 
 .download-stats {
     display: flex;
     justify-content: center;
-    gap: calc(2 * var(--spacing-unit));
-    margin: calc(1.5 * var(--spacing-unit)) 0;
+    gap: 3rem;
+    margin: 2rem 0;
     flex-wrap: wrap;
 }
 
 .stat-item {
     text-align: center;
-    padding: calc(0.5 * var(--spacing-unit));
 }
 
 .stat-value {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     font-weight: 700;
     color: var(--gradient-1);
     display: block;
@@ -616,14 +586,14 @@ nav a:hover::before {
     opacity: 0.7;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-top: calc(0.5 * var(--spacing-unit));
+    margin-top: 0.5rem;
 }
 
 /* Подвал */
 footer {
     text-align: center;
-    padding: calc(2.5 * var(--spacing-unit)) 0;
-    margin-top: calc(3 * var(--spacing-unit));
+    padding: 3rem 0;
+    margin-top: 4rem;
     border-top: 1px solid var(--border-color);
     position: relative;
 }
@@ -642,180 +612,115 @@ footer::before {
 .footer-text {
     opacity: 0.6;
     font-size: 0.9rem;
-    margin-bottom: calc(0.8 * var(--spacing-unit));
 }
 
 .footer-links {
     display: flex;
     justify-content: center;
-    gap: calc(1.5 * var(--spacing-unit));
-    margin-top: calc(0.8 * var(--spacing-unit));
+    gap: 2rem;
+    margin-top: 1rem;
 }
 
 .footer-links a {
     color: var(--text-secondary);
     text-decoration: none;
-    font-size: 0.9rem;
     transition: color 0.3s ease;
-    padding: calc(0.2 * var(--spacing-unit)) 0;
 }
 
 .footer-links a:hover {
     color: var(--gradient-1);
 }
 
-/* Анимации */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Пиксельные эффекты */
+.pixel-border {
+    position: relative;
 }
 
-.feature-card, .capability-item, .detail-block {
-    animation: fadeInUp 0.6s ease-out forwards;
+.pixel-border::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px solid;
+    border-image: var(--gradient-main) 1;
+    pointer-events: none;
+    border-radius: 2px;
 }
-
-.feature-card:nth-child(1) { animation-delay: 0.1s; }
-.feature-card:nth-child(2) { animation-delay: 0.2s; }
-.feature-card:nth-child(3) { animation-delay: 0.3s; }
-
-.capability-item:nth-child(1) { animation-delay: 0.4s; }
-.capability-item:nth-child(2) { animation-delay: 0.5s; }
-.capability-item:nth-child(3) { animation-delay: 0.6s; }
-.capability-item:nth-child(4) { animation-delay: 0.7s; }
 
 /* Адаптивность */
 @media (max-width: 768px) {
     .container {
-        padding: calc(1 * var(--spacing-unit));
+        padding: 1rem;
     }
-
+    
     nav ul {
         flex-direction: column;
-        gap: calc(1 * var(--spacing-unit));
+        gap: 1rem;
         align-items: center;
     }
-
+    
     .logo-container img {
         max-width: 300px;
     }
-
+    
     .features-grid {
         grid-template-columns: 1fr;
-        gap: calc(1.5 * var(--spacing-unit));
     }
-
-    .feature-card {
-        padding: calc(1.5 * var(--spacing-unit));
-    }
-
+    
     .capabilities-grid {
         grid-template-columns: 1fr;
-        gap: calc(1 * var(--spacing-unit));
     }
-
-    .capability-item {
-        padding: calc(1.3 * var(--spacing-unit));
-    }
-
+    
     .cta-buttons {
         flex-direction: column;
         align-items: center;
-        gap: calc(1 * var(--spacing-unit));
-        margin: calc(2 * var(--spacing-unit)) 0;
     }
-
-    .primary-button, .secondary-button {
-        padding: calc(0.8 * var(--spacing-unit)) calc(2 * var(--spacing-unit));
-        width: 100%;
-        max-width: 300px;
-        text-align: center;
-    }
-
+    
     .download-stats {
-        gap: calc(1 * var(--spacing-unit));
-        margin: calc(1 * var(--spacing-unit)) 0;
-    }
-
-    .stat-item {
-        padding: calc(0.3 * var(--spacing-unit));
-    }
-
-    .stat-value {
-        font-size: 1.8rem;
-    }
-
-    .download-section {
-        padding: calc(1.5 * var(--spacing-unit)) calc(1 * var(--spacing-unit));
-        margin: calc(2 * var(--spacing-unit)) 0;
-    }
-
-    .download-title {
-        font-size: 1.6rem;
-    }
-
-    .download-subtitle {
-        font-size: 1rem;
-    }
-
-    .footer-links {
-        flex-wrap: wrap;
-        gap: calc(1 * var(--spacing-unit));
-    }
-
-    .footer-links a {
-        font-size: 0.85rem;
+        gap: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
     .header-logo {
-        padding: calc(2 * var(--spacing-unit)) 0;
+        padding: 2rem 0;
     }
-
+    
     .logo-container img {
         max-width: 250px;
     }
-
+    
     .section-header h2 {
         font-size: 1.8rem;
     }
-
-    .feature-title {
-        font-size: 1.2rem;
+    
+    .download-section {
+        padding: 2rem 1rem;
     }
-
-    .feature-list li {
-        font-size: 0.9rem;
-        padding: calc(0.5 * var(--spacing-unit)) 0;
-        padding-left: calc(1 * var(--spacing-unit));
-    }
-
-    .capability-content h4 {
-        font-size: 1rem;
-    }
-
-    .capability-content li {
-        font-size: 0.85rem;
-        padding: calc(0.4 * var(--spacing-unit)) 0;
-        padding-left: calc(0.8 * var(--spacing-unit));
-    }
-
+    
     .stat-value {
-        font-size: 1.6rem;
-    }
-
-    .stat-label {
-        font-size: 0.8rem;
+        font-size: 2rem;
     }
 }
 
-/* Убираем загрузочный экран */
+/* Эффект загрузки для всей страницы */
 .loading-screen {
-    display: none !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease-out;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
 }
