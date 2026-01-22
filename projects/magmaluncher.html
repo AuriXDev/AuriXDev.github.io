@@ -1,3 +1,6 @@
+ты немного не так меня понял надо в magmaluncher.html чтобы просто в блоках части были подальше от края блоков хотябы на 5 пикселей со всех сторон и по 5 между друг другом
+
+опирайся на предыдуший код 
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -36,7 +39,7 @@
         <header class="header-logo">
             <div class="logo-container">
                 <img src="../assets/mgllogo.png" alt="Magma Launcher" 
-                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"150\"></svg>'">
+                     onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"400\" height=\"150\"><text x=\"50%\" y=\"50%\" font-family=\"Orbitron\" font-size=\"60\" fill=\"%2375C892\" text-anchor=\"middle\" dy=\".3em\">MAGMA</text></svg>
             </div>
             <p class="logo-subtitle">Разрыв реальности Minecraft</p>
         </header>
@@ -69,39 +72,33 @@
                 
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-card-inner">
-                            <span class="feature-icon">🚀</span>
-                            <h3 class="feature-title">Запуск Minecraft</h3>
-                            <ul class="feature-list">
-                                <li>Автоустановка версий</li>
-                                <li>Модлоадеры в один клик</li>
-                                <li>Умный запуск</li>
-                            </ul>
-                        </div>
+                        <span class="feature-icon">🚀</span>
+                        <h3 class="feature-title">Запуск Minecraft</h3>
+                        <ul class="feature-list">
+                            <li>Автоустановка версий</li>
+                            <li>Модлоадеры в один клик</li>
+                            <li>Умный запуск</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card">
-                        <div class="feature-card-inner">
-                            <span class="feature-icon">📦</span>
-                            <h3 class="feature-title">Менеджер версий</h3>
-                            <ul class="feature-list">
-                                <li>Безлимитная библиотека</li>
-                                <li>Официальные сервера</li>
-                                <li>Уведомления об обновлениях</li>
-                            </ul>
-                        </div>
+                        <span class="feature-icon">📦</span>
+                        <h3 class="feature-title">Менеджер версий</h3>
+                        <ul class="feature-list">
+                            <li>Безлимитная библиотека</li>
+                            <li>Официальные сервера</li>
+                            <li>Уведомления об обновлениях</li>
+                        </ul>
                     </div>
 
                     <div class="feature-card">
-                        <div class="feature-card-inner">
-                            <span class="feature-icon">⚡</span>
-                            <h3 class="feature-title">Производительность</h3>
-                            <ul class="feature-list">
-                                <li>Оптимизация RAM</li>
-                                <li>Фоновые загрузки</li>
-                                <li>Быстрый запуск</li>
-                            </ul>
-                        </div>
+                        <span class="feature-icon">⚡</span>
+                        <h3 class="feature-title">Производительность</h3>
+                        <ul class="feature-list">
+                            <li>Оптимизация RAM</li>
+                            <li>Фоновые загрузки</li>
+                            <li>Быстрый запуск</li>
+                        </ul>
                     </div>
                 </div>
 
@@ -163,38 +160,32 @@
                     <h2>Уникальные функции</h2>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; margin-top: 2.5rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
                     <div class="feature-card">
-                        <div class="feature-card-inner">
-                            <span class="feature-icon">🌐</span>
-                            <h3 class="feature-title">Встроенный браузер</h3>
-                            <p style="opacity: 0.9; margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.1); border-radius: 6px; border-left: 3px solid var(--gradient-2);">
-                                Ищите сервера, моды и ресурсы прямо в лаунчере. 
-                                Один клик — и всё установлено.
-                            </p>
-                        </div>
+                        <span class="feature-icon">🌐</span>
+                        <h3 class="feature-title">Встроенный браузер</h3>
+                        <p style="opacity: 0.9; margin-top: 1rem;">
+                            Ищите сервера, моды и ресурсы прямо в лаунчере. 
+                            Один клик — и всё установлено.
+                        </p>
                     </div>
 
                     <div class="feature-card">
-                        <div class="feature-card-inner">
-                            <span class="feature-icon">💾</span>
-                            <h3 class="feature-title">Авто-бэкапы</h3>
-                            <p style="opacity: 0.9; margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.1); border-radius: 6px; border-left: 3px solid var(--gradient-3);">
-                                Magma автоматически создаёт бэкапы миров и настроек. 
-                                Никогда не теряйте прогресс.
-                            </p>
-                        </div>
+                        <span class="feature-icon">💾</span>
+                        <h3 class="feature-title">Авто-бэкапы</h3>
+                        <p style="opacity: 0.9; margin-top: 1rem;">
+                            Magma автоматически создаёт бэкапы миров и настроек. 
+                            Никогда не теряйте прогресс.
+                        </p>
                     </div>
 
                     <div class="feature-card">
-                        <div class="feature-card-inner">
-                            <span class="feature-icon">🎯</span>
-                            <h3 class="feature-title">Умная оптимизация</h3>
-                            <p style="opacity: 0.9; margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.1); border-radius: 6px; border-left: 3px solid var(--gradient-1);">
-                                Лаунчер анализирует ваш ПК и настраивает Minecraft 
-                                для максимальной производительности.
-                            </p>
-                        </div>
+                        <span class="feature-icon">🎯</span>
+                        <h3 class="feature-title">Умная оптимизация</h3>
+                        <p style="opacity: 0.9; margin-top: 1rem;">
+                            Лаунчер анализирует ваш ПК и настраивает Minecraft 
+                            для максимальной производительности.
+                        </p>
                     </div>
                 </div>
             </section>
@@ -243,41 +234,35 @@
                     <h2>Системные требования</h2>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; margin-top: 2.5rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
                     <div class="feature-card" style="text-align: center;">
-                        <div class="feature-card-inner">
-                            <h3 class="feature-title">Минимальные</h3>
-                            <ul class="feature-list" style="text-align: left;">
-                                <li>Windows 10/11 (64-bit)</li>
-                                <li>4 ГБ ОЗУ</li>
-                                <li>2 ГБ свободного места</li>
-                                <li>DirectX 11</li>
-                            </ul>
-                        </div>
+                        <h3 class="feature-title">Минимальные</h3>
+                        <ul class="feature-list" style="text-align: left;">
+                            <li>Windows 10/11 (64-bit)</li>
+                            <li>4 ГБ ОЗУ</li>
+                            <li>2 ГБ свободного места</li>
+                            <li>DirectX 11</li>
+                        </ul>
                     </div>
                     
                     <div class="feature-card" style="text-align: center; border-color: var(--gradient-3);">
-                        <div class="feature-card-inner">
-                            <h3 class="feature-title" style="color: var(--gradient-3);">Рекомендуемые</h3>
-                            <ul class="feature-list" style="text-align: left;">
-                                <li>Windows 10/11 (64-bit)</li>
-                                <li>8 ГБ ОЗУ</li>
-                                <li>10 ГБ свободного места</li>
-                                <li>DirectX 12</li>
-                            </ul>
-                        </div>
+                        <h3 class="feature-title" style="color: var(--gradient-3);">Рекомендуемые</h3>
+                        <ul class="feature-list" style="text-align: left;">
+                            <li>Windows 10/11 (64-bit)</li>
+                            <li>8 ГБ ОЗУ</li>
+                            <li>10 ГБ свободного места</li>
+                            <li>DirectX 12</li>
+                        </ul>
                     </div>
                     
                     <div class="feature-card" style="text-align: center;">
-                        <div class="feature-card-inner">
-                            <h3 class="feature-title">Поддержка Minecraft</h3>
-                            <ul class="feature-list" style="text-align: left;">
-                                <li>1.0 - 1.21+ версии</li>
-                                <li>Vanilla/Forge/Fabric</li>
-                                <li>OptiFine и шейдеры</li>
-                                <li>Все модлоадеры</li>
-                            </ul>
-                        </div>
+                        <h3 class="feature-title">Поддержка Minecraft</h3>
+                        <ul class="feature-list" style="text-align: left;">
+                            <li>1.0 - 1.21+ версии</li>
+                            <li>Vanilla/Forge/Fabric</li>
+                            <li>OptiFine и шейдеры</li>
+                            <li>Все модлоадеры</li>
+                        </ul>
                     </div>
                 </div>
             </section>
