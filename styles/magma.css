@@ -80,7 +80,7 @@ body {
         );
 }
 
-/* Квадратные звёзды */
+/* КВАДРАТНЫЕ ЗВЁЗДЫ */
 #square-stars {
     position: fixed;
     top: 0;
@@ -111,6 +111,23 @@ body {
         transform: translateY(-100vh) rotate(360deg);
         opacity: 0.3;
     }
+}
+
+/* Стили для звёзд - дополнительные */
+.star-layer-1 {
+    animation: floatSquare 25s infinite linear;
+    filter: blur(0.5px);
+}
+
+.star-layer-2 {
+    animation: floatSquare 35s infinite linear reverse;
+    filter: blur(1px);
+}
+
+.star-layer-3 {
+    animation: floatSquare 45s infinite linear;
+    filter: blur(0.3px);
+    opacity: 0.4;
 }
 
 /* Кристаллический эффект */
@@ -863,6 +880,20 @@ footer::before {
     animation: cardReveal 0.6s ease-out forwards;
 }
 
+/* Анимации для звёзд */
+@keyframes starTwinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+@keyframes starDrift {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(20px, 10px) rotate(90deg); }
+    50% { transform: translate(0, 20px) rotate(180deg); }
+    75% { transform: translate(-20px, 10px) rotate(270deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
 /* Адаптивность */
 @media (max-width: 1200px) {
     .features-grid {
@@ -1024,3 +1055,12 @@ footer::before {
 .gap-3 { gap: var(--spacing-md); }
 .gap-4 { gap: var(--spacing-lg); }
 .gap-5 { gap: var(--spacing-xl); }
+
+/* Звёздные эффекты */
+.star-pulse {
+    animation: starTwinkle 3s ease-in-out infinite;
+}
+
+.star-drift {
+    animation: starDrift 15s linear infinite;
+}
