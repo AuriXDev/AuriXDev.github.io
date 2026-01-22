@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CubikAI - AuriX Dev</title>
+    <link rel="stylesheet" href="../styles/cubikai.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Нейронный фон -->
+    <div class="neural-background"></div>
+    <div class="neuron-dots" id="neuronDots"></div>
+    <div class="neural-connections" id="neuralConnections"></div>
+
+    <!-- Навигация -->
+    <nav class="ai-nav">
+        <a href="../index.html">← На главную</a>
+        <a href="magmaluncher.html">Magma Launcher</a>
+        <a href="sintax.html">SiNtax</a>
+        <a href="#models">Модели</a>
+        <a href="#capabilities">Возможности</a>
+    </nav>
+
+    <!-- Герой-секция -->
+    <section class="ai-hero">
+        <div class="container">
+            <div class="ai-title">
+                <h1>CUBIK<span style="color: var(--ai-green)">AI</span></h1>
+                <span class="version">v2.6</span>
+            </div>
+            
+            <p class="ai-subtitle">Текст в текст • Мышление в коде</p>
+            
+            <div class="ai-tagline">
+                Передовая нейросеть на основе TinyLlama, созданная для творчества, анализа и помощи в разработке.
+                Простота использования с мощностью профессионального инструмента.
+            </div>
+            
+            <div class="ai-cta">
+                <a href="#models" class="primary-btn">
+                    <i class="fas fa-brain"></i> Изучить модели
+                </a>
+                <a href="https://t.me/cubik_news" target="_blank" class="secondary-btn">
+                    <i class="fab fa-telegram"></i> Новости в Telegram
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Модели -->
+    <section id="models" class="ai-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Доступные модели</h2>
+                <p>Две версии — одна философия. Выбирайте под свои задачи.</p>
+            </div>
+
+            <div class="models-grid">
+                <!-- Стандартная версия -->
+                <div class="model-card">
+                    <div class="model-badge">Стандарт</div>
+                    <h3 class="model-name">CubikAI 2.6</h3>
+                    <div class="model-params">12B параметров</div>
+                    <p class="model-description">
+                        Идеальный баланс скорости и качества. Оптимизирована для широкого спектра задач:
+                        от генерации контента до анализа данных и помощи в программировании.
+                    </p>
+                    
+                    <ul class="model-features">
+                        <li>Быстрая обработка запросов</li>
+                        <li>Поддержка контекста до 4096 токенов</li>
+                        <li>Специализация на русском и английском</li>
+                        <li>Генерация кода на 20+ языках</li>
+                        <li>Творческое письмо и анализ</li>
+                    </ul>
+                    
+                    <div class="model-stats">
+                        <div class="stat">
+                            <span class="stat-value">12B</span>
+                            <span class="stat-label">Параметров</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">4K</span>
+                            <span class="stat-label">Контекст</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">20+</span>
+                            <span class="stat-label">Языков кода</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">1.2s</span>
+                            <span class="stat-label">Средний ответ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ultra версия -->
+                <div class="model-card">
+                    <div class="model-badge" style="background: linear-gradient(135deg, var(--neural-pink), var(--neural-purple));">Ultra</div>
+                    <h3 class="model-name" style="color: var(--neural-pink);">CubikAI 2.6 Ultra</h3>
+                    <div class="model-params" style="color: var(--neural-pink);">22B параметров</div>
+                    <p class="model-description">
+                        Максимальная мощность для сложных задач. Улучшенное понимание контекста,
+                        расширенные возможности анализа и премиальное качество генерации.
+                    </p>
+                    
+                    <ul class="model-features">
+                        <li>Повышенная точность и глубина</li>
+                        <li>Расширенный контекст до 8192 токенов</li>
+                        <li>Мультиязычная специализация</li>
+                        <li>Продвинутый анализ данных</li>
+                        <li>Творчество уровня эксперта</li>
+                    </ul>
+                    
+                    <div class="model-stats">
+                        <div class="stat">
+                            <span class="stat-value" style="color: var(--neural-pink);">22B</span>
+                            <span class="stat-label">Параметров</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" style="color: var(--neural-pink);">8K</span>
+                            <span class="stat-label">Контекст</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" style="color: var(--neural-pink);">30+</span>
+                            <span class="stat-label">Языков кода</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" style="color: var(--neural-pink);">2.1s</span>
+                            <span class="stat-label">Средний ответ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Возможности -->
+    <section id="capabilities" class="ai-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Что умеет CubikAI</h2>
+                <p>Многофункциональный инструмент для разработчиков и творцов</p>
+            </div>
+
+            <div class="capabilities-grid">
+                <div class="capability-card">
+                    <span class="capability-icon">💻</span>
+                    <h3 class="capability-title">Генерация кода</h3>
+                    <p class="capability-description">
+                        Пишет код на Python, JavaScript, C++, Java и других языках.
+                        Помогает с отладкой, оптимизацией и документированием.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="capability-icon">📝</span>
+                    <h3 class="capability-title">Творческое письмо</h3>
+                    <p class="capability-description">
+                        Создаёт статьи, рассказы, сценарии, стихи и другой контент.
+                        Поддерживает различные стили и форматы.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="capability-icon">🔍</span>
+                    <h3 class="capability-title">Анализ данных</h3>
+                    <p class="capability-description">
+                        Анализирует тексты, структурирует информацию,
+                        выявляет закономерности и делает выводы.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="capability-icon">🎓</span>
+                    <h3 class="capability-title">Обучение и помощь</h3>
+                    <p class="capability-description">
+                        Объясняет сложные концепции, помогает с учебными задачами,
+                        создаёт учебные материалы и тесты.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="capability-icon">💬</span>
+                    <h3 class="capability-title">Диалог и консультации</h3>
+                    <p class="capability-description">
+                        Ведёт осмысленные диалоги, даёт советы,
+                        помогает принимать решения и планировать задачи.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <span class="capability-icon">🎨</span>
+                    <h3 class="capability-title">Креативные задачи</h3>
+                    <p class="capability-description">
+                        Придумывает идеи, генерирует концепции,
+                        помогает с мозговым штурмом и творческим поиском.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Технические особенности -->
+    <section class="ai-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Технологии под капотом</h2>
+                <p>Современные подходы к созданию AI</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <div class="capability-card" style="text-align: center;">
+                    <h3 class="capability-title" style="color: var(--ai-green);">Архитектура</h3>
+                    <p class="capability-description" style="margin-top: 1rem;">
+                        Основана на TinyLlama с кастомными улучшениями.
+                        Оптимизирована для эффективного использования ресурсов
+                        без потери качества генерации.
+                    </p>
+                </div>
+
+                <div class="capability-card" style="text-align: center;">
+                    <h3 class="capability-title" style="color: var(--neural-blue);">Обучение</h3>
+                    <p class="capability-description" style="margin-top: 1rem;">
+                        Fine-tuning на специализированных датасетах
+                        по программированию, научным текстам и творческому письму.
+                        Баланс между общими знаниями и специализацией.
+                    </p>
+                </div>
+
+                <div class="capability-card" style="text-align: center;">
+                    <h3 class="capability-title" style="color: var(--neural-purple);">Оптимизация</h3>
+                    <p class="capability-description" style="margin-top: 1rem;">
+                        Квантование, дистилляция знаний и другие техники
+                        для работы на различных устройствах.
+                        От слабых ПК до серверных решений.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Telegram канал -->
+    <section class="ai-section">
+        <div class="container">
+            <div class="telegram-section">
+                <span class="tg-icon">📢</span>
+                <h3 class="tg-title">Telegram канал новостей</h3>
+                <p class="tg-description">
+                    Следите за обновлениями CubikAI, узнавайте о новых возможностях,
+                    получайте примеры использования и участвуйте в обсуждениях.
+                </p>
+                <a href="https://t.me/cubik_news" target="_blank" class="tg-link">
+                    <i class="fab fa-telegram"></i> Подписаться на @cubik_news
+                </a>
+                <p style="margin-top: 1.5rem; opacity: 0.7; font-size: 0.9rem;">
+                    Все анонсы, обновления и полезные материалы в одном месте
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer class="ai-footer">
+        <div class="container">
+            <p class="footer-text">© 2025 AuriX Dev. CubikAI.</p>
+            <p class="footer-credits">AI, который понимает больше, чем кажется</p>
+        </div>
+    </footer>
+
+    <!-- Скрипты для нейронных эффектов -->
+    <script>
+        // Создание нейронных точек
+        function createNeuronDots() {
+            const container = document.getElementById('neuronDots');
+            if (!container) return;
+            
+            const dotCount = 100;
+            
+            for (let i = 0; i < dotCount; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('neuron-dot');
+                
+                const size = Math.random() * 4 + 2;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const duration = Math.random() * 4 + 2;
+                const delay = Math.random() * 5;
+                const colors = ['#00D4FF', '#00FFAA', '#FF00AA', '#8A2BE2'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                dot.style.width = `${size}px`;
+                dot.style.height = `${size}px`;
+                dot.style.left = `${x}%`;
+                dot.style.top = `${y}%`;
+                dot.style.backgroundColor = color;
+                dot.style.animationDuration = `${duration}s`;
+                dot.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(dot);
+            }
+        }
+        
+        // Создание нейронных соединений
+        function createNeuralConnections() {
+            const container = document.getElementById('neuralConnections');
+            if (!container) return;
+            
+            const connectionCount = 50;
+            
+            for (let i = 0; i < connectionCount; i++) {
+                const connection = document.createElement('div');
+                connection.classList.add('neural-connection');
+                
+                const x1 = Math.random() * 100;
+                const y1 = Math.random() * 100;
+                const x2 = Math.random() * 100;
+                const y2 = Math.random() * 100;
+                
+                // Вычисляем длину и угол
+                const dx = x2 - x1;
+                const dy = y2 - y1;
+                const length = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+                
+                const duration = Math.random() * 8 + 4;
+                const delay = Math.random() * 3;
+                const colors = ['#00D4FF', '#00FFAA', '#8A2BE2'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                connection.style.width = `${length}%`;
+                connection.style.left = `${x1}%`;
+                connection.style.top = `${y1}%`;
+                connection.style.transform = `rotate(${angle}deg)`;
+                connection.style.background = `linear-gradient(90deg, transparent, ${color}, transparent)`;
+                connection.style.animationDuration = `${duration}s`;
+                connection.style.animationDelay = `${delay}s`;
+                connection.style.opacity = Math.random() * 0.3 + 0.1;
+                
+                container.appendChild(connection);
+            }
+        }
+        
+        // Матричный дождь (опционально)
+        function createMatrixRain() {
+            const container = document.querySelector('.neural-background');
+            if (!container) return;
+            
+            const characters = '01アイウエオカキクケコサシスセソタチツテト';
+            const drops = 30;
+            
+            for (let i = 0; i < drops; i++) {
+                const drop = document.createElement('div');
+                drop.style.position = 'absolute';
+                drop.style.left = `${Math.random() * 100}%`;
+                drop.style.top = `${Math.random() * -100}%`;
+                drop.style.color = '#00FFAA';
+                drop.style.fontSize = `${Math.random() * 10 + 14}px`;
+                drop.style.opacity = Math.random() * 0.5 + 0.2;
+                drop.style.animation = `matrixRain ${Math.random() * 5 + 3}s linear infinite`;
+                drop.style.animationDelay = `${Math.random() * 5}s`;
+                drop.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                
+                container.appendChild(drop);
+            }
+        }
+        
+        // Инициализация эффектов
+        document.addEventListener('DOMContentLoaded', () => {
+            createNeuronDots();
+            createNeuralConnections();
+            createMatrixRain();
+            
+            // Добавляем анимацию появления карточек
+            const cards = document.querySelectorAll('.model-card, .capability-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 + index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
