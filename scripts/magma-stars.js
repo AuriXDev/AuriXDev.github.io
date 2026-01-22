@@ -1,236 +1,214 @@
-// Создание квадратных звёзд - УЛУЧШЕННАЯ ВЕРСИЯ
+// БОЛЬШИЕ И КВАДРАТНЫЕ ЗВЁЗДЫ
 function createSquareStars() {
     const starsContainer = document.getElementById('square-stars');
     if (!starsContainer) {
-        console.error('Контейнер для звёзд не найден!');
-        return;
+        // Если контейнера нет - создадим
+        const newContainer = document.createElement('div');
+        newContainer.id = 'square-stars';
+        document.body.appendChild(newContainer);
+        console.log('✅ Создан контейнер для звёзд');
+        return createSquareStars(); // Запускаем снова
     }
     
-    // Очищаем контейнер
+    // Очищаем
     starsContainer.innerHTML = '';
     
-    const starCount = 30; // Оптимальное количество для видимости
-    const viewportHeight = window.innerHeight;
+    // МЕНЬШЕ звёзд, но они БОЛЬШИЕ
+    const starCount = 15;
     
     for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
-        star.classList.add('square-star');
+        star.className = 'square-star';
         
-        // Случайные параметры для лучшей видимости
-        const size = Math.random() * 20 + 15; // 15-35px
-        const x = Math.random() * 110 - 5; // -5% до 105%
-        const y = Math.random() * 120 + 100; // 100% до 220% (старт снизу)
-        const duration = Math.random() * 25 + 15; // 15-40 секунд
-        const delay = Math.random() * 20; // задержка 0-20 секунд
-        const opacity = Math.random() * 0.5 + 0.3; // 0.3-0.8
+        // БОЛЬШИЕ размеры: 40-80px
+        const size = Math.random() * 40 + 40;
         
-        // Цвет из градиента
-        const gradientColors = [
-            '#75C892',
-            '#52B69A', 
-            '#34A0A3',
-            '#158AAD',
-            '#1A769F'
+        // Позиция
+        const x = Math.random() * 110 - 5;
+        const y = Math.random() * 120 + 100;
+        
+        // Разная скорость
+        const duration = Math.random() * 30 + 20;
+        const delay = Math.random() * 10;
+        
+        // Цвета
+        const colors = [
+            'linear-gradient(135deg, #75C892 0%, #52B69A 50%, #34A0A3 100%)',
+            'linear-gradient(135deg, #52B69A 0%, #34A0A3 50%, #158AAD 100%)',
+            'linear-gradient(135deg, #34A0A3 0%, #158AAD 50%, #1A769F 100%)',
+            'linear-gradient(135deg, #75C892 0%, #158AAD 50%, #1A769F 100%)'
         ];
-        const color = gradientColors[Math.floor(Math.random() * gradientColors.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
         
-        // Применяем стили напрямую
+        // Стили для БОЛЬШОЙ КВАДРАТНОЙ звезды
         Object.assign(star.style, {
             width: `${size}px`,
             height: `${size}px`,
-            backgroundColor: color,
+            background: color,
             position: 'absolute',
             left: `${x}%`,
             top: `${y}%`,
-            opacity: opacity,
+            opacity: '0',
             transform: `rotate(${Math.random() * 45}deg)`,
-            animation: `floatSquare ${duration}s linear ${delay}s infinite`,
-            filter: 'blur(1px)',
+            animation: `floatBigSquare ${duration}s linear ${delay}s infinite`,
+            filter: 'blur(0.5px)',
             zIndex: '-2',
-            borderRadius: '3px',
+            borderRadius: '6px',
             pointerEvents: 'none',
-            willChange: 'transform, opacity'
+            willChange: 'transform, opacity',
+            boxShadow: `
+                0 0 25px rgba(117, 200, 146, 0.8),
+                0 0 50px rgba(117, 200, 146, 0.4),
+                inset 0 0 15px rgba(255, 255, 255, 0.3)
+            `
         });
         
         starsContainer.appendChild(star);
     }
+    
+    console.log(`✅ Создано ${starCount} БОЛЬШИХ квадратных звёзд`);
 }
 
-// Эффект пикселей для crystal-overlay
+// Эффект пикселей
 function createPixelEffect() {
     const container = document.querySelector('.crystal-overlay');
     if (!container) return;
     
     container.innerHTML = '';
     
-    for (let i = 0; i < 50; i++) {
+    // Меньше пикселей, но они больше
+    for (let i = 0; i < 30; i++) {
         const pixel = document.createElement('div');
-        pixel.style.position = 'absolute';
-        pixel.style.width = '2px';
-        pixel.style.height = '2px';
-        pixel.style.backgroundColor = getRandomColor();
-        pixel.style.left = `${Math.random() * 100}%`;
-        pixel.style.top = `${Math.random() * 100}%`;
-        pixel.style.opacity = Math.random() * 0.3 + 0.1;
-        pixel.style.animation = `pixelFloat ${Math.random() * 20 + 10}s linear infinite`;
-        pixel.style.zIndex = '-1';
-        pixel.style.borderRadius = '50%';
-        pixel.style.pointerEvents = 'none';
+        Object.assign(pixel.style, {
+            position: 'absolute',
+            width: '4px',
+            height: '4px',
+            background: getRandomColor(),
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            opacity: Math.random() * 0.4 + 0.1,
+            animation: `pixelFloat ${Math.random() * 25 + 15}s linear infinite`,
+            zIndex: '-1',
+            borderRadius: '1px',
+            pointerEvents: 'none',
+            boxShadow: '0 0 10px currentColor'
+        });
         
         container.appendChild(pixel);
     }
 }
 
 function getRandomColor() {
-    const colors = ['#75C892', '#52B69A', '#34A0A3', '#158AAD', '#1A769F'];
+    const colors = ['#75C892', '#52B69A', '#34A0A3', '#158AAD'];
     return colors[Math.floor(Math.random() * colors.length)];
 }
 
-// Добавляем стили для анимаций
+// Стили для анимаций
 function addAnimationStyles() {
-    if (document.querySelector('#magma-animations')) return;
+    if (document.querySelector('#magma-big-stars')) return;
     
     const style = document.createElement('style');
-    style.id = 'magma-animations';
+    style.id = 'magma-big-stars';
     style.textContent = `
-        @keyframes floatSquare {
+        /* Анимация для больших квадратных звёзд */
+        @keyframes floatBigSquare {
             0% {
-                transform: translateY(100vh) rotate(0deg) scale(0.8);
+                transform: translateY(120vh) rotate(0deg) scale(0.7);
                 opacity: 0;
             }
             10% {
-                opacity: 0.7;
+                opacity: 0.9;
+                transform: translateY(90vh) rotate(90deg) scale(1);
+            }
+            30% {
+                opacity: 1;
+                transform: translateY(60vh) rotate(180deg) scale(1.1);
+                filter: blur(0px) brightness(1.5);
+            }
+            60% {
+                opacity: 0.9;
+                transform: translateY(30vh) rotate(270deg) scale(1);
+                filter: blur(0.5px) brightness(1.2);
             }
             90% {
-                opacity: 0.7;
+                opacity: 0.8;
+                transform: translateY(0vh) rotate(360deg) scale(0.9);
+                filter: blur(1px) brightness(1);
             }
             100% {
-                transform: translateY(-100px) rotate(360deg) scale(1.2);
+                transform: translateY(-100px) rotate(450deg) scale(0.7);
                 opacity: 0;
             }
         }
         
+        /* Анимация пикселей */
         @keyframes pixelFloat {
             0% {
                 transform: translate(0, 0) rotate(0deg);
-                opacity: 0.1;
-            }
-            25% {
-                transform: translate(${Math.random() * 60 - 30}px, ${Math.random() * 60 - 30}px) rotate(90deg);
-                opacity: 0.3;
+                opacity: 0.2;
             }
             50% {
                 transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(180deg);
-                opacity: 0.2;
-            }
-            75% {
-                transform: translate(${Math.random() * 60 - 30}px, ${Math.random() * 60 - 30}px) rotate(270deg);
-                opacity: 0.3;
+                opacity: 0.4;
             }
             100% {
                 transform: translate(0, 0) rotate(360deg);
-                opacity: 0.1;
+                opacity: 0.2;
             }
         }
         
-        /* Плавное появление контента */
-        .feature-card, .capability-item, .req-card {
+        /* Плавное появление */
+        body {
             opacity: 0;
-            animation: fadeInUp 0.6s ease-out forwards;
+            animation: fadeInBody 1s ease-out forwards;
         }
         
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
+        @keyframes fadeInBody {
             to {
                 opacity: 1;
-                transform: translateY(0);
             }
         }
     `;
     document.head.appendChild(style);
 }
 
-// Анимация появления контента с задержкой
-function animateContent() {
-    const cards = document.querySelectorAll('.feature-card, .capability-item, .req-card');
-    cards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-    });
-    
-    // Плавное появление body
-    document.body.style.opacity = '0';
-    setTimeout(() => {
-        document.body.style.transition = 'opacity 0.8s ease';
-        document.body.style.opacity = '1';
-    }, 100);
-}
-
 // Эффекты при наведении
 function addHoverEffects() {
     const cards = document.querySelectorAll('.feature-card, .req-card');
     cards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transform = 'translateY(-8px) scale(1.02)';
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.03)';
+            this.style.boxShadow = '0 0 40px rgba(117, 200, 146, 0.6)';
         });
         
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0) scale(1)';
-        });
-    });
-    
-    const capabilityItems = document.querySelectorAll('.capability-item');
-    capabilityItems.forEach(item => {
-        item.addEventListener('mouseenter', () => {
-            item.style.transform = 'translateX(8px)';
-        });
-        
-        item.addEventListener('mouseleave', () => {
-            item.style.transform = 'translateX(0)';
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.boxShadow = '';
         });
     });
 }
 
-// Пересоздание звёзд при изменении размера окна
-function handleResize() {
-    createSquareStars();
-    createPixelEffect();
-}
-
-// Основная функция инициализации
+// Инициализация
 function initMagmaEffects() {
-    console.log('Инициализация эффектов Magma...');
+    console.log('🚀 Инициализация БОЛЬШИХ квадратных звёзд...');
     
-    // Добавляем стили анимаций
     addAnimationStyles();
-    
-    // Создаём эффекты
     createSquareStars();
     createPixelEffect();
     
-    // Анимируем контент
-    setTimeout(() => {
-        animateContent();
-        addHoverEffects();
-    }, 500);
+    // Обновляем звёзды каждые 40 секунд
+    setInterval(createSquareStars, 40000);
     
-    // Слушаем изменение размера окна
-    window.addEventListener('resize', handleResize);
+    // Эффекты при наведении
+    setTimeout(addHoverEffects, 1000);
     
-    // Периодическое обновление звёзд (каждые 30 секунд)
-    setInterval(createSquareStars, 30000);
-    
-    console.log('Эффекты Magma инициализированы!');
+    console.log('✅ Большие квадратные звёзды созданы!');
 }
 
-// Запуск при полной загрузке страницы
+// Запускаем при загрузке
 window.addEventListener('load', initMagmaEffects);
 
-// Альтернативный запуск если DOM уже загружен
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMagmaEffects);
-} else {
+// Если страница уже загружена
+if (document.readyState === 'complete') {
     initMagmaEffects();
 }
