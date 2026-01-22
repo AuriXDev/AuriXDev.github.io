@@ -180,13 +180,13 @@ body {
     max-width: 700px;
     font-size: 1.2rem;
     opacity: 0.9;
-    margin-bottom: 10rem;
+    margin-bottom: 20rem;
     line-height: 1.8;
 }
 
 .scroll-indicator {
     position: absolute;
-    bottom: 3rem;
+    bottom: 15rem;
     left: 50%;
     transform: translateX(-50%);
     animation: bounce 2s infinite;
