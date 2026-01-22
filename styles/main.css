@@ -10,6 +10,7 @@
     --button-hover: rgba(106, 90, 205, 0.3);
     --border-color: rgba(106, 90, 205, 0.2);
     --glow: 0 0 20px rgba(106, 90, 205, 0.3);
+    --project-glow: 0 0 15px rgba(106, 90, 205, 0.2);
 }
 
 * {
@@ -147,44 +148,133 @@ section {
     opacity: 1;
 }
 
-/* Проекты */
+/* Проекты - ОБНОВЛЁННЫЙ СТИЛЬ */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    gap: 2rem;
     margin-top: 2rem;
 }
 
 .project-card {
     display: flex;
     flex-direction: column;
+    align-items: center;
     text-decoration: none;
     color: inherit;
-    height: 200px;
+    height: 320px;
     position: relative;
+    padding: 2.5rem 2rem;
+}
+
+.project-icon-container {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
 .project-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    opacity: 0.9;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(106, 90, 205, 0.3));
+    transition: all 0.3s ease;
+}
+
+.project-card:hover .project-icon {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 15px rgba(106, 90, 205, 0.5));
+}
+
+.project-icon-fallback {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
 }
 
 .project-title {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    text-align: center;
     background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    position: relative;
+}
+
+.project-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: var(--gradient);
+    opacity: 0.5;
 }
 
 .project-desc {
     font-size: 0.95rem;
-    opacity: 0.7;
-    line-height: 1.5;
+    text-align: center;
+    opacity: 0.8;
+    line-height: 1.6;
     flex-grow: 1;
+    padding: 0 1rem;
+}
+
+.project-status {
+    margin-top: 1rem;
+    padding: 0.4rem 1rem;
+    background: rgba(106, 90, 205, 0.1);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--accent-light);
+    border: 1px solid rgba(106, 90, 205, 0.3);
+}
+
+/* Особый стиль для карточки "Прочее" */
+.project-card.other {
+    position: relative;
+    overflow: hidden;
+}
+
+.project-card.other::before {
+    content: '···';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5rem;
+    color: var(--accent-color);
+    opacity: 0.2;
+    font-weight: bold;
+    letter-spacing: 1rem;
+}
+
+.project-card.other .project-icon-container {
+    opacity: 0.5;
+}
+
+.project-card.other .project-desc {
+    opacity: 0.7;
 }
 
 /* Список целей */
@@ -275,6 +365,31 @@ footer {
     }
 }
 
+@keyframes iconFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.project-icon-container {
+    animation: iconFloat 3s ease-in-out infinite;
+}
+
+.project-card:nth-child(2) .project-icon-container {
+    animation-delay: 0.2s;
+}
+
+.project-card:nth-child(3) .project-icon-container {
+    animation-delay: 0.4s;
+}
+
+.project-card:nth-child(4) .project-icon-container {
+    animation-delay: 0.6s;
+}
+
 section {
     animation: fadeInUp 0.6s ease-out forwards;
 }
@@ -300,6 +415,22 @@ section:nth-child(4) { animation-delay: 0.3s; }
     .project-grid {
         grid-template-columns: 1fr;
     }
+    
+    .project-card {
+        height: 300px;
+        padding: 2rem 1.5rem;
+    }
+    
+    .project-icon-container {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .project-icon,
+    .project-icon-fallback {
+        width: 70px;
+        height: 70px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -313,5 +444,14 @@ section:nth-child(4) { animation-delay: 0.3s; }
     
     .card {
         padding: 1.5rem;
+    }
+    
+    .project-title {
+        font-size: 1.4rem;
+    }
+    
+    .project-desc {
+        font-size: 0.9rem;
+        padding: 0;
     }
 }
