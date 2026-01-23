@@ -130,12 +130,10 @@
                 <div class="tech-stack">
                     <span class="tech-item">JavaScript/TypeScript</span>
                     <span class="tech-item">Python</span>
-                    <span class="tech-item">C#/.NET</span>
+                    <span class="tech-item">C#</span>
                     <span class="tech-item">Java</span>
                     <span class="tech-item">Lua</span>
-                    <span class="tech-item">Rust</span>
                     <span class="tech-item">AI/ML</span>
-                    <span class="tech-item">Cloud</span>
                 </div>
             </div>
         </div>
@@ -151,7 +149,7 @@
 
             <div class="goals-list">
                 <div class="goal-item reveal">
-                    <span class="goal-icon">🚀</span>
+                    <span class="goal-icon"><i class="fas fa-rocket"></i></span>
                     <h3 class="goal-title">Инновации</h3>
                     <p class="goal-description">
                         Создавать продукты, которые опережают время и задают новые стандарты в индустрии.
@@ -159,7 +157,7 @@
                 </div>
 
                 <div class="goal-item reveal">
-                    <span class="goal-icon">👥</span>
+                    <span class="goal-icon"><i class="fas fa-users"></i></span>
                     <h3 class="goal-title">Сообщество</h3>
                     <p class="goal-description">
                         Развивать русскоязычное IT-сообщество через открытый код, туториалы и поддержку.
@@ -167,7 +165,7 @@
                 </div>
 
                 <div class="goal-item reveal">
-                    <span class="goal-icon">🔓</span>
+                    <span class="goal-icon"><i class="fas fa-unlock-alt"></i></span>
                     <h3 class="goal-title">Доступность</h3>
                     <p class="goal-description">
                         Делать передовые технологии доступными каждому, независимо от опыта или бюджета.
@@ -175,7 +173,7 @@
                 </div>
 
                 <div class="goal-item reveal">
-                    <span class="goal-icon">🌍</span>
+                    <span class="contact-icon"><i class="fab fa-handshake"></i></span>
                     <h3 class="goal-title">Коллаборация</h3>
                     <p class="goal-description">
                         Сотрудничать с талантливыми разработчиками со всего мира для создания лучших решений.
@@ -195,16 +193,16 @@
 
             <div class="contact-grid">
                 <div class="contact-card reveal">
-                    <span class="contact-icon">📧</span>
+                    <span class="contact-icon"><i class="fab fa-envelope"></i></span>
                     <h3 class="contact-title">Почта</h3>
-                    <a href="mailto:aurixhelp@gmail.com" class="contact-link">aurixhelp@gmail.com</a>
+                    <a href="mailto:aurixhelp@gmail.com" class="contact-link">Gmail.com</a>
                     <p style="opacity: 0.7; margin-top: 0.5rem; font-size: 0.9rem;">Ответ в течение 24 часов</p>
                 </div>
 
                 <div class="contact-card reveal">
-                    <span class="contact-icon">💬</span>
+                    <span class="contact-icon"><i class="fab fa-telegram-plane"></i></span>
                     <h3 class="contact-title">Telegram</h3>
-                    <a href="https://t.me/aurix_dev" target="_blank" class="contact-link">@aurix_dev</a>
+                    <a href="https://t.me/aurix_dev" target="_blank" class="contact-link">Telegram</a>
                     <p style="opacity: 0.7; margin-top: 0.5rem; font-size: 0.9rem;">Основной канал связи</p>
                 </div>
 
@@ -216,7 +214,7 @@
                 </div>
 
                 <div class="contact-card reveal">
-                    <span class="contact-icon">🤝</span>
+                    <span class="contact-icon"><i class="fas fa-handshake"></i></span>
                     <h3 class="contact-title">Сотрудничество</h3>
                     <a href="mailto:aurix.partners@gmail.com" class="contact-link">Партнёрство</a>
                     <p style="opacity: 0.7; margin-top: 0.5rem; font-size: 0.9rem;">Коммерческие проекты</p>
@@ -280,12 +278,10 @@
             }
         }
         
-        // Создание эффекта туманности
         function createNebula() {
             const container = document.querySelector('.nebula');
             if (!container) return;
             
-            // Добавляем мерцающие частицы
             for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
                 particle.classList.add('star');
@@ -312,12 +308,10 @@
             }
         }
         
-        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', () => {
             createStars();
             createNebula();
             
-            // Плавный скролл для навигации
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -337,7 +331,6 @@
         });
     </script>
     
-    <!-- Скрипт для звёзд (старый, для совместимости) -->
     <script src="scripts/stars.js"></script>
 </body>
 </html>
