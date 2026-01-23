@@ -189,7 +189,7 @@
 
             <div class="features-grid">
                 <div class="feature-item">
-                    <div class="feature-icon">🛡️</div>
+                    <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
                     <div class="feature-text">
                         <h4>Улучшенная защита</h4>
                         <p>Расширенная база сигнатур, поведенческий анализ и защита от zero-day атак</p>
@@ -197,7 +197,7 @@
                 </div>
 
                 <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
+                    <div class="feature-icon"><i class="fas fa-bolt"></i></div>
                     <div class="feature-text">
                         <h4>Автоматизация</h4>
                         <p>Автоматические обновления, сканирование по расписанию и умные уведомления</p>
@@ -205,7 +205,7 @@
                 </div>
 
                 <div class="feature-item">
-                    <div class="feature-icon">🔧</div>
+                    <div class="feature-icon"><i class="fas fa-tools"></i></div>
                     <div class="feature-text">
                         <h4>Дополнительные инструменты</h4>
                         <p>Менеджер паролей, VPN, защита веб-камеры и файрвол</p>
@@ -213,7 +213,7 @@
                 </div>
 
                 <div class="feature-item">
-                    <div class="feature-icon">👨‍💻</div>
+                    <div class="feature-icon"><i class="fas fa-headset"></i></div>
                     <div class="feature-text">
                         <h4>Приоритетная поддержка</h4>
                         <p>Ответ в течение 2 часов, персональный менеджер и удалённая помощь</p>
@@ -261,11 +261,10 @@
 
         <footer>
             <p>&copy; 2025 AuriX Dev. SiNtax Antivirus.</p>
-            <p class="footer-note">Защитите свою цифровую жизнь уже сегодня</p>
+            <p class="footer-note">Я в шоке буду если ты это и на предыдущей прочитал</p>
         </footer>
     </div>
 
-    <!-- Скрипт для покупки -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const modal = document.getElementById('buyModal');
@@ -273,43 +272,35 @@
             const closeModal = document.querySelector('.modal-close');
             const buyButtons = document.querySelectorAll('.buy-button[data-price]');
             
-            // Обработка кнопок покупки
             buyButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const plan = this.getAttribute('data-plan');
                     const price = this.getAttribute('data-price');
                     
-                    // Формируем ссылку на Telegram бота с командой
                     const telegramBotUrl = `https://t.me/sintax_ebot?start=/buy_${price}`;
                     
-                    // Обновляем ссылку в модальном окне
                     telegramLink.href = telegramBotUrl;
                     
-                    // Показываем модальное окно
                     modal.style.display = 'flex';
                 });
             });
             
-            // Закрытие модального окна
             closeModal.addEventListener('click', function() {
                 modal.style.display = 'none';
             });
             
-            // Закрытие по клику вне модального окна
             modal.addEventListener('click', function(e) {
                 if (e.target === modal) {
                     modal.style.display = 'none';
                 }
             });
             
-            // Закрытие по ESC
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     modal.style.display = 'none';
                 }
             });
             
-            // Автоматическое открытие модального окна при переходе с параметром
             const urlParams = new URLSearchParams(window.location.search);
             const planParam = urlParams.get('plan');
             
@@ -324,7 +315,6 @@
         });
     </script>
     
-    <!-- Скрипт для звёзд -->
     <script src="../../scripts/stars.js"></script>
 </body>
   </html>
