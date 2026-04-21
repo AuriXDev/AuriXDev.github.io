@@ -4,226 +4,1010 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiNtax Antivirus - AuriX Dev</title>
-    <link rel="stylesheet" href="../styles/sintax.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0A0F0A;
+            --bg-secondary: #151F15;
+            --text-color: #F0FFF0;
+            --accent-color: #00FF41;
+            --accent-dark: #00CC33;
+            --accent-light: #66FF8C;
+            --gradient: linear-gradient(135deg, #00FF41 0%, #00CC33 100%);
+            --button-bg: rgba(0, 255, 65, 0.1);
+            --button-hover: rgba(0, 255, 65, 0.2);
+            --border-color: rgba(0, 255, 65, 0.15);
+            --glow: 0 0 30px rgba(0, 255, 65, 0.25);
+            --neon-glow: 0 0 10px rgba(0, 255, 65, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+            font-weight: 300;
+            min-height: 100vh;
+        }
+
+        /* Старые звёзды */
+        #stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 3s) infinite var(--delay, 0s);
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: flex;
+            position: relative;
+            gap: 40px;
+            min-height: 100vh;
+        }
+
+        /* Левая часть (для текста с анимацией) */
+        .left-panel {
+            width: 45%;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-right: 40px;
+        }
+
+        .text-slider {
+            width: 100%;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .text-content {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            font-size: 1.8rem;
+            line-height: 1.9;
+            text-align: left;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .text-content.active {
+            opacity: 1;
+        }
+
+        .text-content h3 {
+            color: var(--accent-color);
+            font-family: 'Orbitron', monospace;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: var(--neon-glow);
+        }
+
+        .text-content p {
+            font-size: 1.6rem;
+            opacity: 0.9;
+            margin-bottom: 0;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        /* Правая часть (с увеличенными отступами) */
+        .right-panel {
+            width: 55%;
+            padding: 120px 40px 60px 40px;
+            position: relative;
+            min-height: 100vh;
+            background: rgba(0, 255, 65, 0.01);
+            transform: perspective(1000px) rotateY(-10deg) rotateX(2deg);
+            transform-origin: left;
+            z-index: 1;
+            margin: 0;
+        }
+
+        /* Остальной CSS (без изменений) */
+        nav {
+            margin: 2rem 0 3rem;
+            position: relative;
+        }
+
+        nav::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 400;
+            padding: 0.5rem 0;
+            position: relative;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            opacity: 1;
+            color: var(--accent-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 0 3rem;
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin: 0 0 0.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+        }
+
+        header h1 span {
+            color: var(--accent-light);
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 2px;
+            box-shadow: var(--neon-glow);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.7;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 1rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+            box-shadow: var(--neon-glow);
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-light);
+            box-shadow: var(--glow);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .project-hero {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .project-hero p {
+            max-width: 800px;
+            margin: 2rem auto 0;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            height: 100%;
+        }
+
+        .feature-card h3 {
+            color: var(--accent-color);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-card ul {
+            list-style: none;
+        }
+
+        .feature-card li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+            opacity: 0.9;
+        }
+
+        .feature-card li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .version-selector {
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        /* Блоки с версиями в одной линии */
+        .version-cards {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: nowrap;
+        }
+
+        .version-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            min-width: 280px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .version-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .version-card.featured {
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+
+        .version-card.featured::after {
+            opacity: 1;
+        }
+
+        .version-card:hover {
+            border-color: var(--accent-light);
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+        }
+
+        .version-card:hover::after {
+            opacity: 1;
+        }
+
+        .version-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--gradient);
+            color: var(--bg-color);
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+        }
+
+        .version-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .version-specs {
+            list-style: none;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .version-specs li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .spec-label {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .spec-value {
+            color: var(--accent-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .download-button {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--gradient);
+            color: var(--bg-color);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .download-button:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--glow);
+        }
+
+        .system-req {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--button-bg);
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .system-req h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .system-req ul {
+            list-style: none;
+        }
+
+        .system-req li {
+            padding: 0.4rem 0;
+            opacity: 0.9;
+            position: relative;
+            padding-left: 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .system-req li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--button-bg);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .contact-item:hover {
+            background: var(--button-hover);
+            border-color: var(--accent-color);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .contact-link {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .contact-link:hover {
+            color: var(--accent-light);
+        }
+
+        /* Подвал */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-color);
+            opacity: 0.6;
+            font-size: 0.9rem;
+            width: 100%;
+            clear: both;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        section {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .container {
+                gap: 20px;
+            }
+            
+            .text-content {
+                font-size: 1.6rem;
+            }
+            
+            .text-content h3 {
+                font-size: 2rem;
+            }
+            
+            .right-panel {
+                padding: 80px 30px 40px 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0;
+            }
+
+            .left-panel, .right-panel {
+                width: 100%;
+                padding: 0;
+                position: relative;
+                transform: none;
+                height: auto;
+                margin: 0;
+            }
+
+            .left-panel {
+                position: relative;
+                top: 0;
+                transform: none;
+                padding-right: 0;
+                height: auto;
+                min-height: 400px;
+                margin-bottom: 2rem;
+            }
+
+            .text-slider {
+                height: auto;
+                padding: 2rem 1rem;
+            }
+
+            .text-content {
+                position: relative;
+                top: 0;
+                transform: none;
+                margin-bottom: 2rem;
+                font-size: 1.4rem;
+                text-align: center;
+            }
+
+            .text-content h3 {
+                font-size: 1.8rem;
+            }
+
+            .right-panel {
+                transform: none;
+                background: rgba(0, 255, 65, 0.02);
+                padding: 40px 20px;
+                margin: 20px 0;
+                width: 100%;
+            }
+
+            .version-cards {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .version-card {
+                min-width: 250px;
+            }
+
+            .version-card.featured {
+                transform: none;
+            }
+
+            nav ul {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            footer {
+                padding: 2rem 1rem;
+                margin-top: 2rem;
+            }
+            
+            footer::before {
+                width: 80%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .text-content {
+                font-size: 1.2rem;
+            }
+            
+            .text-content h3 {
+                font-size: 1.5rem;
+            }
+            
+            header h1 {
+                font-size: 3.5rem;
+            }
+            
+            .right-panel {
+                padding: 30px 15px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <div id="stars"></div>
 
     <div class="container">
-        <header>
-            <h1>S<span>i</span>N<span>TAX</span></h1>
-            <p class="subtitle">Антивирус нового поколения!</p>
-        </header>
-
-        <nav>
-            <ul>
-                <li><a href="../index.html">← На главную</a></li>
-                <li><a href="../projects/magmaluncher.html">MagmaLauncher</a></li>
-                <li><a href="../projects/cubikai.html">CubikAI</a></li>
-            </ul>
-        </nav>
-
-        <main>
-            <section class="project-hero">
-                <div class="card">
-                    <p>
-                        <strong>SiNtax</strong> — это передовой антивирус для Windows, разработанный для защиты от современных киберугроз.
-                        Сочетает мощный мониторинг, интеллектуальное сканирование и эффективное восстановление системы,
-                        оставаясь легковесным и быстрым решением.
-                    </p>
-                </div>
-            </section>
-
-            <section class="features">
-                <div class="section-header">
-                    <h2>Основные функции</h2>
-                    <div class="section-line"></div>
-                </div>
-                <div class="feature-grid">
-                    <div class="feature-card card">
-                        <h3>Системный мониторинг</h3>
-                        <ul>
-                            <li>Мониторинг процессов в реальном времени</li>
-                            <li>Скрытый мониторинг (работает в фоне)</li>
-                            <li>Детектор маскирующихся процессов</li>
-                            <li>Анализ потребления CPU/GPU/RAM</li>
-                        </ul>
-                    </div>
-
-                    <div class="feature-card card">
-                        <h3>Сканирование</h3>
-                        <ul>
-                            <li>Быстрое и полное сканирование системы</li>
-                            <li>Сигнатурное и эвристическое сканирование</li>
-                            <li>Поведенческий анализ (аномалии в работе)</li>
-                            <li>Сканирование памяти, автозагрузки и реестра</li>
-                        </ul>
-                    </div>
-
-                    <div class="feature-card card">
-                        <h3>Детекторы угроз</h3>
-                        <ul>
-                            <li>Криптомайнеры (CPU/GPU аномалии)</li>
-                            <li>Вымогатели (шифрование файлов)</li>
-                            <li>Трояны, руткиты, шпионское ПО</li>
-                            <li>Рекламное ПО и ботнеты</li>
-                        </ul>
-                    </div>
-
-                    <div class="feature-card card">
-                        <h3>Восстановление</h3>
-                        <ul>
-                            <li>Восстановление системных файлов</li>
-                            <li>Сброс реестра и автозагрузки</li>
-                            <li>Очистка от следов вирусов</li>
-                            <li>Восстановление Hosts-файла</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <section class="download">
-                <div class="section-header">
-                    <h2>Выберите версию</h2>
-                    <div class="section-line"></div>
+        <!-- Левая часть (для текста с анимацией) -->
+        <div class="left-panel">
+            <div class="text-slider">
+                <!-- Текст 1 -->
+                <div class="text-content active" id="text1">
+                    <h3>Инновационная защита</h3>
+                    <p>SiNtax — это передовой антивирус для Windows, разработанный для защиты от современных киберугроз. Сочетает мощный мониторинг, интеллектуальное сканирование и эффективное восстановление системы, оставаясь легковесным и быстрым решением.</p>
                 </div>
                 
-                <div class="version-selector">
-                    <div class="version-cards">
-                        <div class="version-card">
-                            <div class="version-badge">Lite</div>
-                            <h3 class="version-title">Для слабых ПК</h3>
-                            <p style="opacity: 0.8; margin-bottom: 1.5rem;">Оптимальная защита, максимальная производительность</p>
-                            
-                            <ul class="version-specs">
-                                <li>
-                                    <span class="spec-label">Вес</span>
-                                    <span class="spec-value">20 МБ</span>
-                                </li>
-                                <li>
-                                    <span class="spec-label">ОЗУ</span>
-                                    <span class="spec-value">100 МБ</span>
-                                </li>
-                                <li>
-                                    <span class="spec-label">Процессор</span>
-                                    <span class="spec-value">Potato</span>
-                                </li>
-                                <li>
-                                    <span class="spec-label">Функции</span>
-                                    <span class="spec-value">Базовые</span>
-                                </li>
+                <!-- Текст 2 -->
+                <div class="text-content" id="text2">
+                    <h3>AI-детекция угроз</h3>
+                    <p>Использует машинное обучение для обнаружения неизвестных вирусов и вредоносных программ. Анализирует поведение процессов в реальном времени, предотвращая атаки до их выполнения. Более 99% точности обнаружения.</p>
+                </div>
+                
+                <!-- Текст 3 -->
+                <div class="text-content" id="text3">
+                    <h3>Режим гибернации</h3>
+                    <p>Автоматически приостанавливает несущественные процессы во время игр и ресурсоёмких задач, обеспечивая максимальную производительность без ущерба для безопасности. Экономит до 40% системных ресурсов.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая часть (с 3D-эффектом) -->
+        <div class="right-panel">
+            <header>
+                <h1>S<span>i</span>N<span>TAX</span></h1>
+                <p class="subtitle">Антивирус нового поколения!</p>
+            </header>
+
+            <nav>
+                <ul>
+                    <li><a href="../index.html">← На главную</a></li>
+                    <li><a href="../projects/magmaluncher.html">MagmaLauncher</a></li>
+                    <li><a href="../projects/cubikai.html">CubikAI</a></li>
+                </ul>
+            </nav>
+
+            <main>
+                <section class="features">
+                    <div class="section-header">
+                        <h2>Основные функции</h2>
+                        <div class="section-line"></div>
+                    </div>
+                    <div class="feature-grid">
+                        <div class="feature-card card">
+                            <h3>Системный мониторинг</h3>
+                            <ul>
+                                <li>Мониторинг процессов в реальном времени</li>
+                                <li>Скрытый мониторинг (работает в фоне)</li>
+                                <li>Детектор маскирующихся процессов</li>
+                                <li>Анализ потребления CPU/GPU/RAM</li>
                             </ul>
-                            
-                            <a href="https://github.com/AuriXDev/SiNtax/releases/lite" class="download-button">
-                                Скачать Lite
-                            </a>
                         </div>
 
-                        <div class="version-card featured">
-                            <div class="version-badge">Full</div>
-                            <h3 class="version-title">Полная защита</h3>
-                            <p style="opacity: 0.8; margin-bottom: 1.5rem;">Все функции для максимальной безопасности</p>
-                            
-                            <ul class="version-specs">
-                                <li>
-                                    <span class="spec-label">Вес</span>
-                                    <span class="spec-value">400 МБ</span>
-                                </li>
-                                <li>
-                                    <span class="spec-label">ОЗУ</span>
-                                    <span class="spec-value">300 МБ</span>
-                                </li>
-                                <li>
-                                    <span class="spec-label">Процессор</span>
-                                    <span class="spec-value">2+ ядра</span>
-                                </li>
-                                <li>
-                                    <span class="spec-label">Функции</span>
-                                    <span class="spec-value">Все</span>
-                                </li>
+                        <div class="feature-card card">
+                            <h3>Сканирование</h3>
+                            <ul>
+                                <li>Быстрое и полное сканирование системы</li>
+                                <li>Сигнатурное и эвристическое сканирование</li>
+                                <li>Поведенческий анализ (аномалии в работе)</li>
+                                <li>Сканирование памяти, автозагрузки и реестра</li>
                             </ul>
-                            
-                            <a href="https://github.com/AuriXDev/SiNtax/releases/full" class="download-button">
-                                Скачать Full
-                            </a>
                         </div>
+
+                        <div class="feature-card card">
+                            <h3>Детекторы угроз</h3>
+                            <ul>
+                                <li>Криптомайнеры (CPU/GPU аномалии)</li>
+                                <li>Вымогатели (шифрование файлов)</li>
+                                <li>Трояны, руткиты, шпионское ПО</li>
+                                <li>Рекламное ПО и ботнеты</li>
+                            </ul>
+                        </div>
+
+                        <div class="feature-card card">
+                            <h3>Восстановление</h3>
+                            <ul>
+                                <li>Восстановление системных файлов</li>
+                                <li>Сброс реестра и автозагрузки</li>
+                                <li>Очистка от следов вирусов</li>
+                                <li>Восстановление Hosts-файла</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="download">
+                    <div class="section-header">
+                        <h2>Выберите версию</h2>
+                        <div class="section-line"></div>
                     </div>
 
-                    <div class="system-req">
-                        <h3>Системные требования (Full версия):</h3>
-                        <ul>
-                            <li>Операционная система: Windows 10/11 (x64)</li>
-                            <li>Оперативная память: 2 ГБ (рекомендуется 4 ГБ)</li>
-                            <li>Свободное место на диске: 900+ МБ</li>
-                            <li>Процессор: 2+ ядра, 1.5 ГГц</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-            <section class="buy-section">
-                <div class="section-header">
-                    <h2>SiNtax Premium</h2>
-                    <div class="section-line"></div>
-                </div>
-                <div class="card" style="text-align: center; padding: 3rem;">
-                    <h3 style="color: var(--accent-color); font-size: 1.8rem; margin-bottom: 1rem;">
-                        Получите полную защиту
-                    </h3>
-                    <p style="max-width: 600px; margin: 0 auto 2rem; opacity: 0.9;">
-                       Премиум версия включает расширенную защиту, приоритетную поддержку, 
-                       автоматические обновления и дополнительные инструменты безопасности.
-                    </p>
-                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                         <a href="../buy/buysintax.html" class="download-button" 
-                             style="background: var(--gradient); color: var(--bg-color); padding: 1rem 2rem;">
-                             Купить Premium
-                         </a>
-                         <a href="../buy/buysintax.html?plan=Family" class="download-button" 
-                             style="background: rgba(0, 255, 65, 0.1); color: var(--accent-color); border: 1px solid var(--accent-color); padding: 1rem 2rem;">
-                             Family (3 устройства)
-                         </a>
-                    </div>
-                    <p style="margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.7;">
-                           От 299 ₽/месяц • Все комиссии включены
-                    </p>
-                </div>
-            </section>
-            <section class="contact-project">
-                <div class="section-header">
-                    <h2>Поддержка и вопросы</h2>
-                    <div class="section-line"></div>
-                </div>
-                <div class="card">
-                    <p style="margin-bottom: 2rem;">
-                        Если у вас есть вопросы, предложения или вы обнаружили проблему с SiNtax — пишите нам.
-                        Мы всегда готовы помочь и улучшить наш продукт.
-                    </p>
-                    <div class="contact-grid">
-                        <div class="contact-item">
-                            <span class="contact-icon"><i class="fas fa-envelope"></i></span>
-                            <a href="mailto:aurixhelp@gmail.com" class="contact-link">Gmail.com</a>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon"><i class="fab fa-telegram-plane"></i></span>
-                            <a href="https://t.me/AuriX_Dev" class="contact-link">Telegram</a>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon"><i class="fab fa-github"></i></span>
-                            <a href="https://github.com/AuriXDev/SiNtax" class="contact-link">GitHub репозиторий</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
+                    <div class="version-selector">
+                        <div class="version-cards">
+                            <div class="version-card">
+                                <div class="version-badge">Lite</div>
+                                <h3 class="version-title">Для слабых ПК</h3>
+                                <p style="opacity: 0.8; margin-bottom: 1rem; font-size: 0.9rem;">Оптимальная защита, максимальная производительность</p>
 
-        <footer>
-            <p>&copy; 2026 AuriX Dev. SiNtax Antivirus.</p>
-            <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.5;">Это кто-то читает?</p>
-        </footer>
+                                <ul class="version-specs">
+                                    <li>
+                                        <span class="spec-label">Вес</span>
+                                        <span class="spec-value">20 МБ</span>
+                                    </li>
+                                    <li>
+                                        <span class="spec-label">ОЗУ</span>
+                                        <span class="spec-value">100 МБ</span>
+                                    </li>
+                                    <li>
+                                        <span class="spec-label">Процессор</span>
+                                        <span class="spec-value">Potato</span>
+                                    </li>
+                                    <li>
+                                        <span class="spec-label">Функции</span>
+                                        <span class="spec-value">Базовые</span>
+                                    </li>
+                                </ul>
+
+                                <a href="https://github.com/AuriXDev/SiNtax/releases/lite" class="download-button">
+                                    Скачать Lite
+                                </a>
+                            </div>
+
+                            <div class="version-card featured">
+                                <div class="version-badge">Full</div>
+                                <h3 class="version-title">Полная защита</h3>
+                                <p style="opacity: 0.8; margin-bottom: 1rem; font-size: 0.9rem;">Все функции для максимальной безопасности</p>
+
+                                <ul class="version-specs">
+                                    <li>
+                                        <span class="spec-label">Вес</span>
+                                        <span class="spec-value">400 МБ</span>
+                                    </li>
+                                    <li>
+                                        <span class="spec-label">ОЗУ</span>
+                                        <span class="spec-value">300 МБ</span>
+                                    </li>
+                                    <li>
+                                        <span class="spec-label">Процессор</span>
+                                        <span class="spec-value">2+ ядра</span>
+                                    </li>
+                                    <li>
+                                        <span class="spec-label">Функции</span>
+                                        <span class="spec-value">Все</span>
+                                    </li>
+                                </ul>
+
+                                <a href="https://github.com/AuriXDev/SiNtax/releases/full" class="download-button">
+                                    Скачать Full
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="system-req">
+                            <h3>Системные требования (Full версия):</h3>
+                            <ul>
+                                <li>Операционная система: Windows 10/11 (x64)</li>
+                                <li>Оперативная память: 2 ГБ (рекомендуется 4 ГБ)</li>
+                                <li>Свободное место на диске: 900+ МБ</li>
+                                <li>Процессор: 2+ ядра, 1.5 ГГц</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="buy-section">
+                    <div class="section-header">
+                        <h2>SiNtax Premium</h2>
+                        <div class="section-line"></div>
+                    </div>
+                    <div class="card" style="text-align: center; padding: 2rem;">
+                        <h3 style="color: var(--accent-color); font-size: 1.6rem; margin-bottom: 1rem;">
+                            Получите полную защиту
+                        </h3>
+                        <p style="max-width: 600px; margin: 0 auto 1.5rem; opacity: 0.9; font-size: 0.9rem;">
+                           Премиум версия включает расширенную защиту, приоритетную поддержку,
+                           автоматические обновления и дополнительные инструменты безопасности.
+                        </p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                             <a href="../buy/buysintax.html" class="download-button"
+                                 style="background: var(--gradient); color: var(--bg-color); padding: 0.8rem 1.5rem; font-size: 0.9rem;">
+                                 Купить Premium
+                             </a>
+                             <a href="../buy/buysintax.html?plan=Family" class="download-button"
+                                 style="background: rgba(0, 255, 65, 0.1); color: var(--accent-color); border: 1px solid var(--accent-color); padding: 0.8rem 1.5rem; font-size: 0.9rem;">
+                                 Family (3 устройства)
+                             </a>
+                        </div>
+                        <p style="margin-top: 1rem; font-size: 0.8rem; opacity: 0.7;">
+                               От 299 ₽/месяц • Все комиссии включены
+                        </p>
+                    </div>
+                </section>
+
+                <section class="contact-project">
+                    <div class="section-header">
+                        <h2>Поддержка и вопросы</h2>
+                        <div class="section-line"></div>
+                    </div>
+                    <div class="card">
+                        <p style="margin-bottom: 1.5rem; font-size: 0.9rem;">
+                            Если у вас есть вопросы, предложения или вы обнаружили проблему с SiNtax — пишите нам.
+                            Мы всегда готовы помочь и улучшить наш продукт.
+                        </p>
+                        <div class="contact-grid">
+                            <div class="contact-item">
+                                <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+                                <a href="mailto:aurixhelp@gmail.com" class="contact-link">Gmail.com</a>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-icon"><i class="fab fa-telegram-plane"></i></span>
+                                <a href="https://t.me/AuriX_Dev" class="contact-link">Telegram</a>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-icon"><i class="fab fa-github"></i></span>
+                                <a href="https://github.com/AuriXDev/SiNtax" class="contact-link">GitHub репозиторий</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
     </div>
 
-    <script src="../scripts/stars.js"></script>
+    <!-- Подвал -->
+    <footer>
+        <p>&copy; 2026 AuriX Dev. SiNtax Antivirus.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.5;">Это кто-то читает?</p>
+    </footer>
+
+    <script>
+        // Создание старых звёзд
+        function createStars() {
+            const container = document.getElementById('stars');
+            const starCount = 300;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                const size = Math.random() * 2 + 1;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const duration = Math.random() * 5 + 3;
+                const delay = Math.random() * 5;
+                
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.opacity = Math.random() * 0.5 + 0.3;
+                star.style.animationDuration = `${duration}s`;
+                star.style.animationDelay = `${delay}s`;
+                
+                container.appendChild(star);
+            }
+        }
+        
+        // Слайдер текста
+        let currentText = 1;
+        const totalTexts = 3;
+        
+        function rotateText() {
+            // Скрываем текущий текст
+            const current = document.getElementById(`text${currentText}`);
+            current.classList.remove('active');
+            
+            // Увеличиваем счетчик
+            currentText = currentText % totalTexts + 1;
+            
+            // Показываем следующий текст
+            const next = document.getElementById(`text${currentText}`);
+            next.classList.add('active');
+        }
+        
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            
+            // Запускаем слайдер текста
+            setInterval(rotateText, 10000); // 10 секунд
+            
+            // Простая фиксация текста в центре левой панели
+            // Не обновляем позицию при скролле - используем только sticky
+        });
+    </script>
 </body>
 </html>
