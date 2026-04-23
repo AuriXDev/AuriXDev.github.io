@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lume - Chaos | Lume Lume Lume | Cube</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a0a0f;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            pointer-events: none;
+        }
+
+        .search-container, .bookmarks, .settings-btn {
+            pointer-events: auto;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 110px 15px 20px;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .search-buttons {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .search-btn, .engine-btn {
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            position: relative;
+        }
+
+        .search-btn:hover, .engine-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .engine-btn {
+            min-width: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Выпадающее меню поисковиков - теперь появляется сверху */
+        .engine-dropdown {
+            position: absolute;
+            bottom: calc(100% + 8px); /* Изменено с top на bottom */
+            right: 0;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px;
+            min-width: 200px;
+            display: none;
+            z-index: 300;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5); /* Тень теперь сверху */
+        }
+
+        .engine-dropdown.active {
+            display: block;
+            animation: slideUp 0.2s ease; /* Анимация появления сверху */
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .engine-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .engine-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .engine-option.active {
+            background: rgba(0, 255, 100, 0.15);
+            color: #00ff64;
+        }
+
+        .engine-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .bookmarks {
+            display: flex;
+            gap: 20px;
+            max-width: 800px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .bookmark-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .bookmark-square {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .bookmark-square:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .bookmark-square img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            filter: brightness(0.9);
+        }
+
+        .bookmark-label {
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .settings-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            z-index: 2;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .settings-panel {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 340px;
+            background: rgba(10, 10, 15, 0.95);
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .settings-panel.active {
+            display: block;
+        }
+
+        .setting-item {
+            margin-bottom: 20px;
+        }
+
+        .setting-item label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #aaa;
+            letter-spacing: 0.5px;
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 5px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: #888;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .mode-btn.active {
+            background: #00ff64;
+            color: #0a0a0f;
+        }
+
+        .mode-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .warning-message {
+            background: rgba(255, 200, 50, 0.15);
+            border-left: 3px solid #ffcc33;
+            padding: 10px 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            color: #ffcc33;
+            text-align: center;
+        }
+
+        .color-presets {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .color-preset {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .color-preset:hover {
+            transform: scale(1.1);
+        }
+
+        .color-preset.active {
+            border-color: white;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .hex-input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 14px;
+            outline: none;
+            font-family: monospace;
+        }
+
+        .hex-input:focus {
+            border-color: currentColor;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: #333;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00ff64;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .value-display {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .settings-group {
+            display: none;
+        }
+
+        .settings-group.active {
+            display: block;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-label input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .checkbox-custom {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid #555;
+            background: transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .checkbox-custom::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid #0a0a0f;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .checkbox-label input:checked+.checkbox-custom {
+            background: #00ff64;
+            border-color: #00ff64;
+        }
+
+        .checkbox-label input:checked+.checkbox-custom::after {
+            opacity: 1;
+        }
+
+        .checkbox-text {
+            font-size: 13px;
+            color: #ddd;
+        }
+
+        /* Casino Slot Machine */
+        .casino-game {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 340px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: 200;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .casino-game.active {
+            display: block;
+        }
+
+        .casino-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .casino-score,
+        .casino-record {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .casino-score span,
+        .casino-record span {
+            color: #00ff64;
+        }
+
+        .casino-close {
+            cursor: pointer;
+            font-size: 20px;
+            color: #888;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .casino-close:hover {
+            color: #ff3366;
+        }
+
+        .slot-machine {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .slot-reels {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+
+        .slot-reel {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .slot-reel.spinning {
+            animation: slotSpin 0.05s linear infinite;
+        }
+
+        @keyframes slotSpin {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-3px);
+            }
+        }
+
+        .spin-btn {
+            width: 100%;
+            padding: 12px;
+            background: #00ff64;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #0a0a0f;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .spin-btn:hover {
+            background: #00cc50;
+            transform: scale(1.02);
+        }
+
+        .spin-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .win-message {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+            animation: winBlink 0.5s ease;
+        }
+
+        @keyframes winBlink {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div class="content-wrapper">
+        <div class="search-container">
+            <input type="text" class="search-box" id="search-input" placeholder="Lume — Learn. Understand. Manage. Explore.">
+            <div class="search-buttons">
+                <button class="engine-btn" id="engine-btn">G</button>
+                <div class="engine-dropdown" id="engine-dropdown">
+                    <div class="engine-option active" data-engine="google">
+                        <div class="engine-icon">G</div>
+                        Google
+                    </div>
+                    <div class="engine-option" data-engine="yandex">
+                        <div class="engine-icon">Я</div>
+                        Yandex
+                    </div>
+                    <div class="engine-option" data-engine="duckduckgo">
+                        <div class="engine-icon">D</div>
+                        DuckDuckGo
+                    </div>
+                    <div class="engine-option" data-engine="perplexity">
+                        <div class="engine-icon">P</div>
+                        Perplexity
+                    </div>
+                </div>
+                <button class="search-btn" id="search-btn">Search</button>
+            </div>
+        </div>
+
+        <div class="bookmarks">
+            <div class="bookmark-item" data-url="https://aurixdev.github.io/projects/magmaluncher.html">
+                <div class="bookmark-square">
+                    <img src="https://www.google.com/s2/favicons?domain=aurixdev.github.io&sz=64" alt="Magma" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌋</text></svg>'">
+                </div>
+                <div class="bookmark-label">Magma</div>
+            </div>
+            <div class="bookmark-item" data-url="https://github.com/AuriXDev">
+                <div class="bookmark-square">
+                    <img src="https://www.google.com/s2/favicons?domain=github.com&sz=64" alt="GitHub" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐙</text></svg>'">
+                </div>
+                <div class="bookmark-label">GitHub</div>
+            </div>
+            <div class="bookmark-item" data-url="https://youtube.com">
+                <div class="bookmark-square">
+                    <img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=64" alt="Youtube" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>▶️</text></svg>'">
+                </div>
+                <div class="bookmark-label">Youtube</div>
+            </div>
+            <div class="bookmark-item" data-url="https://qwen.ai">
+                <div class="bookmark-square">
+                    <img src="https://www.google.com/s2/favicons?domain=qwen.ai&sz=64" alt="Qwen" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>'">
+                </div>
+                <div class="bookmark-label">Qwen</div>
+            </div>
+        </div>
+    </div>
+
+    <button class="settings-btn">L</button>
+
+    <div class="settings-panel">
+        <div class="mode-selector">
+            <button class="mode-btn" data-mode="chaos">Chaos</button>
+            <button class="mode-btn" data-mode="lume">Lume</button>
+            <button class="mode-btn" data-mode="cube">Cube</button>
+        </div>
+
+        <div id="chaos-settings" class="settings-group">
+            <div class="setting-item">
+                <label>Point & line color</label>
+                <div class="color-presets" id="chaos-color-presets">
+                    <div class="color-preset" style="background: #00ff64;" data-color="#00ff64"></div>
+                    <div class="color-preset" style="background: #ff3366;" data-color="#ff3366"></div>
+                    <div class="color-preset" style="background: #00ccff;" data-color="#00ccff"></div>
+                    <div class="color-preset" style="background: #cc33ff;" data-color="#cc33ff"></div>
+                    <div class="color-preset" style="background: #ff6600;" data-color="#ff6600"></div>
+                </div>
+                <input type="text" id="chaos-point-color-hex" class="hex-input" placeholder="#00ff64" maxlength="7">
+            </div>
+
+            <div class="setting-item">
+                <label>Background color</label>
+                <div class="color-presets" id="chaos-bg-presets">
+                    <div class="color-preset" style="background: #0a0a0f;" data-color="#0a0a0f"></div>
+                    <div class="color-preset" style="background: #000000;" data-color="#000000"></div>
+                    <div class="color-preset" style="background: #0d1117;" data-color="#0d1117"></div>
+                    <div class="color-preset" style="background: #1a0b1a;" data-color="#1a0b1a"></div>
+                    <div class="color-preset" style="background: #0b1a1a;" data-color="#0b1a1a"></div>
+                </div>
+                <input type="text" id="chaos-bg-color-hex" class="hex-input" placeholder="#0a0a0f" maxlength="7">
+            </div>
+
+            <div class="setting-item">
+                <label>Points count</label>
+                <input type="range" id="chaos-point-count" min="50" max="800" value="200">
+                <span class="value-display" id="chaos-point-count-value">200</span>
+            </div>
+
+            <div class="setting-item">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="chaos-neon-toggle">
+                    <span class="checkbox-custom"></span>
+                    <span class="checkbox-text">Neon glow effect</span>
+                </label>
+            </div>
+        </div>
+
+        <div id="lume-settings" class="settings-group">
+            <div class="warning-message" id="lume-warning">
+                Neon disabled in Lume mode for performance
+            </div>
+
+            <div class="setting-item">
+                <label>Point & line color</label>
+                <div class="color-presets" id="lume-color-presets">
+                    <div class="color-preset" style="background: #00ff64;" data-color="#00ff64"></div>
+                    <div class="color-preset" style="background: #ff3366;" data-color="#ff3366"></div>
+                    <div class="color-preset" style="background: #00ccff;" data-color="#00ccff"></div>
+                    <div class="color-preset" style="background: #cc33ff;" data-color="#cc33ff"></div>
+                    <div class="color-preset" style="background: #ff6600;" data-color="#ff6600"></div>
+                </div>
+                <input type="text" id="lume-point-color-hex" class="hex-input" placeholder="#00ff64" maxlength="7">
+            </div>
+
+            <div class="setting-item">
+                <label>Background color</label>
+                <div class="color-presets" id="lume-bg-presets">
+                    <div class="color-preset" style="background: #0a0a0f;" data-color="#0a0a0f"></div>
+                    <div class="color-preset" style="background: #000000;" data-color="#000000"></div>
+                    <div class="color-preset" style="background: #0d1117;" data-color="#0d1117"></div>
+                    <div class="color-preset" style="background: #1a0b1a;" data-color="#1a0b1a"></div>
+                    <div class="color-preset" style="background: #0b1a1a;" data-color="#0b1a1a"></div>
+                </div>
+                <input type="text" id="lume-bg-color-hex" class="hex-input" placeholder="#0a0a0f" maxlength="7">
+            </div>
+
+            <div class="setting-item">
+                <label>Points count</label>
+                <input type="range" id="lume-point-count" min="100" max="800" value="450">
+                <span class="value-display" id="lume-point-count-value">450</span>
+            </div>
+
+            <div class="setting-item">
+                <label>Letter thickness</label>
+                <input type="range" id="l-thickness" min="35" max="100" value="55">
+                <span class="value-display" id="thickness-value">55</span>
+            </div>
+
+            <div class="setting-item">
+                <label>Breath intensity</label>
+                <input type="range" id="breath-intensity" min="0" max="25" value="12">
+                <span class="value-display" id="breath-value">12</span>
+            </div>
+
+            <div class="setting-item">
+                <label>Reconstruction speed</label>
+                <input type="range" id="reconstruct-speed" min="0" max="3" value="2">
+                <span class="value-display" id="speed-value">2</span>
+            </div>
+        </div>
+
+        <div id="cube-settings" class="settings-group">
+            <div class="setting-item">
+                <label>Point & line color</label>
+                <div class="color-presets" id="cube-color-presets">
+                    <div class="color-preset" style="background: #00ff64;" data-color="#00ff64"></div>
+                    <div class="color-preset" style="background: #ff3366;" data-color="#ff3366"></div>
+                    <div class="color-preset" style="background: #00ccff;" data-color="#00ccff"></div>
+                    <div class="color-preset" style="background: #cc33ff;" data-color="#cc33ff"></div>
+                    <div class="color-preset" style="background: #ff6600;" data-color="#ff6600"></div>
+                </div>
+                <input type="text" id="cube-point-color-hex" class="hex-input" placeholder="#00ff64" maxlength="7">
+            </div>
+
+            <div class="setting-item">
+                <label>Background color</label>
+                <div class="color-presets" id="cube-bg-presets">
+                    <div class="color-preset" style="background: #0a0a0f;" data-color="#0a0a0f"></div>
+                    <div class="color-preset" style="background: #000000;" data-color="#000000"></div>
+                    <div class="color-preset" style="background: #0d1117;" data-color="#0d1117"></div>
+                    <div class="color-preset" style="background: #1a0b1a;" data-color="#1a0b1a"></div>
+                    <div class="color-preset" style="background: #0b1a1a;" data-color="#0b1a1a"></div>
+                </div>
+                <input type="text" id="cube-bg-color-hex" class="hex-input" placeholder="#0a0a0f" maxlength="7">
+            </div>
+        </div>
+    </div>
+
+    <!-- Casino Slot Machine -->
+    <div class="casino-game" id="casino-game">
+        <div class="casino-header">
+            <div class="casino-score">BALANCE: <span id="casino-score">100</span></div>
+            <div class="casino-record">BEST: <span id="casino-record">0</span></div>
+            <div class="casino-close" id="casino-close">✕</div>
+        </div>
+        <div class="slot-machine">
+            <div class="slot-reels" id="slot-reels">
+                <div class="slot-reel" id="reel-0">🍒</div>
+                <div class="slot-reel" id="reel-1">🍒</div>
+                <div class="slot-reel" id="reel-2">🍒</div>
+            </div>
+            <button class="spin-btn" id="spin-btn">SPIN (5)</button>
+        </div>
+        <div class="win-message" id="win-message" style="display: none;"></div>
+    </div>
+
+    <script>
+        let currentMode = 'lume';
+        let lumeClickCount = 0;
+        let lumeClickTimer = null;
+        let currentEngine = 'google';
+
+        const engines = {
+            google: {
+                name: 'Google',
+                icon: 'G',
+                url: 'https://www.google.com/search?q='
+            },
+            yandex: {
+                name: 'Yandex',
+                icon: 'Я',
+                url: 'https://yandex.com/search/?text='
+            },
+            duckduckgo: {
+                name: 'DuckDuckGo',
+                icon: 'D',
+                url: 'https://duckduckgo.com/?q='
+            },
+            perplexity: {
+                name: 'Perplexity',
+                icon: 'P',
+                url: 'https://www.perplexity.ai/search?q='
+            }
+        };
+
+        const settings = {
+            chaos: { pointColor: '#00ff64', bgColor: '#0a0a0f', pointCount: 200, neonEffect: false },
+            lume: { pointColor: '#00ff64', bgColor: '#0a0a0f', pointCount: 450, neonEffect: false,
+                lThickness: 55, breathIntensity: 12, reconstructSpeed: 2 },
+            cube: { pointColor: '#00ff64', bgColor: '#0a0a0f', neonEffect: false }
+        };
+
+        let points = [];
+        let baseTargets = [];
+        let breathPhase = 0;
+        let reconstructionTimer = null;
+
+        let cubeAngleX = 0,
+            cubeAngleY = 0,
+            cubeAngleZ = 0;
+        let lumeModeActive = false;
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.getElementById('canvas-container').appendChild(canvas);
+
+        const edges = [
+            [0, 1],
+            [1, 2],
+            [2, 3],
+            [3, 0],
+            [4, 5],
+            [5, 6],
+            [6, 7],
+            [7, 4],
+            [0, 4],
+            [1, 5],
+            [2, 6],
+            [3, 7]
+        ];
+        const vertices = [
+            [-50, -50, -50],
+            [50, -50, -50],
+            [50, 50, -50],
+            [-50, 50, -50],
+            [-50, -50, 50],
+            [50, -50, 50],
+            [50, 50, 50],
+            [-50, 50, 50]
+        ];
+
+        // Casino Slot Machine
+        let casinoBalance = 100;
+        let bestWin = localStorage.getItem('casinoBestWin') ? parseInt(localStorage.getItem('casinoBestWin')) : 0;
+        let isSpinning = false;
+
+        const casinoIcons = ['🍒', '🍓', '🍌', '💎', '🍎', '🍋', '🥭'];
+        const winMultipliers = {
+            '🍒': 60,
+            '🍓': 100,
+            '🍌': 23,
+            '💎': 1000000,
+            '🍎': 30,
+            '🍋': 45,
+            '🥭': 1488
+        };
+
+        // Функции поиска
+        function performSearch() {
+            const searchInput = document.getElementById('search-input');
+            const query = searchInput.value.trim();
+
+            if (query) {
+                const encodedQuery = encodeURIComponent(query);
+                window.open(engines[currentEngine].url + encodedQuery, '_blank');
+            } else {
+                window.open(engines[currentEngine].url.split('?')[0], '_blank');
+            }
+        }
+
+        function updateEngineButton() {
+            const engineBtn = document.getElementById('engine-btn');
+            engineBtn.textContent = engines[currentEngine].icon;
+        }
+
+        function switchEngine(engine) {
+            currentEngine = engine;
+            updateEngineButton();
+            localStorage.setItem('lumeCurrentEngine', engine);
+
+            // Обновляем активный пункт в выпадающем меню
+            document.querySelectorAll('.engine-option').forEach(option => {
+                if (option.dataset.engine === engine) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+
+            // Закрываем выпадающее меню
+            document.getElementById('engine-dropdown').classList.remove('active');
+        }
+
+        // Загрузка сохраненного поисковика
+        function loadEngine() {
+            const saved = localStorage.getItem('lumeCurrentEngine');
+            if (saved && engines[saved]) {
+                currentEngine = saved;
+            }
+            updateEngineButton();
+
+            // Обновляем активный пункт
+            document.querySelectorAll('.engine-option').forEach(option => {
+                if (option.dataset.engine === currentEngine) {
+                    option.classList.add('active');
+                }
+            });
+        }
+
+        // Обработчики для кнопки поисковика
+        document.getElementById('engine-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('engine-dropdown');
+            dropdown.classList.toggle('active');
+        });
+
+        // Обработчики для выбора поисковика
+        document.querySelectorAll('.engine-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                switchEngine(this.dataset.engine);
+            });
+        });
+
+        // Закрытие выпадающего меню при клике вне его
+        document.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('engine-dropdown');
+            const engineBtn = document.getElementById('engine-btn');
+            if (!dropdown.contains(e.target) && !engineBtn.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        document.getElementById('search-btn').addEventListener('click', performSearch);
+
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Обработчики для закладок
+        document.querySelectorAll('.bookmark-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                if (url) {
+                    window.open(url, '_blank');
+                }
+            });
+        });
+
+        function updateCasinoUI() {
+            document.getElementById('casino-score').textContent = casinoBalance;
+            document.getElementById('casino-record').textContent = bestWin;
+        }
+
+        function getRandomIcon() {
+            return casinoIcons[Math.floor(Math.random() * casinoIcons.length)];
+        }
+
+        function addFreeMoney() {
+            casinoBalance += 20;
+            updateCasinoUI();
+            const msgDiv = document.getElementById('win-message');
+            msgDiv.textContent = 'FREE 20!';
+            msgDiv.style.color = '#00ff64';
+            msgDiv.style.display = 'block';
+            setTimeout(() => { msgDiv.style.display = 'none'; }, 1500);
+        }
+
+        function spinSlot() {
+            if (isSpinning) return;
+
+            if (casinoBalance < 5) {
+                addFreeMoney();
+                return;
+            }
+
+            casinoBalance -= 5;
+            updateCasinoUI();
+            isSpinning = true;
+
+            const spinBtn = document.getElementById('spin-btn');
+            spinBtn.disabled = true;
+            spinBtn.textContent = 'SPINNING...';
+
+            const spinInterval = setInterval(() => {
+                for (let i = 0; i < 3; i++) {
+                    const reelDiv = document.getElementById(`reel-${i}`);
+                    reelDiv.textContent = getRandomIcon();
+                    reelDiv.classList.add('spinning');
+                }
+            }, 50);
+
+            setTimeout(() => {
+                clearInterval(spinInterval);
+
+                const finalIcons = [];
+                for (let i = 0; i < 3; i++) {
+                    finalIcons.push(getRandomIcon());
+                    const reelDiv = document.getElementById(`reel-${i}`);
+                    reelDiv.textContent = finalIcons[i];
+                    reelDiv.classList.remove('spinning');
+                }
+
+                let winAmount = 0;
+                let winType = null;
+
+                if (finalIcons[0] === finalIcons[1] && finalIcons[1] === finalIcons[2]) {
+                    winAmount = winMultipliers[finalIcons[0]];
+                    winType = finalIcons[0];
+                }
+
+                if (winAmount > 0) {
+                    casinoBalance += winAmount;
+                    updateCasinoUI();
+
+                    if (winAmount > bestWin) {
+                        bestWin = winAmount;
+                        localStorage.setItem('casinoBestWin', bestWin);
+                        updateCasinoUI();
+                    }
+
+                    const msgDiv = document.getElementById('win-message');
+                    msgDiv.textContent = `${winType} ${winType} ${winType}  |  +${winAmount}!`;
+                    msgDiv.style.color = '#00ff64';
+                    msgDiv.style.display = 'block';
+                    setTimeout(() => { msgDiv.style.display = 'none'; }, 2000);
+                } else {
+                    const msgDiv = document.getElementById('win-message');
+                    msgDiv.textContent = 'NO MATCH';
+                    msgDiv.style.color = '#888';
+                    msgDiv.style.display = 'block';
+                    setTimeout(() => { msgDiv.style.display = 'none'; }, 1000);
+                }
+
+                isSpinning = false;
+                spinBtn.disabled = false;
+                spinBtn.textContent = 'SPIN (5)';
+            }, 800);
+        }
+
+        function showCasino() {
+            const casino = document.getElementById('casino-game');
+            casino.classList.add('active');
+            updateCasinoUI();
+        }
+
+        function hideCasino() {
+            const casino = document.getElementById('casino-game');
+            casino.classList.remove('active');
+        }
+
+        document.getElementById('casino-close')?.addEventListener('click', hideCasino);
+        document.getElementById('spin-btn')?.addEventListener('click', spinSlot);
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            if (currentMode === 'lume') regenerateBaseTargets();
+            if (currentMode === 'cube') initCubePoints();
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Point {
+            constructor(x, y) {
+                this.x = x !== undefined ? x : Math.random() * canvas.width;
+                this.y = y !== undefined ? y : Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.radius = 2 + Math.random() * 2;
+                this.baseX = null;
+                this.baseY = null;
+            }
+            update() {
+                if (currentMode === 'chaos') {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x <= 0 || this.x >= canvas.width) this.vx *= -1;
+                    if (this.y <= 0 || this.y >= canvas.height) this.vy *= -1;
+                } else if (currentMode === 'lume' && lumeModeActive) {
+                    if (this.baseX !== null && this.baseY !== null) {
+                        let speed = 0.03 + (settings.lume.reconstructSpeed / 200);
+                        speed = Math.min(speed, 0.08);
+                        this.x += (this.baseX - this.x) * speed;
+                        this.y += (this.baseY - this.y) * speed;
+                    }
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                let color = currentMode === 'chaos' ? settings.chaos.pointColor :
+                    (currentMode === 'lume' ? settings.lume.pointColor : settings.cube.pointColor);
+                ctx.fillStyle = color;
+                let neonOn = currentMode === 'chaos' ? settings.chaos.neonEffect : false;
+                if (neonOn) {
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = color;
+                } else ctx.shadowBlur = 0;
+                ctx.fill();
+            }
+        }
+
+        function generateLPoints(count, thickness) {
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const thick = thickness;
+            const vertHeight = 490;
+            const horizLength = 200;
+            const vertLeft = cx - thick / 2;
+            const vertRight = cx + thick / 2;
+            const vertTop = cy - vertHeight / 2;
+            const vertBottom = cy + vertHeight / 2 - 30;
+            const horizLeft = cx - thick / 2;
+            const horizRight = cx + horizLength;
+            const horizTop = vertBottom - thick;
+            const horizBottom = vertBottom;
+            const points2D = [];
+            const vertCount = Math.floor(count * 0.65);
+            for (let i = 0; i < vertCount; i++) {
+                points2D.push({ x: vertLeft + Math.random() * (vertRight - vertLeft), y: vertTop + Math.random() * (
+                        vertBottom - vertTop) });
+            }
+            const horizCount = count - vertCount;
+            for (let i = 0; i < horizCount; i++) {
+                points2D.push({ x: horizLeft + Math.random() * (horizRight - horizLeft), y: horizTop + Math.random() * (
+                        horizBottom - horizTop) });
+            }
+            for (let i = points2D.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [points2D[i], points2D[j]] = [points2D[j], points2D[i]];
+            }
+            return points2D;
+        }
+
+        function applyBreathing() {
+            if (currentMode !== 'lume') return;
+            const breath = Math.sin(breathPhase) * (settings.lume.breathIntensity / 2);
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            for (let i = 0; i < points.length && i < baseTargets.length; i++) {
+                const dx = baseTargets[i].x - cx;
+                const dy = baseTargets[i].y - cy;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist > 0.1) {
+                    const scale = 1 + breath / 100;
+                    points[i].baseX = cx + dx * scale;
+                    points[i].baseY = cy + dy * scale;
+                } else {
+                    points[i].baseX = baseTargets[i].x;
+                    points[i].baseY = baseTargets[i].y;
+                }
+            }
+        }
+
+        function regenerateBaseTargets() {
+            baseTargets = generateLPoints(settings.lume.pointCount, settings.lume.lThickness);
+            for (let i = 0; i < points.length && i < baseTargets.length; i++) {
+                points[i].baseX = baseTargets[i].x;
+                points[i].baseY = baseTargets[i].y;
+            }
+        }
+
+        function startReconstruction() {
+            if (reconstructionTimer) clearInterval(reconstructionTimer);
+            if (settings.lume.reconstructSpeed === 0) return;
+            const intervalTime = Math.max(300, 3000 - (settings.lume.reconstructSpeed * 900));
+            reconstructionTimer = setInterval(() => {
+                if (currentMode === 'lume') {
+                    const newTargets = generateLPoints(settings.lume.pointCount, settings.lume.lThickness);
+                    for (let i = 0; i < points.length && i < newTargets.length; i++) {
+                        baseTargets[i] = newTargets[i];
+                    }
+                }
+            }, intervalTime);
+        }
+
+        function stopReconstruction() {
+            if (reconstructionTimer) { clearInterval(reconstructionTimer);
+                reconstructionTimer = null; }
+        }
+
+        function initChaosPoints() {
+            points = [];
+            for (let i = 0; i < settings.chaos.pointCount; i++) points.push(new Point());
+        }
+
+        function initLumePoints() {
+            points = [];
+            for (let i = 0; i < settings.lume.pointCount; i++) points.push(new Point());
+            regenerateBaseTargets();
+            startReconstruction();
+        }
+
+        function initCubePoints() {
+            points = [];
+            const pointsPerEdge = Math.floor(200 / 12);
+            const remainingPoints = 200 % 12;
+            for (let edgeIndex = 0; edgeIndex < 12; edgeIndex++) {
+                const [startIdx, endIdx] = edges[edgeIndex];
+                const startVertex = vertices[startIdx];
+                const endVertex = vertices[endIdx];
+                const pointsForThisEdge = pointsPerEdge + (edgeIndex < remainingPoints ? 1 : 0);
+                for (let i = 0; i < pointsForThisEdge; i++) {
+                    const t = i / (pointsForThisEdge - 1 || 1);
+                    const x = startVertex[0] * (1 - t) + endVertex[0] * t;
+                    const y = startVertex[1] * (1 - t) + endVertex[1] * t;
+                    const z = startVertex[2] * (1 - t) + endVertex[2] * t;
+                    points.push(new Point(x, y));
+                }
+            }
+        }
+
+        function updateCubePoints() {
+            if (currentMode !== 'cube') return;
+            cubeAngleX += 0.01;
+            cubeAngleY += 0.01;
+            cubeAngleZ += 0.005;
+            const pointsPerEdge = Math.floor(200 / 12);
+            const remainingPoints = 200 % 12;
+            let pointIndex = 0;
+            for (let edgeIndex = 0; edgeIndex < 12; edgeIndex++) {
+                const [startIdx, endIdx] = edges[edgeIndex];
+                const startVertex = vertices[startIdx];
+                const endVertex = vertices[endIdx];
+                const pointsForThisEdge = pointsPerEdge + (edgeIndex < remainingPoints ? 1 : 0);
+                for (let i = 0; i < pointsForThisEdge; i++) {
+                    const t = i / (pointsForThisEdge - 1 || 1);
+                    const x = startVertex[0] * (1 - t) + endVertex[0] * t;
+                    const y = startVertex[1] * (1 - t) + endVertex[1] * t;
+                    const z = startVertex[2] * (1 - t) + endVertex[2] * t;
+                    const cosX = Math.cos(cubeAngleX),
+                        sinX = Math.sin(cubeAngleX);
+                    const cosY = Math.cos(cubeAngleY),
+                        sinY = Math.sin(cubeAngleY);
+                    const cosZ = Math.cos(cubeAngleZ),
+                        sinZ = Math.sin(cubeAngleZ);
+                    const y1 = y * cosX - z * sinX;
+                    const z1 = y * sinX + z * cosX;
+                    const x2 = x * cosY + z1 * sinY;
+                    const z2 = -x * sinY + z1 * cosY;
+                    const x3 = x2 * cosZ - y1 * sinZ;
+                    const y3 = x2 * sinZ + y1 * cosZ;
+                    const scale = 200 / (z2 + 5);
+                    if (points[pointIndex]) {
+                        points[pointIndex].x = x3 * scale + canvas.width / 2;
+                        points[pointIndex].y = y3 * scale + canvas.height / 2;
+                    }
+                    pointIndex++;
+                }
+            }
+        }
+
+        function drawLines() {
+            ctx.shadowBlur = 0;
+            for (let i = 0; i < points.length; i++) {
+                for (let j = i + 1; j < points.length; j++) {
+                    const dx = points[i].x - points[j].x;
+                    const dy = points[i].y - points[j].y;
+                    if (Math.sqrt(dx * dx + dy * dy) < 75) {
+                        ctx.beginPath();
+                        ctx.moveTo(points[i].x, points[i].y);
+                        ctx.lineTo(points[j].x, points[j].y);
+                        let color = currentMode === 'chaos' ? settings.chaos.pointColor :
+                            (currentMode === 'lume' ? settings.lume.pointColor : settings.cube.pointColor);
+                        ctx.strokeStyle = color;
+                        let neonOn = currentMode === 'chaos' ? settings.chaos.neonEffect : false;
+                        if (neonOn) { ctx.shadowBlur = 8;
+                            ctx.shadowColor = color; }
+                        ctx.lineWidth = 0.6;
+                        ctx.stroke();
+                    }
+                }
+            }
+            ctx.shadowBlur = 0;
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (currentMode === 'lume') {
+                lumeModeActive = true;
+                breathPhase += 0.02;
+                applyBreathing();
+            } else {
+                lumeModeActive = false;
+            }
+            if (currentMode === 'cube') {
+                updateCubePoints();
+            }
+            for (let p of points) p.update();
+            for (let p of points) p.draw();
+            drawLines();
+            requestAnimationFrame(animate);
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            stopReconstruction();
+
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                if (btn.dataset.mode === mode) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
+            document.querySelectorAll('.settings-group').forEach(group => group.classList.remove('active'));
+            const activeGroup = document.getElementById(`${mode}-settings`);
+            if (activeGroup) activeGroup.classList.add('active');
+
+            document.body.style.backgroundColor = settings[mode].bgColor;
+
+            if (mode === 'chaos') {
+                initChaosPoints();
+            } else if (mode === 'lume') {
+                initLumePoints();
+            } else if (mode === 'cube') {
+                initCubePoints();
+            }
+        }
+
+        function onLumeModeClick() {
+            if (currentMode !== 'lume') return;
+
+            if (lumeClickTimer) clearTimeout(lumeClickTimer);
+            lumeClickCount++;
+
+            if (lumeClickCount >= 5) {
+                showCasino();
+                lumeClickCount = 0;
+            } else {
+                lumeClickTimer = setTimeout(() => {
+                    lumeClickCount = 0;
+                }, 800);
+            }
+        }
+
+        function loadSettings() {
+            const saved = localStorage.getItem('lumeSettings');
+            if (saved) {
+                const savedSettings = JSON.parse(saved);
+                if (savedSettings.chaos) Object.assign(settings.chaos, savedSettings.chaos);
+                if (savedSettings.lume) Object.assign(settings.lume, savedSettings.lume);
+                if (savedSettings.cube) Object.assign(settings.cube, savedSettings.cube);
+                if (savedSettings.currentMode) currentMode = savedSettings.currentMode;
+            }
+            updateUI();
+        }
+
+        function saveSettings() {
+            localStorage.setItem('lumeSettings', JSON.stringify({
+                chaos: settings.chaos,
+                lume: settings.lume,
+                cube: settings.cube,
+                currentMode: currentMode
+            }));
+        }
+
+        function updateUI() {
+            document.getElementById('chaos-point-count').value = settings.chaos.pointCount;
+            document.getElementById('chaos-point-count-value').textContent = settings.chaos.pointCount;
+            document.getElementById('chaos-neon-toggle').checked = settings.chaos.neonEffect;
+
+            document.getElementById('lume-point-count').value = settings.lume.pointCount;
+            document.getElementById('lume-point-count-value').textContent = settings.lume.pointCount;
+            document.getElementById('l-thickness').value = settings.lume.lThickness;
+            document.getElementById('thickness-value').textContent = settings.lume.lThickness;
+            document.getElementById('breath-intensity').value = settings.lume.breathIntensity;
+            document.getElementById('breath-value').textContent = settings.lume.breathIntensity;
+            document.getElementById('reconstruct-speed').value = settings.lume.reconstructSpeed;
+            document.getElementById('speed-value').textContent = settings.lume.reconstructSpeed;
+
+            document.getElementById('chaos-point-color-hex').value = settings.chaos.pointColor;
+            document.getElementById('chaos-bg-color-hex').value = settings.chaos.bgColor;
+            document.getElementById('lume-point-color-hex').value = settings.lume.pointColor;
+            document.getElementById('lume-bg-color-hex').value = settings.lume.bgColor;
+            document.getElementById('cube-point-color-hex').value = settings.cube.pointColor;
+            document.getElementById('cube-bg-color-hex').value = settings.cube.bgColor;
+
+            document.querySelectorAll('#chaos-color-presets .color-preset').forEach(el => {
+                el.classList.toggle('active', el.dataset.color === settings.chaos.pointColor);
+            });
+            document.querySelectorAll('#chaos-bg-presets .color-preset').forEach(el => {
+                el.classList.toggle('active', el.dataset.color === settings.chaos.bgColor);
+            });
+            document.querySelectorAll('#lume-color-presets .color-preset').forEach(el => {
+                el.classList.toggle('active', el.dataset.color === settings.lume.pointColor);
+            });
+            document.querySelectorAll('#lume-bg-presets .color-preset').forEach(el => {
+                el.classList.toggle('active', el.dataset.color === settings.lume.bgColor);
+            });
+            document.querySelectorAll('#cube-color-presets .color-preset').forEach(el => {
+                el.classList.toggle('active', el.dataset.color === settings.cube.pointColor);
+            });
+            document.querySelectorAll('#cube-bg-presets .color-preset').forEach(el => {
+                el.classList.toggle('active', el.dataset.color === settings.cube.bgColor);
+            });
+
+            switchMode(currentMode);
+        }
+
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (btn.dataset.mode === 'lume') onLumeModeClick();
+                currentMode = btn.dataset.mode;
+                saveSettings();
+                updateUI();
+            });
+        });
+
+        document.getElementById('chaos-point-count').addEventListener('input', e => {
+            settings.chaos.pointCount = parseInt(e.target.value);
+            document.getElementById('chaos-point-count-value').textContent = settings.chaos.pointCount;
+            saveSettings();
+            if (currentMode === 'chaos') initChaosPoints();
+        });
+
+        document.getElementById('chaos-neon-toggle').addEventListener('change', e => {
+            settings.chaos.neonEffect = e.target.checked;
+            saveSettings();
+        });
+
+        document.getElementById('lume-point-count').addEventListener('input', e => {
+            settings.lume.pointCount = parseInt(e.target.value);
+            document.getElementById('lume-point-count-value').textContent = settings.lume.pointCount;
+            saveSettings();
+            if (currentMode === 'lume') initLumePoints();
+        });
+
+        document.getElementById('l-thickness').addEventListener('input', e => {
+            settings.lume.lThickness = parseInt(e.target.value);
+            document.getElementById('thickness-value').textContent = settings.lume.lThickness;
+            saveSettings();
+            if (currentMode === 'lume') regenerateBaseTargets();
+        });
+
+        document.getElementById('breath-intensity').addEventListener('input', e => {
+            settings.lume.breathIntensity = parseInt(e.target.value);
+            document.getElementById('breath-value').textContent = settings.lume.breathIntensity;
+            saveSettings();
+        });
+
+        document.getElementById('reconstruct-speed').addEventListener('input', e => {
+            settings.lume.reconstructSpeed = parseInt(e.target.value);
+            document.getElementById('speed-value').textContent = settings.lume.reconstructSpeed;
+            saveSettings();
+            if (currentMode === 'lume') {
+                stopReconstruction();
+                startReconstruction();
+            }
+        });
+
+        function setupColorHandlers(prefix, mode) {
+            const colorPresets = document.querySelectorAll(`#${prefix}-color-presets .color-preset`);
+            const bgPresets = document.querySelectorAll(`#${prefix}-bg-presets .color-preset`);
+            const colorHex = document.getElementById(`${prefix}-point-color-hex`);
+            const bgHex = document.getElementById(`${prefix}-bg-color-hex`);
+
+            colorPresets.forEach(el => {
+                el.addEventListener('click', () => {
+                    settings[mode].pointColor = el.dataset.color;
+                    saveSettings();
+                    updateUI();
+                });
+            });
+
+            bgPresets.forEach(el => {
+                el.addEventListener('click', () => {
+                    settings[mode].bgColor = el.dataset.color;
+                    if (currentMode === mode) document.body.style.backgroundColor = settings[mode]
+                        .bgColor;
+                    saveSettings();
+                    updateUI();
+                });
+            });
+
+            if (colorHex) {
+                colorHex.addEventListener('input', e => {
+                    let val = e.target.value;
+                    if (val.match(/^#[0-9A-Fa-f]{6}$/)) {
+                        settings[mode].pointColor = val;
+                        saveSettings();
+                        updateUI();
+                    }
+                });
+            }
+
+            if (bgHex) {
+                bgHex.addEventListener('input', e => {
+                    let val = e.target.value;
+                    if (val.match(/^#[0-9A-Fa-f]{6}$/)) {
+                        settings[mode].bgColor = val;
+                        if (currentMode === mode) document.body.style.backgroundColor = settings[mode]
+                            .bgColor;
+                        saveSettings();
+                        updateUI();
+                    }
+                });
+            }
+        }
+
+        setupColorHandlers('chaos', 'chaos');
+        setupColorHandlers('lume', 'lume');
+        setupColorHandlers('cube', 'cube');
+
+        document.querySelector('.settings-btn').onclick = (e) => {
+            e.stopPropagation();
+            const panel = document.querySelector('.settings-panel');
+            panel.classList.toggle('active');
+        };
+
+        document.addEventListener('click', (e) => {
+            const panel = document.querySelector('.settings-panel');
+            const btn = document.querySelector('.settings-btn');
+            if (panel && btn && !panel.contains(e.target) && !btn.contains(e.target)) {
+                panel.classList.remove('active');
+            }
+        });
+
+        loadEngine();
+        loadSettings();
+        animate();
+    </script>
+</body>
+</html>
