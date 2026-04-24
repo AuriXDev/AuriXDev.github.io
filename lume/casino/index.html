@@ -1504,24 +1504,33 @@
     }
 
     function updateUI() {
-      balanceEl.textContent = balance;
-      balanceRightEl.textContent = balance;
-      bestEl.textContent = bestWin;
-      clickPowerEl.textContent = clickPower;
-      upgradeCostEl.textContent = upgradeCost;
-      loanAmountDisplay.textContent = nextLoanAmount;
-      loanBonusEl.textContent = loanCount * 5;
-      autoRateEl.textContent = autoIncomeRate;
-      autoCostEl.textContent = autoIncomeCost;
-      autoTotalEl.textContent = autoIncomeRate;
-      if (loanAmount > 0 && Date.now() >= loanDeadline) {
-        const due = Math.floor(loanAmount * (1 + getLoanInterest()/100));
-        balance = Math.max(0, balance - due);
-        loanAmount = 0; loanDeadline = 0;
-      }
-      updateLoanTimer();
-      updateStreakDisplays();
-      save();
+        balanceEl.textContent = balance;
+        balanceRightEl.textContent = balance;
+        bestEl.textContent = bestWin;
+        clickPowerEl.textContent = clickPower;
+        upgradeCostEl.textContent = upgradeCost;
+        loanAmountDisplay.textContent = nextLoanAmount;
+        loanBonusEl.textContent = loanCount * 5;
+        autoRateEl.textContent = autoIncomeRate;
+        autoCostEl.textContent = autoIncomeCost;
+        autoTotalEl.textContent = autoIncomeRate;
+    
+        if (loanAmount > 0 && Date.now() >= loanDeadline) {
+            const interestRate = getLoanInterest() / 100;
+            const totalDue = Math.floor(loanAmount * (1 + interestRate));
+            if (balance >= totalDue) {
+                balance -= totalDue;
+            } else {
+                const penaltyBase = 1000;
+                const penaltyWithInterest = Math.floor(penaltyBase * (1 + interestRate));
+                balance -= penaltyWithInterest;
+            }
+            loanAmount = 0;
+            loanDeadline = 0;
+        }
+        updateLoanTimer();
+        updateStreakDisplays();
+        save();
     }
 
     function addBalance(amt) {
