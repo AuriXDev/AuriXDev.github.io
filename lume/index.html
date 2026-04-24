@@ -476,16 +476,35 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .casino-score,
-        .casino-record {
+        .casino-score {
             font-size: 14px;
             font-weight: bold;
             letter-spacing: 1px;
         }
 
-        .casino-score span,
-        .casino-record span {
+        .casino-score span {
             color: #00ff64;
+        }
+
+        .casino-more-btn {
+            padding: 6px 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 255, 100, 0.1);
+            color: #00ff64;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .casino-more-btn:hover {
+            background: rgba(0, 255, 100, 0.2);
+            border-color: #00ff64;
+            transform: scale(1.05);
         }
 
         .casino-close {
@@ -776,7 +795,7 @@
     <div class="casino-game" id="casino-game">
         <div class="casino-header">
             <div class="casino-score">BALANCE: <span id="casino-score">100</span></div>
-            <div class="casino-record">BEST: <span id="casino-record">0</span></div>
+            <a href="https://aurixdev.github.io/lume/casino/" target="_blank" class="casino-more-btn" id="casino-more-btn">More...</a>
             <div class="casino-close" id="casino-close">✕</div>
         </div>
         <div class="slot-machine">
@@ -977,7 +996,6 @@
 
         function updateCasinoUI() {
             document.getElementById('casino-score').textContent = casinoBalance;
-            document.getElementById('casino-record').textContent = bestWin;
         }
 
         function getRandomIcon() {
@@ -1044,7 +1062,6 @@
                     if (winAmount > bestWin) {
                         bestWin = winAmount;
                         localStorage.setItem('casinoBestWin', bestWin);
-                        updateCasinoUI();
                     }
 
                     const msgDiv = document.getElementById('win-message');
