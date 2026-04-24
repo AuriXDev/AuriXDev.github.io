@@ -162,7 +162,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 110px; /* Increased margin */
+      margin-bottom: 110px;
       gap: 10px;
       flex-shrink: 0;
       position: relative;
@@ -302,8 +302,15 @@
       flex: 1;
     }
 
-    /* Theme toggle in right panel header */
-    .theme-toggle-panel {
+    /* Theme toggle & Home button in right panel header */
+    .panel-header-buttons {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .theme-toggle-panel,
+    .home-btn-panel {
       width: 40px;
       height: 40px;
       border-radius: 50%;
@@ -317,9 +324,12 @@
       justify-content: center;
       transition: all 0.3s ease;
       backdrop-filter: blur(10px);
+      text-decoration: none;
+      font-weight: 700;
     }
 
-    .theme-toggle-panel:hover {
+    .theme-toggle-panel:hover,
+    .home-btn-panel:hover {
       border-color: var(--toxic);
     }
 
@@ -389,12 +399,19 @@
       transform: scale(0.97);
     }
 
+    .right-btn:disabled {
+      background: #333;
+      color: #666;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
     .right-btn.work-btn {
       background: linear-gradient(135deg, var(--toxic), var(--toxic-dim));
       color: #000;
     }
 
-    .right-btn.work-btn:hover {
+    .right-btn.work-btn:hover:not(:disabled) {
       box-shadow: 0 0 12px var(--toxic-glow);
     }
 
@@ -404,7 +421,7 @@
       color: var(--text-primary);
     }
 
-    .right-btn.upgrade-btn-r:hover {
+    .right-btn.upgrade-btn-r:hover:not(:disabled) {
       border-color: var(--toxic);
       box-shadow: 0 0 8px var(--toxic-glow);
     }
@@ -414,7 +431,7 @@
       color: #000;
     }
 
-    .right-btn.loan-btn-r:hover {
+    .right-btn.loan-btn-r:hover:not(:disabled) {
       box-shadow: 0 0 12px var(--gold-glow);
     }
 
@@ -428,7 +445,7 @@
       color: #fff;
     }
 
-    .right-btn.auto-btn:hover {
+    .right-btn.auto-btn:hover:not(:disabled) {
       box-shadow: 0 0 12px rgba(108, 92, 231, 0.4);
     }
 
@@ -451,7 +468,7 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* ===== TABS (hidden by default, shown on small screens if panels not used) ===== */
+    /* ===== TABS ===== */
     .game-tabs {
       display: none;
       gap: 5px;
@@ -639,13 +656,20 @@
       font-family: 'Inter', sans-serif;
     }
 
-    .bet-adj-btn:hover {
+    .bet-adj-btn:hover:not(:disabled) {
       border-color: var(--toxic);
       box-shadow: 0 0 10px var(--toxic-glow);
     }
 
-    .bet-adj-btn:active {
+    .bet-adj-btn:active:not(:disabled) {
       transform: scale(0.9);
+    }
+
+    .bet-adj-btn:disabled {
+      background: #222;
+      border-color: #333;
+      color: #555;
+      cursor: not-allowed;
     }
 
     .bet-display {
@@ -728,12 +752,17 @@
       border-radius: 19px;
     }
 
-    .color-card:hover {
+    .color-card:hover:not(:disabled) {
       transform: scale(1.06);
     }
 
-    .color-card:active {
+    .color-card:active:not(:disabled) {
       transform: scale(0.96);
+    }
+
+    .color-card:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     .color-card.red-card {
@@ -741,7 +770,7 @@
       box-shadow: 0 4px 15px rgba(192, 57, 43, 0.5);
     }
 
-    .color-card.red-card:hover {
+    .color-card.red-card:hover:not(:disabled) {
       box-shadow: 0 6px 25px rgba(192, 57, 43, 0.7);
     }
 
@@ -751,7 +780,7 @@
       border-color: #555;
     }
 
-    .color-card.black-card:hover {
+    .color-card.black-card:hover:not(:disabled) {
       box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6);
       border-color: #888;
     }
@@ -843,7 +872,7 @@
       margin: 12px 0;
       background: var(--bg-input);
       border-radius: 16px;
-      min-height: 220px; /* Increased height */
+      min-height: 220px;
       max-height: 220px;
       align-items: center;
       border: 1px solid var(--border-color);
@@ -889,9 +918,14 @@
       transition: all 0.2s ease;
     }
 
-    .mine-choice-btn:hover {
+    .mine-choice-btn:hover:not(:disabled) {
       border-color: var(--toxic);
       box-shadow: 0 0 12px var(--toxic-glow);
+    }
+
+    .mine-choice-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     .mine-choice-btn.highlight {
@@ -967,13 +1001,19 @@
       font-family: 'Inter', sans-serif;
     }
 
-    .clicker-btn:hover {
+    .clicker-btn:hover:not(:disabled) {
       box-shadow: 0 0 15px var(--toxic-glow-strong);
       transform: translateY(-1px);
     }
 
-    .clicker-btn:active {
+    .clicker-btn:active:not(:disabled) {
       transform: translateY(0);
+    }
+
+    .clicker-btn:disabled {
+      background: #333;
+      color: #666;
+      cursor: not-allowed;
     }
 
     .upgrade-btn {
@@ -990,9 +1030,14 @@
       font-family: 'Inter', sans-serif;
     }
 
-    .upgrade-btn:hover {
+    .upgrade-btn:hover:not(:disabled) {
       border-color: var(--toxic);
       box-shadow: 0 0 10px var(--toxic-glow);
+    }
+
+    .upgrade-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     .loan-section .card-header {
@@ -1016,9 +1061,15 @@
       font-family: 'Inter', sans-serif;
     }
 
-    .loan-btn:hover {
+    .loan-btn:hover:not(:disabled) {
       box-shadow: 0 0 15px var(--gold-glow);
       transform: translateY(-1px);
+    }
+
+    .loan-btn:disabled {
+      background: #333;
+      color: #666;
+      cursor: not-allowed;
     }
 
     .loan-btn.repay {
@@ -1141,7 +1192,10 @@
   <div class="side-panel right-panel" id="rightPanel">
     <div class="side-panel-header">
       <span>Управление</span>
-      <button class="theme-toggle-panel" id="themeToggle" title="Переключить тему">🌙</button>
+      <div class="panel-header-buttons">
+        <a href="https://aurixdev.github.io/lume/" class="home-btn-panel" title="На главную">🏠</a>
+        <button class="theme-toggle-panel" id="themeToggle" title="Переключить тему">🌙</button>
+      </div>
     </div>
     <div class="side-panel-content">
       <!-- Balance section -->
@@ -1224,8 +1278,8 @@
         </div>
         <div style="margin-bottom: 200px;"></div>
         <div class="color-area">
-          <div class="color-card red-card" id="betBlack">🔴</div>
-          <div class="color-card Black-card" id="betRed">⚫️</div>
+          <div class="color-card red-card" id="betRed">🔴</div>
+          <div class="color-card black-card" id="betBlack">⚫</div>
         </div>
         <div class="bet-controls">
           <button class="bet-adj-btn" id="rbMinus">−</button>
@@ -1398,6 +1452,24 @@
     const autoCostEl = document.getElementById('autoCost');
     const autoTotalEl = document.getElementById('autoTotal');
 
+    // Ссылки на все игровые кнопки
+    const spin3Btn = document.getElementById('spin3');
+    const spin5Btn = document.getElementById('spin5');
+    const spin35Btn = document.getElementById('spin35');
+    const betRedBtn = document.getElementById('betRed');
+    const betBlackBtn = document.getElementById('betBlack');
+    const rbMinusBtn = document.getElementById('rbMinus');
+    const rbPlusBtn = document.getElementById('rbPlus');
+    const diceMinusBtn = document.getElementById('diceMinus');
+    const dicePlusBtn = document.getElementById('dicePlus');
+    const rollDiceBtn = document.getElementById('rollDice');
+    const cashOutMinesBtn = document.getElementById('cashOutMines');
+    const workClickBtn = document.getElementById('workClickRight');
+    const upgradeClickBtn = document.getElementById('upgradeClickRight');
+    const autoBuyBtn = document.getElementById('autoBuy');
+    const takeLoanBtn = document.getElementById('takeLoanRight');
+    const repayLoanBtn = document.getElementById('repayLoanRight');
+
     // Auto income interval
     let autoInterval = setInterval(() => {
       if (autoIncomeRate > 0) {
@@ -1509,8 +1581,8 @@
     setInterval(updateLoanTimer, 500);
 
     // Work / Upgrade (right panel)
-    document.getElementById('workClickRight').onclick = () => { balance += clickPower; updateUI(); };
-    document.getElementById('upgradeClickRight').onclick = () => {
+    workClickBtn.onclick = () => { balance += clickPower; updateUI(); };
+    upgradeClickBtn.onclick = () => {
       if (freeUpgradesActive) {
         clickPower++;
         upgradeCost = Math.floor(upgradeCost * 2);
@@ -1525,7 +1597,7 @@
     };
 
     // Auto income
-    document.getElementById('autoBuy').onclick = () => {
+    autoBuyBtn.onclick = () => {
       if (balance < autoIncomeCost) { alert('Нужно '+autoIncomeCost+'$'); return; }
       balance -= autoIncomeCost;
       autoIncomeRate += 1;
@@ -1534,14 +1606,14 @@
     };
 
     // Credit
-    document.getElementById('takeLoanRight').onclick = () => {
+    takeLoanBtn.onclick = () => {
       if (loanAmount > 0) { alert('Уже есть кредит'); return; }
       loanAmount = nextLoanAmount;
       loanDeadline = Date.now() + 10*60*1000;
       balance += nextLoanAmount;
       updateUI();
     };
-    document.getElementById('repayLoanRight').onclick = () => {
+    repayLoanBtn.onclick = () => {
       if (loanAmount === 0) { alert('Нет кредита'); return; }
       if (freeUpgradesActive) {
         loanAmount = 0; loanDeadline = 0;
@@ -1563,11 +1635,33 @@
       document.querySelectorAll(`#${containerId} .slot-icon`).forEach(el => el.classList.remove('win-highlight'));
     }
 
+    // Блокировка кнопок во время анимации
+    function disableGameButtons() {
+      spin3Btn.disabled = true;
+      spin5Btn.disabled = true;
+      spin35Btn.disabled = true;
+      betRedBtn.disabled = true;
+      betBlackBtn.disabled = true;
+      rollDiceBtn.disabled = true;
+      if (cashOutMinesBtn) cashOutMinesBtn.disabled = true;
+    }
+
+    function enableGameButtons() {
+      spin3Btn.disabled = false;
+      spin5Btn.disabled = false;
+      spin35Btn.disabled = false;
+      betRedBtn.disabled = false;
+      betBlackBtn.disabled = false;
+      rollDiceBtn.disabled = false;
+      if (cashOutMinesBtn) cashOutMinesBtn.disabled = false;
+    }
+
     // SLOTS 3
     function animateSlots3(callback) {
       const reels = document.querySelectorAll('#reels3 .slot-icon');
       if (isSpinning) return;
       isSpinning = true;
+      disableGameButtons();
       clearHighlights('reels3');
       let finalIcons;
       if (slotJackpotActive) {
@@ -1586,13 +1680,18 @@
             clearInterval(interval);
             reel.textContent = finalIcons[idx];
             reel.classList.remove('spinning');
-            if (idx === 2) { isSpinning = false; callback(finalIcons); }
+            if (idx === 2) { 
+              isSpinning = false; 
+              enableGameButtons();
+              callback(finalIcons); 
+            }
           }
         }, 60);
       });
     }
 
-    document.getElementById('spin3').onclick = () => {
+    spin3Btn.onclick = () => {
+      if (isSpinning) return;
       if (!spend(5)) { alert('Мало монет'); return; }
       animateSlots3(final => {
         const win = (final[0]===final[1] && final[1]===final[2]) ? (winTable[final[0]]||10) : 0;
@@ -1614,6 +1713,7 @@
       const reels = document.querySelectorAll('#reels5 .slot-icon');
       if (isSpinning) return;
       isSpinning = true;
+      disableGameButtons();
       clearHighlights('reels5');
       let finalIcons;
       if (slotJackpotActive) {
@@ -1632,13 +1732,18 @@
             clearInterval(interval);
             reel.textContent = finalIcons[idx];
             reel.classList.remove('spinning');
-            if (idx === 4) { isSpinning = false; callback(finalIcons); }
+            if (idx === 4) { 
+              isSpinning = false; 
+              enableGameButtons();
+              callback(finalIcons); 
+            }
           }
         }, 60);
       });
     }
 
-    document.getElementById('spin5').onclick = () => {
+    spin5Btn.onclick = () => {
+      if (isSpinning) return;
       if (!spend(10)) { alert('Мало монет'); return; }
       animateSlots5(final => {
         let win = 0;
@@ -1687,10 +1792,11 @@
       }
     }
 
-    document.getElementById('spin35').onclick = () => {
-      if (!spend(15)) { alert('Нужно 15$'); return; }
+    spin35Btn.onclick = () => {
       if (isSpinning) return;
+      if (!spend(15)) { alert('Нужно 15$'); return; }
       isSpinning = true;
+      disableGameButtons();
       clearHighlights('reels35grid');
       let finalGrid = [];
       if (slotJackpotActive) {
@@ -1745,6 +1851,7 @@
                 handleStreak('slots35', false);
               }
               isSpinning = false;
+              enableGameButtons();
             }, 200);
           }
         }, colIndex * 400);
@@ -1756,19 +1863,23 @@
       document.getElementById('rbBetDisplay').textContent = rbBet + '$';
     }
 
-    document.getElementById('rbMinus').onclick = () => {
+    rbMinusBtn.onclick = () => {
+      if (isSpinning) return;
       if (rbBet > 10) { rbBet = Math.max(10, rbBet - 5); updateRbDisplay(); }
     };
-    document.getElementById('rbPlus').onclick = () => {
+    rbPlusBtn.onclick = () => {
+      if (isSpinning) return;
       if (rbBet < balance) { rbBet += 5; updateRbDisplay(); }
     };
 
-    document.getElementById('betRed').onclick = () => playRedBlack('red');
-    document.getElementById('betBlack').onclick = () => playRedBlack('black');
+    betRedBtn.onclick = () => playRedBlack('red');
+    betBlackBtn.onclick = () => playRedBlack('black');
     
     function playRedBlack(choice) {
-      if (!spend(rbBet) || isSpinning) return;
+      if (isSpinning) return;
+      if (!spend(rbBet)) return;
       isSpinning = true;
+      disableGameButtons();
       const msg = document.getElementById('msgRB');
       msg.textContent = 'Вращение...';
       msg.classList.remove('win','loss');
@@ -1787,6 +1898,7 @@
           handleStreak('redblack', false);
         }
         isSpinning = false;
+        enableGameButtons();
       }, 1900);
     }
 
@@ -1795,20 +1907,23 @@
       document.getElementById('diceBetDisplay').textContent = diceBet + '$';
     }
 
-    document.getElementById('diceMinus').onclick = () => {
+    diceMinusBtn.onclick = () => {
+      if (isSpinning) return;
       if (diceBet > 10) { diceBet = Math.max(10, diceBet - 5); updateDiceDisplay(); }
     };
-    document.getElementById('dicePlus').onclick = () => {
+    dicePlusBtn.onclick = () => {
+      if (isSpinning) return;
       if (diceBet < balance) { diceBet += 5; updateDiceDisplay(); }
     };
 
     const cubeRotations = [
       'rotateX(0deg) rotateY(0deg)','rotateY(180deg)','rotateY(-90deg)','rotateY(90deg)','rotateX(-90deg)','rotateX(90deg)'
     ];
-    document.getElementById('rollDice').onclick = () => {
-      if (!spend(diceBet)) { alert('Нужно '+diceBet+'$'); return; }
+    rollDiceBtn.onclick = () => {
       if (isSpinning) return;
+      if (!spend(diceBet)) { alert('Нужно '+diceBet+'$'); return; }
       isSpinning = true;
+      disableGameButtons();
       let val1, val2;
       if (guaranteedWinActive) { val1 = Math.floor(Math.random()*6); val2 = val1; }
       else { val1 = Math.floor(Math.random()*6); val2 = Math.floor(Math.random()*6); }
@@ -1827,6 +1942,7 @@
           handleStreak('dice', false);
         }
         isSpinning = false;
+        enableGameButtons();
       }, 2100);
     };
 
@@ -1864,7 +1980,7 @@
     }
 
     function revealMineCell(idx) {
-      if (!minesGameActive) return;
+      if (!minesGameActive || isSpinning) return;
       if (currentMinesBoard[idx]==='mine') {
         minesHistory.push('mine'); minesGameActive = false;
         setMessageElement(document.getElementById('msgMines'), '💥 Взрыв!', 'loss');
@@ -1878,7 +1994,8 @@
       renderMinesColumn();
     }
 
-    document.getElementById('cashOutMines').onclick = () => {
+    cashOutMinesBtn.onclick = () => {
+      if (isSpinning) return;
       if (minesGameActive) {
         addBalance(minesPrize);
         if (minesPrize > 0) handleStreak('mines', true);
