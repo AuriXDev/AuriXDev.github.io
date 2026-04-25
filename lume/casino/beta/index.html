@@ -17,6 +17,7 @@
       --transition-speed: 0.4s;
       --wheel-red: #c0392b;
       --wheel-black: #1e272e;
+      --wheel-white: #f0f0f0;
     }
 
     [data-theme="dark"] {
@@ -41,10 +42,9 @@
       --mine-mine: #331111;
       --scrollbar-track: #111;
       --scrollbar-thumb: #333;
-      --wheel-segment1: var(--wheel-red);
-      --wheel-segment2: var(--wheel-black);
       --rb-red-bg: linear-gradient(135deg, #e74c3c, #c0392b);
       --rb-black-bg: linear-gradient(135deg, #2c3e50, #1a1a2e);
+      --rb-white-bg: linear-gradient(135deg, #ffffff, #e0e0e0);
     }
 
     [data-theme="light"] {
@@ -69,10 +69,9 @@
       --mine-mine: #f8d7da;
       --scrollbar-track: #ddd;
       --scrollbar-thumb: #bbb;
-      --wheel-segment1: #e74c3c;
-      --wheel-segment2: #2c3e50;
       --rb-red-bg: linear-gradient(135deg, #ff6b6b, #e74c3c);
       --rb-black-bg: linear-gradient(135deg, #34495e, #2c3e50);
+      --rb-white-bg: linear-gradient(135deg, #ffffff, #cccccc);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -179,6 +178,7 @@
       align-items: center; justify-content: space-between; gap: 8px;
     }
     .side-panel-content { padding: 12px; flex: 1; }
+    .side-panel-footer { padding: 12px; border-top: 1px solid var(--border-color); margin-top: auto; }
 
     .panel-header-buttons { display: flex; gap: 8px; align-items: center; }
     .theme-toggle-panel, .home-btn-panel {
@@ -309,31 +309,37 @@
 
     .wheel-wrapper { position: relative; display: flex; justify-content: center; margin: 14px 0; }
     .wheel {
-      width: 130px; height: 130px; border-radius: 50%;
+      width: 195px; height: 195px; border-radius: 50%;
       background: conic-gradient(
-        var(--wheel-segment1) 0deg 45deg, var(--wheel-segment2) 45deg 90deg,
-        var(--wheel-segment1) 90deg 135deg, var(--wheel-segment2) 135deg 180deg,
-        var(--wheel-segment1) 180deg 225deg, var(--wheel-segment2) 225deg 270deg,
-        var(--wheel-segment1) 270deg 315deg, var(--wheel-segment2) 315deg 360deg
+        var(--wheel-white) 0deg 40deg,
+        var(--wheel-red) 40deg 80deg,
+        var(--wheel-black) 80deg 120deg,
+        var(--wheel-red) 120deg 160deg,
+        var(--wheel-black) 160deg 200deg,
+        var(--wheel-red) 200deg 240deg,
+        var(--wheel-black) 240deg 280deg,
+        var(--wheel-red) 280deg 320deg,
+        var(--wheel-black) 320deg 360deg
       );
       border: 5px solid var(--gold); box-shadow: 0 0 20px var(--gold-glow);
       transition: transform 0.3s ease-out;
     }
     .arrow {
-      position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
-      font-size: 28px; color: var(--gold); filter: drop-shadow(0 0 6px var(--gold-glow));
+      position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+      font-size: 32px; color: var(--gold); filter: drop-shadow(0 0 6px var(--gold-glow));
       z-index: 10; pointer-events: none;
     }
 
-    .color-area { display: flex; gap: 20px; justify-content: center; margin: 14px 0; }
+    .color-area { display: flex; gap: 12px; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
     .color-card {
-      width: 80px; height: 80px; border-radius: 22px; display: flex; align-items: center;
-      justify-content: center; font-size: 2rem; cursor: pointer; border: 3px solid transparent;
+      width: 70px; height: 70px; border-radius: 18px; display: flex; align-items: center;
+      justify-content: center; font-size: 1.5rem; cursor: pointer; border: 3px solid transparent;
       color: white; transition: all 0.3s ease; position: relative; overflow: hidden;
     }
     .color-card:disabled { opacity: 0.5; cursor: not-allowed; }
     .color-card.red-card { background: var(--rb-red-bg); box-shadow: 0 4px 15px rgba(192, 57, 43, 0.5); }
     .color-card.black-card { background: var(--rb-black-bg); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); border-color: #555; }
+    .color-card.white-card { background: var(--rb-white-bg); color: #000; box-shadow: 0 4px 15px rgba(255,255,255,0.3); }
 
     .message { text-align: center; font-weight: 700; font-size: 1.1rem; margin: 8px 0; min-height: 28px; color: var(--text-primary); }
     .message.win { color: var(--toxic) !important; }
@@ -396,7 +402,7 @@
     }
     .shop-item.purchased { opacity: 0.5; border-color: #333; }
     .shop-item-name { font-weight: 700; color: var(--text-primary); font-size: 0.8rem; }
-    .shop-item-desc { font-size: 0.7rem; color: var(--text-muted); }
+    .shop-item-desc { font-size: 0.75rem; color: var(--text-primary); opacity: 0.85; }
     .shop-item-cost { font-weight: 700; color: var(--gold); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
     .shop-item-btn { background: linear-gradient(135deg, var(--toxic), var(--toxic-dim)); color: #000; }
     .shop-item-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
@@ -404,7 +410,7 @@
     .shop-refresh-btn {
       background: linear-gradient(135deg, var(--toxic), var(--toxic-dim));
       border: none; padding: 12px; border-radius: 18px; font-weight: 800;
-      cursor: pointer; color: #000; width: 100%; margin-top: 10px;
+      cursor: pointer; color: #000; width: 100%; margin-top: 8px;
       font-size: 0.9rem; transition: all 0.2s ease; font-family: 'Inter', sans-serif;
     }
     .shop-refresh-btn:hover:not(:disabled) { box-shadow: 0 0 15px var(--toxic-glow-strong); transform: translateY(-1px); }
@@ -433,6 +439,24 @@
       background: var(--loss-red); border-color: var(--loss-red); color: #fff; font-weight: 700;
     }
 
+    .beta-notice {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.8); z-index: 200;
+      display: flex; align-items: center; justify-content: center; flex-direction: column;
+      backdrop-filter: blur(8px); border-radius: inherit;
+    }
+    .beta-notice-box {
+      background: var(--bg-card-solid); border: 2px solid var(--toxic);
+      border-radius: 20px; padding: 24px; text-align: center;
+      max-width: 320px; color: var(--text-primary);
+    }
+    .beta-notice-box p { margin-bottom: 20px; font-weight: 600; }
+    .beta-notice-box button {
+      margin: 6px; padding: 10px 24px; border-radius: 12px; font-weight: 700;
+      font-size: 0.9rem; cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+    }
+    .stay-btn { background: var(--toxic); color: #000; }
+    .leave-btn { background: var(--loss-red); color: #fff; }
+
     @media (max-width: 400px) {
       .panel-game-tab { font-size: 0.8rem; padding: 10px 12px; }
       .game-tab { font-size: 0.62rem; padding: 7px 2px; }
@@ -443,17 +467,26 @@
 </head>
 <body>
 <div class="casino-phone" id="casinoApp">
+  <!-- Beta notice -->
+  <div class="beta-notice" id="betaNotice">
+    <div class="beta-notice-box">
+      <p>Это бета-версия и в ней много недочётов и багов.<br>Если вам важна стабильность, перейдите на старую версию.</p>
+      <button class="stay-btn" id="stayBeta">Остаться</button>
+      <button class="leave-btn" id="leaveBeta">Уйти</button>
+    </div>
+  </div>
+
   <!-- Left toggle buttons -->
   <div class="left-toggles">
     <button class="side-toggle" id="leftToggle">▶</button>
-    <button class="side-toggle" id="debugToggle" style="display: none;">▶</button>
+    <button class="side-toggle" id="debugToggle" style="display: none;">✦</button>
   </div>
   
   <!-- Right toggle buttons -->
   <div class="right-toggles">
-    <button class="side-toggle" id="rightToggle">◀</button>
-    <button class="side-toggle" id="shopToggle">◀</button>
-    <button class="side-toggle" id="buffsToggle">◀</button>
+    <button class="side-toggle" id="rightToggle">★</button>
+    <button class="side-toggle" id="shopToggle">⬢</button>
+    <button class="side-toggle" id="buffsToggle">☘</button>
   </div>
   
   <div class="side-panel-overlay" id="panelOverlay"></div>
@@ -477,24 +510,21 @@
       <span>Читы</span>
       <button class="theme-toggle-panel" id="closeDebugPanel" style="font-size: 1rem;">✕</button>
     </div>
-    <div class="side-panel-content">
+    <div class="side-panel-content" style="display: flex; flex-direction: column;">
       <button class="debug-toggle" id="toggleMinesHint">Мины XRay</button>
       <button class="debug-toggle" id="toggleFreeUpgrades">Free Апгрейд + Кредит</button>
       <button class="debug-toggle" id="toggle5xWin">x5 Выигрыш</button>
-      <button class="debug-toggle" id="toggleFreeDeposit">(в разаботке)</button>
-      <button class="debug-toggle" id="toggleGuaranteedWin">(в разаботке)</button>
-      <button class="debug-toggle" id="toggleSlotJackpot">(в разаботке)</button>
-      <button class="debug-toggle reset-btn" id="resetData">Сброс всего</button>
+      <button class="debug-toggle reset-btn" id="resetData" style="margin-top: auto;">Сброс всего</button>
     </div>
   </div>
 
-  <!-- Right Panel 1: Management -->
+  <!-- Right Panel 1: Прокачка -->
   <div class="side-panel right-panel" id="rightPanel">
     <div class="side-panel-header">
-      <span>Управление</span>
+      <span>Прокачка ★</span>
       <div class="panel-header-buttons">
         <a href="https://aurixdev.github.io/lume/casino" class="home-btn-panel" title="Стабильная версия">F</a>
-        <a href="https://aurixdev.github.io/lume/" class="home-btn-panel" title="На главную">🏠</a>
+        <a href="https://aurixdev.github.io/lume/" class="home-btn-panel" title="Поисковик Lume">L</a>
         <button class="theme-toggle-panel" id="themeToggle" title="Переключить тему">🌙</button>
       </div>
     </div>
@@ -526,14 +556,20 @@
   <!-- Right Panel 2: Shop -->
   <div class="side-panel right-panel shop-panel" id="shopPanel">
     <div class="side-panel-header">
-      <span>Магазин</span>
+      <span>Магазин ⬢</span>
       <button class="theme-toggle-panel" id="closeShopPanel" style="font-size: 1rem;">✕</button>
     </div>
     <div class="side-panel-content">
-      <div class="right-info" style="margin-bottom: 10px; font-size: 0.75rem; color: var(--text-muted);">
-        Обновление через: <span id="shopTimer" class="gold-text">60:00</span>
+      <div class="right-section">
+        <div class="right-section-title">$ Баланс</div>
+        <div class="right-info" style="text-align: center; font-size: 1.2rem; font-weight: 800; color: var(--gold); font-family: 'JetBrains Mono', monospace;">$ <span id="balanceShop">100</span></div>
       </div>
       <div class="shop-section" id="shopItems"></div>
+    </div>
+    <div class="side-panel-footer">
+      <div class="right-info" style="margin-bottom: 8px; font-size: 0.75rem; color: var(--text-muted);">
+        Обновление через: <span id="shopTimer" class="gold-text">60:00</span>
+      </div>
       <button class="shop-refresh-btn" id="refreshShop">Обновить магазин (1500$)</button>
     </div>
   </div>
@@ -541,7 +577,7 @@
   <!-- Right Panel 3: Buffs -->
   <div class="side-panel right-panel buffs-panel" id="buffsPanel">
     <div class="side-panel-header">
-      <span>Баффы</span>
+      <span>Баффы ☘</span>
       <button class="theme-toggle-panel" id="closeBuffsPanel" style="font-size: 1rem;">✕</button>
     </div>
     <div class="side-panel-content" id="buffsContent">
@@ -601,10 +637,11 @@
           <div class="arrow">▼</div>
           <div class="wheel" id="wheel"></div>
         </div>
-        <div style="margin-bottom: 180px;"></div>
+        <div style="margin-bottom: 140px;"></div>
         <div class="color-area">
-          <div class="color-card black-card" id="betRed">⚫</div>
-          <div class="color-card red-card" id="betBlack">🔴</div>
+          <div class="color-card black-card" id="betBlack">⚫</div>
+          <div class="color-card red-card" id="betRed">🔴</div>
+          <div class="color-card white-card" id="betWhite">⚪</div>
         </div>
         <div class="bet-controls">
           <button class="bet-adj-btn" id="rbMinus">−</button>
@@ -665,6 +702,10 @@
     }
     applyTheme(currentTheme);
     themeBtn.onclick = () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+
+    // Beta notice
+    document.getElementById('stayBeta').onclick = () => document.getElementById('betaNotice').style.display = 'none';
+    document.getElementById('leaveBeta').onclick = () => window.location.href = 'https://aurixdev.github.io/lume/casino/android/';
 
     // Panels
     const leftPanel = document.getElementById('leftPanel');
@@ -728,11 +769,8 @@
     let autoIncomeCost = parseInt(localStorage.getItem('cautoCost10')) || 100;
 
     let minesHintActive = false;
-    let freeDepositActive = false;
     let freeUpgradesActive = false;
-    let guaranteedWinActive = false;
     let winMultiplier5x = false;
-    let slotJackpotActive = false;
     let minesTabClicks = 0;
     let bestWinClicks = 0;
     let debugVisible = false;
@@ -750,8 +788,8 @@
     // Shop system
     const allShopItems = [
       { id: 'stopCollectors', name: 'СТОП КОЛЛЕКТОРЫ!!!', desc: 'Добовление 20 минут к кредиту', cost: 2000, duration: 20*60*1000, type: 'freeze_loan' },
-      { id: 'luckSlots', name: 'Везение (слоты)', desc: 'Шанс джекпота ≥30% на 1 минуту', cost: 500, duration: 60*1000, type: 'slots_luck' },
-      { id: 'clover', name: 'Клевер', desc: 'Шанс в колесе/костях 50% на 1 минуту', cost: 500, duration: 60*1000, type: 'rb_dice_luck' },
+      { id: 'luckSlots', name: 'Везение (слоты)', desc: 'Шанс джекпота 30% на 1 минуту', cost: 500, duration: 60*1000, type: 'slots_luck' },
+      { id: 'clover', name: 'Клевер', desc: 'Шанс в колесе/костях 30% на 1 минуту', cost: 500, duration: 60*1000, type: 'rb_dice_luck' },
       { id: 'sapper', name: 'Сапер', desc: 'Видит 5 правильных ходов в минах', cost: 400, duration: Infinity, type: 'sapper', uses: 5 },
       { id: 'cleanSlate', name: 'С чистого листа', desc: 'Сброс всего прогресса', cost: 1000000, duration: 0, type: 'reset' },
       { id: 'watch', name: 'Вахта', desc: '+10 к силе клика, блокирует игры на 2 минуты', cost: 1000, duration: 2*60*1000, type: 'watch' },
@@ -762,18 +800,16 @@
       { id: 'godHelp', name: 'Божья помощь', desc: '+1-5 к силе клика', cost: 0, duration: 0, type: 'god_help', special: true, chance: 0.01 }
     ];
 
-    let shopItems = [];
+    let shopItems = JSON.parse(localStorage.getItem('shopItems10')) || [];
     let purchasedItems = JSON.parse(localStorage.getItem('purchased10')) || [];
     let shopRefreshTime = parseInt(localStorage.getItem('shopRefresh10')) || 0;
     let activeBuffs = JSON.parse(localStorage.getItem('buffs10')) || [];
     let sapperUsesLeft = parseInt(localStorage.getItem('sapper10')) || 0;
-    let watchActive = localStorage.getItem('watch10') === 'true';
+    let watchActive = false;
 
     function getAvailableShopItems() {
       const available = allShopItems.filter(item => {
-        if (item.special) {
-          return Math.random() < item.chance;
-        }
+        if (item.special) return Math.random() < item.chance;
         return true;
       });
       const items = [...available];
@@ -800,13 +836,14 @@
 
     function renderShop() {
       const container = document.getElementById('shopItems');
+      if (!container) return;
       container.innerHTML = '';
       shopItems.forEach(item => {
         const purchased = purchasedItems.includes(item.id);
         const div = document.createElement('div'); 
         div.className = 'shop-item' + (purchased ? ' purchased' : '');
         div.innerHTML = `
-          <div class="shop-item-name">${item.name}</div>
+          <div class="shop-item-name" style="${item.id === 'cleanSlate' ? 'color: red;' : ''}">${item.name}</div>
           <div class="shop-item-desc">${item.desc}</div>
           <div class="shop-item-cost">${item.cost === 0 ? 'Бесплатно' : item.cost + '$'}</div>
           <button class="shop-item-btn" data-id="${item.id}" ${purchased ? 'disabled' : ''}>
@@ -832,17 +869,10 @@
         case 'freeze_loan': loanDeadline += item.duration; break;
         case 'slots_luck': activateBuff(item); break;
         case 'rb_dice_luck': activateBuff(item); break;
-        case 'sapper': sapperUsesLeft = item.uses; break;
+        case 'sapper': sapperUsesLeft += item.uses; break;
         case 'reset': resetGame(); break;
-        case 'watch': 
-          clickPower += 10; 
-          watchActive = true;
-          disableGameButtons(); 
-          break;
-        case 'mecha_hand':
-          autoIncomeRate += 10;
-          setTimeout(() => { autoIncomeRate = Math.max(0, autoIncomeRate - 10); updateUI(); }, item.duration);
-          break;
+        case 'watch': activateBuff(item); break;
+        case 'mecha_hand': activateBuff(item); break;
         case 'free_slots': activateBuff(item); break;
         case 'gift': balance += Math.floor(Math.random() * 9991) + 10; break;
         case 'forgive':
@@ -860,8 +890,21 @@
     }
 
     function activateBuff(item) {
-      activeBuffs.push({ id: item.id, name: item.name, type: item.type, endTime: Date.now() + item.duration });
-      save(); 
+      // суммирование времени/использований
+      const existing = activeBuffs.find(b => b.id === item.id);
+      if (existing) {
+        if (item.type === 'sapper') {
+          sapperUsesLeft += item.uses;
+          save();
+          renderBuffs();
+          return;
+        } else {
+          existing.endTime += item.duration;
+        }
+      } else {
+        activeBuffs.push({ id: item.id, name: item.name, type: item.type, endTime: Date.now() + item.duration });
+      }
+      save();
       renderBuffs();
       applyBuffs();
     }
@@ -870,42 +913,53 @@
       const now = Date.now();
       activeBuffs = activeBuffs.filter(buff => buff.endTime > now);
       
-      // Сбрасываем баффы перед применением
-      let hasSlotsLuck = false;
-      let hasRbDiceLuck = false;
-      let hasFreeSlots = false;
+      // Вахта
+      const watchBuff = activeBuffs.find(b => b.type === 'watch');
+      watchActive = !!watchBuff;
+      if (watchActive) disableGameButtons();
+      else enableGameButtons();
       
-      activeBuffs.forEach(buff => {
-        if (buff.type === 'slots_luck') hasSlotsLuck = true;
-        if (buff.type === 'rb_dice_luck') hasRbDiceLuck = true;
-        if (buff.type === 'free_slots') hasFreeSlots = true;
-      });
-      
-      // Применяем только если нет активного чита
-      slotJackpotActive = hasSlotsLuck;
-      guaranteedWinActive = hasRbDiceLuck;
-      freeDepositActive = hasFreeSlots;
+      save();
+    }
+
+    function hasBuff(type) {
+      return activeBuffs.some(b => b.type === type && b.endTime > Date.now());
+    }
+
+    function getEffectiveClickPower() {
+      return clickPower + (hasBuff('watch') ? 10 : 0);
+    }
+
+    function getEffectiveAutoRate() {
+      return autoIncomeRate + (hasBuff('mecha_hand') ? 10 : 0);
     }
 
     function renderBuffs() {
       const container = document.getElementById('buffsContent');
+      if (!container) return;
       const now = Date.now();
       activeBuffs = activeBuffs.filter(buff => buff.endTime > now);
       
-      if (activeBuffs.length === 0) {
-        container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">Баффов нету, загляни в магазин</div>';
-      } else {
-        container.innerHTML = activeBuffs.map(buff => {
-          const remaining = Math.max(0, buff.endTime - now);
-          const minutes = Math.floor(remaining / 60000);
-          const seconds = Math.floor((remaining % 60000) / 1000);
-          return `<div class="buff-item">
-            <div style="font-weight: 700;">${buff.name}</div>
-            <div class="buff-timer">${minutes}:${seconds.toString().padStart(2, '0')}</div>
-          </div>`;
-        }).join('');
+      let html = '';
+      activeBuffs.forEach(buff => {
+        const remaining = Math.max(0, buff.endTime - now);
+        const minutes = Math.floor(remaining / 60000);
+        const seconds = Math.floor((remaining % 60000) / 1000);
+        html += `<div class="buff-item">
+          <div style="font-weight: 700; ${buff.id === 'cleanSlate' ? 'color: red;' : ''}">${buff.name}</div>
+          <div class="buff-timer">${minutes}:${seconds.toString().padStart(2, '0')}</div>
+        </div>`;
+      });
+      if (sapperUsesLeft > 0) {
+        html += `<div class="buff-item">
+          <div style="font-weight: 700;">Сапёр</div>
+          <div class="buff-timer">Осталось: ${sapperUsesLeft} ходов</div>
+        </div>`;
       }
-      
+      if (html === '') {
+        html = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">Баффов нету, загляни в магазин</div>';
+      }
+      container.innerHTML = html;
       save();
     }
 
@@ -916,7 +970,6 @@
       const minutes = Math.floor(remaining / 60000);
       const seconds = Math.floor((remaining % 60000) / 1000);
       timer.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-      if (remaining <= 0 && shopRefreshTime > 0) refreshShop(false);
     }
 
     function makeBetEditable(displayId, betVar, minBet) {
@@ -967,6 +1020,7 @@
     const spin35Btn = document.getElementById('spin35');
     const betRedBtn = document.getElementById('betRed');
     const betBlackBtn = document.getElementById('betBlack');
+    const betWhiteBtn = document.getElementById('betWhite');
     const rbMinusBtn = document.getElementById('rbMinus');
     const rbPlusBtn = document.getElementById('rbPlus');
     const diceMinusBtn = document.getElementById('diceMinus');
@@ -975,7 +1029,8 @@
     const cashOutMinesBtn = document.getElementById('cashOutMines');
 
     setInterval(() => {
-      if (autoIncomeRate > 0) { balance += autoIncomeRate; if (balance > bestWin) bestWin = balance; updateUI(); }
+      const auto = getEffectiveAutoRate();
+      if (auto > 0) { balance += auto; if (balance > bestWin) bestWin = balance; updateUI(); }
     }, 1000);
 
     function getLoanInterest() { return 10 + (loanCount * 5); }
@@ -996,6 +1051,7 @@
       localStorage.setItem('buffs10', JSON.stringify(activeBuffs));
       localStorage.setItem('sapper10', sapperUsesLeft);
       localStorage.setItem('watch10', watchActive);
+      localStorage.setItem('shopItems10', JSON.stringify(shopItems));
     }
 
     function setMessageElement(el, text, type) {
@@ -1008,14 +1064,15 @@
     function updateUI() {
       balanceEl.textContent = balance;
       document.getElementById('balanceRight').textContent = balance;
+      document.getElementById('balanceShop').textContent = balance;
       bestEl.textContent = bestWin;
-      document.getElementById('clickPowerRight').textContent = clickPower;
+      document.getElementById('clickPowerRight').textContent = getEffectiveClickPower();
       document.getElementById('upgradeCostRight').textContent = upgradeCost;
       document.getElementById('loanAmountRight').textContent = nextLoanAmount;
       document.getElementById('loanBonusRight').textContent = loanCount * 5;
       document.getElementById('autoRate').textContent = autoIncomeRate;
       document.getElementById('autoCost').textContent = autoIncomeCost;
-      document.getElementById('autoTotal').textContent = autoIncomeRate;
+      document.getElementById('autoTotal').textContent = getEffectiveAutoRate();
 
       if (loanAmount > 0 && Date.now() >= loanDeadline) {
         const interestRate = getLoanInterest() / 100;
@@ -1037,7 +1094,7 @@
     }
 
     function spend(amt) {
-      if (freeDepositActive || freeUpgradesActive) return true;
+      if (freeUpgradesActive) return true;
       if (balance < amt) return false;
       balance -= amt;
       updateUI();
@@ -1068,21 +1125,24 @@
     }
 
     function disableGameButtons() {
-      [spin3Btn, spin5Btn, spin35Btn, betRedBtn, betBlackBtn, rollDiceBtn, cashOutMinesBtn].forEach(b => { if(b) b.disabled = true; });
+      [spin3Btn, spin5Btn, spin35Btn, betRedBtn, betBlackBtn, betWhiteBtn, rollDiceBtn, cashOutMinesBtn].forEach(b => { if(b) b.disabled = true; });
     }
     function enableGameButtons() {
       if (watchActive) { disableGameButtons(); return; }
-      [spin3Btn, spin5Btn, spin35Btn, betRedBtn, betBlackBtn, rollDiceBtn, cashOutMinesBtn].forEach(b => { if(b) b.disabled = false; });
+      [spin3Btn, spin5Btn, spin35Btn, betRedBtn, betBlackBtn, betWhiteBtn, rollDiceBtn, cashOutMinesBtn].forEach(b => { if(b) b.disabled = false; });
     }
 
     // Work / Upgrade
-    document.getElementById('workClickRight').onclick = () => { balance += clickPower; updateUI(); };
+    document.getElementById('workClickRight').onclick = () => { balance += getEffectiveClickPower(); updateUI(); };
     document.getElementById('upgradeClickRight').onclick = () => {
       if (freeUpgradesActive) { clickPower++; upgradeCost = Math.floor(upgradeCost * 2); updateUI(); return; }
       if (balance < upgradeCost) { alert('Нужно '+upgradeCost+'$'); return; }
       balance -= upgradeCost; clickPower++; upgradeCost = Math.floor(upgradeCost * 2); updateUI();
     };
     document.getElementById('autoBuy').onclick = () => {
+      if (freeUpgradesActive) {
+        autoIncomeRate += 1; autoIncomeCost = Math.floor(autoIncomeCost * 1.5); updateUI(); return;
+      }
       if (balance < autoIncomeCost) { alert('Нужно '+autoIncomeCost+'$'); return; }
       balance -= autoIncomeCost; autoIncomeRate += 1; autoIncomeCost = Math.floor(autoIncomeCost * 1.5); updateUI();
     };
@@ -1107,8 +1167,14 @@
       const reels = document.querySelectorAll('#reels3 .slot-icon');
       if (isSpinning) return;
       isSpinning = true; disableGameButtons();
-      let finalIcons = slotJackpotActive ? [icons3[Math.floor(Math.random()*icons3.length)]].flatMap(i => [i,i,i]) : 
-        [0,0,0].map(() => icons3[Math.floor(Math.random()*icons3.length)]);
+      const hasSlotsLuck = hasBuff('slots_luck');
+      let finalIcons;
+      if (hasSlotsLuck && Math.random() < 0.3) {
+        const icon = icons3[Math.floor(Math.random()*icons3.length)];
+        finalIcons = [icon, icon, icon];
+      } else {
+        finalIcons = [0,0,0].map(() => icons3[Math.floor(Math.random()*icons3.length)]);
+      }
       reels.forEach((reel, idx) => {
         reel.classList.add('spinning');
         let steps = 0;
@@ -1126,7 +1192,7 @@
 
     spin3Btn.onclick = () => {
       if (isSpinning) return;
-      if (!spend(5)) { alert('Мало монет'); return; }
+      if (!hasBuff('free_slots')) { if (!spend(5)) { alert('Мало монет'); return; } }
       animateSlots3(final => {
         const win = (final[0]===final[1] && final[1]===final[2]) ? (winTable[final[0]]||10) : 0;
         const msg = document.getElementById('msg3');
@@ -1142,8 +1208,14 @@
       const reels = document.querySelectorAll('#reels5 .slot-icon');
       if (isSpinning) return;
       isSpinning = true; disableGameButtons();
-      let finalIcons = slotJackpotActive ? [icons5[Math.floor(Math.random()*icons5.length)]].flatMap(i => [i,i,i,i,i]) :
-        Array.from({length:5}, () => icons5[Math.floor(Math.random()*icons5.length)]);
+      const hasSlotsLuck = hasBuff('slots_luck');
+      let finalIcons;
+      if (hasSlotsLuck && Math.random() < 0.3) {
+        const icon = icons5[Math.floor(Math.random()*icons5.length)];
+        finalIcons = [icon, icon, icon, icon, icon];
+      } else {
+        finalIcons = Array.from({length:5}, () => icons5[Math.floor(Math.random()*icons5.length)]);
+      }
       reels.forEach((reel, idx) => {
         reel.classList.add('spinning');
         let steps = 0;
@@ -1161,7 +1233,7 @@
 
     spin5Btn.onclick = () => {
       if (isSpinning) return;
-      if (!spend(10)) { alert('Мало монет'); return; }
+      if (!hasBuff('free_slots')) { if (!spend(10)) { alert('Мало монет'); return; } }
       animateSlots5(final => {
         let win = 0; const base = winTable[final[0]]||50;
         const reels = document.querySelectorAll('#reels5 .slot-icon');
@@ -1194,10 +1266,11 @@
 
     spin35Btn.onclick = () => {
       if (isSpinning) return;
-      if (!spend(15)) { alert('Нужно 15$'); return; }
+      if (!hasBuff('free_slots')) { if (!spend(15)) { alert('Нужно 15$'); return; } }
       isSpinning = true; disableGameButtons();
+      const hasSlotsLuck = hasBuff('slots_luck');
       let finalGrid = [];
-      if (slotJackpotActive) {
+      if (hasSlotsLuck && Math.random() < 0.3) {
         const winIcon = icons5[Math.floor(Math.random()*icons5.length)];
         for (let r=0; r<3; r++) { finalGrid[r] = []; for (let c=0; c<5; c++) finalGrid[r][c] = winIcon; }
       } else {
@@ -1238,37 +1311,71 @@
       });
     };
 
-    // RED/BLACK
+    // RED/BLACK + WHITE
     function updateRbDisplay() { document.getElementById('rbBetDisplay').textContent = rbBet + '$'; }
-    rbMinusBtn.onclick = () => { if (isSpinning) return; if (rbBet > 10) { rbBet = Math.max(10, rbBet - 5); updateRbDisplay(); } };
-    rbPlusBtn.onclick = () => { if (isSpinning) return; if (rbBet < balance) { rbBet += 5; updateRbDisplay(); } };
+    rbMinusBtn.onclick = () => { if (!isSpinning && rbBet > 10) { rbBet = Math.max(10, rbBet - 5); updateRbDisplay(); } };
+    rbPlusBtn.onclick = () => { if (!isSpinning && rbBet < balance) { rbBet += 5; updateRbDisplay(); } };
 
-    betRedBtn.onclick = () => playRedBlack('red');
-    betBlackBtn.onclick = () => playRedBlack('black');
-    
-    function playRedBlack(choice) {
+    betRedBtn.onclick = () => playColorChoice('red');
+    betBlackBtn.onclick = () => playColorChoice('black');
+    betWhiteBtn.onclick = () => playColorChoice('white');
+
+    function playColorChoice(choice) {
       if (isSpinning) return;
       if (!spend(rbBet)) return;
       isSpinning = true; disableGameButtons();
       const msg = document.getElementById('msgRB');
       msg.textContent = 'Вращение...'; msg.classList.remove('win','loss');
-      const winRed = guaranteedWinActive ? (choice === 'red') : Math.random() < 0.48;
-      const angle = winRed ? [22,112,202,292][Math.floor(Math.random()*4)] : [67,157,247,337][Math.floor(Math.random()*4)];
+      
+      const hasRbDiceLuck = hasBuff('rb_dice_luck');
+      let winColor;
+      if (hasRbDiceLuck) {
+        // 30% шанс угадать
+        if (Math.random() < 0.3) {
+          winColor = choice;
+        } else {
+          // противник – случайный из двух других
+          const others = choice === 'red' ? ['black','white'] : (choice === 'black' ? ['red','white'] : ['red','black']);
+          winColor = others[Math.floor(Math.random() * others.length)];
+        }
+      } else {
+        // стандарт: белый 1/9, красный 4/9, черный 4/9
+        const r = Math.random();
+        if (r < 1/9) winColor = 'white';
+        else if (r < 5/9) winColor = 'red';
+        else winColor = 'black';
+      }
+
+      // угол для стрелки: центры сегментов
+      const centerAngles = { white: 20, red: [60,140,220,300], black: [100,180,260,340] };
+      let angle;
+      if (winColor === 'white') angle = 20;
+      else {
+        const arr = winColor === 'red' ? centerAngles.red : centerAngles.black;
+        angle = arr[Math.floor(Math.random() * arr.length)];
+      }
+      
       wheel.style.transition = 'transform 1.8s cubic-bezier(0.25,0.1,0.15,1)';
       wheel.style.transform = `rotate(${5*360+angle}deg)`;
       setTimeout(() => {
-        if (choice === (winRed ? 'red' : 'black')) {
-          const winAmount = Math.floor(rbBet * 1.5);
-          addBalance(winAmount); setMessageElement(msg, `+${winMultiplier5x?winAmount*5:winAmount}$`, 'win'); handleStreak('redblack', true);
-        } else { setMessageElement(msg, 'Проигрыш', 'loss'); handleStreak('redblack', false); }
+        if (choice === winColor) {
+          const mult = choice === 'white' ? 10 : 1.5;
+          const winAmount = Math.floor(rbBet * mult);
+          addBalance(winAmount);
+          setMessageElement(msg, `+${winMultiplier5x ? winAmount*5 : winAmount}$`, 'win');
+          handleStreak('redblack', true);
+        } else {
+          setMessageElement(msg, 'Проигрыш', 'loss');
+          handleStreak('redblack', false);
+        }
         isSpinning = false; enableGameButtons();
       }, 1900);
     }
 
     // DICE
     function updateDiceDisplay() { document.getElementById('diceBetDisplay').textContent = diceBet + '$'; }
-    diceMinusBtn.onclick = () => { if (isSpinning) return; if (diceBet > 10) { diceBet = Math.max(10, diceBet - 5); updateDiceDisplay(); } };
-    dicePlusBtn.onclick = () => { if (isSpinning) return; if (diceBet < balance) { diceBet += 5; updateDiceDisplay(); } };
+    diceMinusBtn.onclick = () => { if (!isSpinning && diceBet > 10) { diceBet = Math.max(10, diceBet - 5); updateDiceDisplay(); } };
+    dicePlusBtn.onclick = () => { if (!isSpinning && diceBet < balance) { diceBet += 5; updateDiceDisplay(); } };
 
     const cubeRotations = [
       'rotateX(0deg) rotateY(0deg)','rotateY(180deg)','rotateY(-90deg)','rotateY(90deg)','rotateX(-90deg)','rotateX(90deg)'
@@ -1278,8 +1385,20 @@
       if (!spend(diceBet)) { alert('Нужно '+diceBet+'$'); return; }
       isSpinning = true; disableGameButtons();
       let val1, val2;
-      if (guaranteedWinActive) { val1 = Math.floor(Math.random()*6); val2 = val1; }
-      else { val1 = Math.floor(Math.random()*6); val2 = Math.floor(Math.random()*6); }
+      const hasRbDiceLuck = hasBuff('rb_dice_luck');
+      if (hasRbDiceLuck) {
+        if (Math.random() < 0.3) {
+          val1 = Math.floor(Math.random()*6);
+          val2 = val1;
+        } else {
+          val1 = Math.floor(Math.random()*6);
+          val2 = Math.floor(Math.random()*6);
+          while (val2 === val1) val2 = Math.floor(Math.random()*6);
+        }
+      } else {
+        val1 = Math.floor(Math.random()*6);
+        val2 = Math.floor(Math.random()*6);
+      }
       const extraSpins = 3 + Math.floor(Math.random()*3);
       document.getElementById('cube1').style.transform = `rotateX(${extraSpins*360}deg) rotateY(${extraSpins*360}deg) ${cubeRotations[val1]}`;
       document.getElementById('cube2').style.transform = `rotateX(${extraSpins*360}deg) rotateY(${extraSpins*360}deg) ${cubeRotations[val2]}`;
@@ -1339,9 +1458,6 @@
         currentMinesBoard = generateMineBoard();
         if (sapperUsesLeft > 0) {
           sapperUsesLeft--;
-          if (sapperUsesLeft <= 0) {
-            sapperUsesLeft = 0;
-          }
           save();
         }
       }
@@ -1413,11 +1529,8 @@
 
     function updateDebugButtons() {
       document.getElementById('toggleMinesHint').classList.toggle('active', minesHintActive);
-      document.getElementById('toggleFreeDeposit').classList.toggle('active', freeDepositActive);
       document.getElementById('toggleFreeUpgrades').classList.toggle('active', freeUpgradesActive);
-      document.getElementById('toggleGuaranteedWin').classList.toggle('active', guaranteedWinActive);
       document.getElementById('toggle5xWin').classList.toggle('active', winMultiplier5x);
-      document.getElementById('toggleSlotJackpot').classList.toggle('active', slotJackpotActive);
     }
 
     document.getElementById('toggleMinesHint').onclick = function() { 
@@ -1426,29 +1539,14 @@
       if(minesGameActive) renderMinesColumn(); 
     };
     
-    document.getElementById('toggleFreeDeposit').onclick = function() { 
-      freeDepositActive = !freeDepositActive; 
-      this.classList.toggle('active', freeDepositActive); 
-    };
-    
     document.getElementById('toggleFreeUpgrades').onclick = function() { 
       freeUpgradesActive = !freeUpgradesActive; 
       this.classList.toggle('active', freeUpgradesActive); 
     };
     
-    document.getElementById('toggleGuaranteedWin').onclick = function() { 
-      guaranteedWinActive = !guaranteedWinActive; 
-      this.classList.toggle('active', guaranteedWinActive); 
-    };
-    
     document.getElementById('toggle5xWin').onclick = function() { 
       winMultiplier5x = !winMultiplier5x; 
       this.classList.toggle('active', winMultiplier5x); 
-    };
-    
-    document.getElementById('toggleSlotJackpot').onclick = function() { 
-      slotJackpotActive = !slotJackpotActive; 
-      this.classList.toggle('active', slotJackpotActive); 
     };
     
     document.getElementById('resetData').onclick = resetGame;
@@ -1466,15 +1564,13 @@
 
     // Init
     if (!shopRefreshTime || shopRefreshTime < Date.now()) {
-      shopItems = getAvailableShopItems();
-      purchasedItems = [];
-      shopRefreshTime = Date.now() + 60*60*1000;
-    } else {
-      const saved = localStorage.getItem('shopItems10');
-      shopItems = saved ? JSON.parse(saved) : getAvailableShopItems();
+      // не обновляем автоматически, только если первый запуск
+      if (!shopItems.length) {
+        shopItems = getAvailableShopItems();
+        purchasedItems = [];
+        shopRefreshTime = Date.now() + 60*60*1000;
+      }
     }
-
-    if (watchActive) disableGameButtons();
 
     fillReels('reels3',3);
     fillReels('reels5',5);
@@ -1486,6 +1582,7 @@
     renderShop();
     renderBuffs();
     updateDebugButtons();
+    applyBuffs();
 
     setInterval(() => { 
       updateShopTimer(); 
