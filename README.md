@@ -4,4 +4,4 @@
 ## Страницы созданные человеком
 *SiNtax* - neeff
 
-*Magma Launcher* - Vuani / EndokRIPa
+*Magma Launcher* и *Lume" - Vuani / EndokRIPa
