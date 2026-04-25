@@ -80,34 +80,24 @@
       width: 100%; height: 100%;
       background: var(--bg-primary);
       font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      display: flex; align-items: center; justify-content: center;
       overflow: hidden; touch-action: manipulation;
       transition: background var(--transition-speed) ease;
+      position: fixed;
+      top: 0;
+      left: 0;
     }
 
     .casino-phone {
-      width: 100%; max-width: 460px; height: 100vh; max-height: 920px;
+      width: 100%; height: 100vh;
       background: var(--bg-secondary); display: flex; flex-direction: column;
-      padding: 16px 14px; box-shadow: var(--shadow-card);
-      border: 1px solid var(--border-color); overflow: hidden;
+      box-shadow: var(--shadow-card);
+      border: none;
+      overflow: hidden;
       position: relative; transition: all var(--transition-speed) ease;
     }
 
-    @media (min-width: 500px) {
-      .casino-phone { border-radius: 36px; height: 96vh; border: 1.5px solid var(--border-color); }
-      .casino-phone::before {
-        content: ''; position: absolute; inset: -1px; border-radius: 37px;
-        padding: 1.5px;
-        background: linear-gradient(135deg, var(--toxic-glow-strong), transparent 50%, var(--toxic-glow));
-        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor; mask-composite: exclude;
-        pointer-events: none; opacity: 0.5; z-index: 10;
-      }
-    }
-
     .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0; position: relative; }
-    .game-scroll-area { flex: 1; overflow-y: auto; min-height: 0; padding-right: 4px; }
+    .game-scroll-area { flex: 1; overflow-y: auto; min-height: 0; padding-right: 4px; padding-bottom: 60px; }
     .game-scroll-area::-webkit-scrollbar { width: 3px; }
     .game-scroll-area::-webkit-scrollbar-track { background: transparent; }
     .game-scroll-area::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
@@ -130,12 +120,12 @@
     }
 
     .left-toggles {
-      position: absolute; left: -2px; top: 50%; transform: translateY(-50%);
-      display: flex; flex-direction: column; gap: 4px; z-index: 50;
+      position: absolute; left: -2px; top: 40%; z-index: 50;
+      display: flex; flex-direction: column; gap: 4px;
     }
     .right-toggles {
-      position: absolute; right: -2px; top: 50%; transform: translateY(-50%);
-      display: flex; flex-direction: column; gap: 4px; z-index: 50;
+      position: absolute; right: -2px; top: 40%; z-index: 50;
+      display: flex; flex-direction: column; gap: 4px;
     }
     .side-toggle {
       width: 28px; height: 56px; background: var(--bg-card);
@@ -159,7 +149,7 @@
       position: absolute; top: 0; bottom: 0; width: 280px;
       background: var(--bg-secondary); border: 1px solid var(--border-color);
       z-index: 70; transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow-y: auto; display: flex; flex-direction: column;
+      display: flex; flex-direction: column;
     }
     .side-panel.left-panel {
       left: 0; transform: translateX(-100%); border-radius: 0 20px 20px 0; border-left: none;
@@ -176,9 +166,23 @@
       padding: 16px; font-weight: 800; font-size: 1rem; color: var(--text-primary);
       border-bottom: 1px solid var(--border-color); display: flex;
       align-items: center; justify-content: space-between; gap: 8px;
+      flex-shrink: 0;
     }
-    .side-panel-content { padding: 12px; flex: 1; }
-    .side-panel-footer { padding: 12px; border-top: 1px solid var(--border-color); margin-top: auto; }
+    .side-panel-content { 
+      padding: 12px; 
+      flex: 1; 
+      overflow-y: auto;
+      padding-bottom: 80px;
+    }
+    .side-panel-footer { 
+      padding: 12px; 
+      border-top: 1px solid var(--border-color);
+      flex-shrink: 0;
+      background: var(--bg-secondary);
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+    }
 
     .panel-header-buttons { display: flex; gap: 8px; align-items: center; }
     .theme-toggle-panel, .home-btn-panel {
@@ -229,17 +233,8 @@
     .gold-text { color: var(--gold); font-family: 'JetBrains Mono', monospace; }
 
     .game-tabs {
-      display: none; gap: 5px; margin: 6px 0 12px; background: var(--bg-input);
-      border-radius: 20px; padding: 5px; flex-wrap: wrap; border: 1px solid var(--border-color); flex-shrink: 0;
+      display: none;
     }
-    @media (max-width: 500px) { .game-tabs { display: flex; } }
-    .game-tab {
-      flex: 1; text-align: center; padding: 8px 3px; border-radius: 16px;
-      font-weight: 700; background: transparent; border: none; color: var(--text-primary);
-      cursor: pointer; font-size: 0.68rem; min-width: fit-content; transition: all 0.3s ease;
-      font-family: 'Inter', sans-serif;
-    }
-    .game-tab.active { background: var(--bg-tab-active); color: var(--text-on-active); box-shadow: 0 0 15px var(--toxic-glow); }
 
     .game-panel {
       display: none; flex-direction: column; justify-content: center;
@@ -262,11 +257,12 @@
     .slot-icon.win-highlight {
       border-color: var(--toxic) !important;
       box-shadow: 0 0 18px var(--toxic), 0 0 40px var(--toxic-glow-strong);
-      animation: neonPulse 0.5s ease-in-out 3;
+      animation: winHighlightAnim 3s ease-out forwards;
     }
-    @keyframes neonPulse {
-      0%, 100% { box-shadow: 0 0 18px var(--toxic), 0 0 40px var(--toxic-glow); }
-      50% { box-shadow: 0 0 35px var(--toxic), 0 0 60px var(--toxic-glow-strong); }
+    @keyframes winHighlightAnim {
+      0% { border-color: var(--toxic); box-shadow: 0 0 18px var(--toxic), 0 0 40px var(--toxic-glow-strong); }
+      50% { border-color: var(--toxic); box-shadow: 0 0 18px var(--toxic), 0 0 40px var(--toxic-glow-strong); }
+      100% { border-color: var(--slot-border); box-shadow: none; }
     }
     .slot-icon.spinning { animation: slotShake 0.08s infinite; }
     @keyframes slotShake {
@@ -393,7 +389,6 @@
     .mines-info-bar { text-align: center; margin: 6px 0; font-weight: 600; color: var(--text-primary); }
     .mines-info-bar span { color: var(--gold); font-family: 'JetBrains Mono', monospace; }
 
-    /* Shop styles */
     .shop-section { margin-bottom: 10px; }
     .shop-item {
       background: var(--bg-input); border: 1px solid var(--border-color);
@@ -423,7 +418,6 @@
     }
     .buff-timer { font-family: 'JetBrains Mono', monospace; color: var(--gold); }
 
-    /* Debug toggle styles */
     .debug-toggle {
       width: 100%; padding: 10px 14px; margin-bottom: 6px; border-radius: 12px;
       font-weight: 700; background: var(--bg-input); border: 1px solid var(--border-color);
@@ -437,29 +431,34 @@
     }
     .debug-toggle.reset-btn {
       background: var(--loss-red); border-color: var(--loss-red); color: #fff; font-weight: 700;
+      margin-top: auto;
     }
 
-    .beta-notice {
-      position: absolute; inset: 0; background: rgba(0,0,0,0.8); z-index: 200;
-      display: flex; align-items: center; justify-content: center; flex-direction: column;
-      backdrop-filter: blur(8px); border-radius: inherit;
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+      overflow: hidden;
     }
-    .beta-notice-box {
-      background: var(--bg-card-solid); border: 2px solid var(--toxic);
-      border-radius: 20px; padding: 24px; text-align: center;
-      max-width: 320px; color: var(--text-primary);
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 20px;
+      opacity: 0.9;
+      top: -20px;
+      animation: confettiFall 2s linear forwards;
     }
-    .beta-notice-box p { margin-bottom: 20px; font-weight: 600; }
-    .beta-notice-box button {
-      margin: 6px; padding: 10px 24px; border-radius: 12px; font-weight: 700;
-      font-size: 0.9rem; cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
     }
-    .stay-btn { background: var(--toxic); color: #000; }
-    .leave-btn { background: var(--loss-red); color: #fff; }
 
     @media (max-width: 400px) {
       .panel-game-tab { font-size: 0.8rem; padding: 10px 12px; }
-      .game-tab { font-size: 0.62rem; padding: 7px 2px; }
       .slot-icon { width: 46px; height: 56px; font-size: 24px; }
       .balance-box { font-size: 1rem; padding: 8px 12px; }
     }
@@ -467,22 +466,11 @@
 </head>
 <body>
 <div class="casino-phone" id="casinoApp">
-  <!-- Beta notice -->
-  <div class="beta-notice" id="betaNotice">
-    <div class="beta-notice-box">
-      <p>Это бета-версия и в ней много недочётов и багов.<br>Если вам важна стабильность, перейдите на старую версию.</p>
-      <button class="stay-btn" id="stayBeta">Остаться</button>
-      <button class="leave-btn" id="leaveBeta">Уйти</button>
-    </div>
-  </div>
-
-  <!-- Left toggle buttons -->
   <div class="left-toggles">
     <button class="side-toggle" id="leftToggle">▶</button>
     <button class="side-toggle" id="debugToggle" style="display: none;">✦</button>
   </div>
   
-  <!-- Right toggle buttons -->
   <div class="right-toggles">
     <button class="side-toggle" id="rightToggle">★</button>
     <button class="side-toggle" id="shopToggle">⬢</button>
@@ -491,7 +479,6 @@
   
   <div class="side-panel-overlay" id="panelOverlay"></div>
 
-  <!-- Left Panel 1: Games -->
   <div class="side-panel left-panel" id="leftPanel">
     <div class="side-panel-header">Игры</div>
     <div class="side-panel-content">
@@ -504,7 +491,6 @@
     </div>
   </div>
 
-  <!-- Left Panel 2: Debug -->
   <div class="side-panel left-panel" id="debugPanel">
     <div class="side-panel-header">
       <span>Читы</span>
@@ -514,17 +500,15 @@
       <button class="debug-toggle" id="toggleMinesHint">Мины XRay</button>
       <button class="debug-toggle" id="toggleFreeUpgrades">Free Апгрейд + Кредит</button>
       <button class="debug-toggle" id="toggle5xWin">x5 Выигрыш</button>
-      <button class="debug-toggle reset-btn" id="resetData" style="margin-top: auto;">Сброс всего</button>
+      <div style="flex: 1;"></div>
+      <button class="debug-toggle reset-btn" id="resetData">Сброс всего</button>
     </div>
   </div>
 
-  <!-- Right Panel 1: Прокачка -->
   <div class="side-panel right-panel" id="rightPanel">
     <div class="side-panel-header">
       <span>Прокачка ★</span>
       <div class="panel-header-buttons">
-        <a href="https://aurixdev.github.io/lume/casino" class="home-btn-panel" title="Стабильная версия">F</a>
-        <a href="https://aurixdev.github.io/lume/" class="home-btn-panel" title="Поисковик Lume">L</a>
         <button class="theme-toggle-panel" id="themeToggle" title="Переключить тему">🌙</button>
       </div>
     </div>
@@ -553,7 +537,6 @@
     </div>
   </div>
 
-  <!-- Right Panel 2: Shop -->
   <div class="side-panel right-panel shop-panel" id="shopPanel">
     <div class="side-panel-header">
       <span>Магазин ⬢</span>
@@ -574,7 +557,6 @@
     </div>
   </div>
 
-  <!-- Right Panel 3: Buffs -->
   <div class="side-panel right-panel buffs-panel" id="buffsPanel">
     <div class="side-panel-header">
       <span>Баффы ☘</span>
@@ -592,15 +574,6 @@
       <div style="margin-top: 100px;"></div>
       <div class="balance-box">$ <span id="balance">100</span></div>
       <div class="record-box" id="bestWinBox">🏆 <span id="bestWin">0</span></div>
-    </div>
-
-    <div class="game-tabs">
-      <button class="game-tab active" data-tab="slots3">3x</button>
-      <button class="game-tab" data-tab="slots5">5x</button>
-      <button class="game-tab" data-tab="slots35">3x5</button>
-      <button class="game-tab" data-tab="redblack">🔴⚫</button>
-      <button class="game-tab" data-tab="dice">🎲</button>
-      <button class="game-tab" data-tab="mines" id="minesTab">💣</button>
     </div>
 
     <div class="game-scroll-area">
@@ -688,6 +661,8 @@
   </div>
 </div>
 
+<div class="confetti-container" id="confettiContainer"></div>
+
 <script>
   (function() {
     const htmlEl = document.documentElement;
@@ -703,11 +678,23 @@
     applyTheme(currentTheme);
     themeBtn.onclick = () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
 
-    // Beta notice
-    document.getElementById('stayBeta').onclick = () => document.getElementById('betaNotice').style.display = 'none';
-    document.getElementById('leaveBeta').onclick = () => window.location.href = 'https://aurixdev.github.io/lume/casino/android/';
+    const confettiContainer = document.getElementById('confettiContainer');
+    
+    function spawnConfetti() {
+      const colors = ['#00ff64', '#00cc50', '#00b848', '#39ff14', '#66ff99', '#00e55c', '#7fff00', '#32cd32'];
+      for (let i = 0; i < 60; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = (Math.random() * 10 + 6) + 'px';
+        confetti.style.height = (Math.random() * 14 + 8) + 'px';
+        confetti.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+        confettiContainer.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 2500);
+      }
+    }
 
-    // Panels
     const leftPanel = document.getElementById('leftPanel');
     const debugPanel = document.getElementById('debugPanel');
     const rightPanel = document.getElementById('rightPanel');
@@ -755,7 +742,6 @@
     document.getElementById('closeBuffsPanel').onclick = () => { buffsPanel.classList.remove('open'); panelOverlay.classList.remove('active'); };
     panelOverlay.onclick = closeAllPanels;
 
-    // Game state
     let balance = parseInt(localStorage.getItem('cb10')) || 100;
     let bestWin = parseInt(localStorage.getItem('cbest10')) || 0;
     let clickPower = parseInt(localStorage.getItem('cpow10')) || 1;
@@ -785,7 +771,6 @@
     let minesHistory = [];
     let currentMinesBoard = [];
 
-    // Shop system
     const allShopItems = [
       { id: 'stopCollectors', name: 'СТОП КОЛЛЕКТОРЫ!!!', desc: 'Добовление 20 минут к кредиту', cost: 2000, duration: 20*60*1000, type: 'freeze_loan' },
       { id: 'luckSlots', name: 'Везение (слоты)', desc: 'Шанс джекпота 30% на 1 минуту', cost: 500, duration: 60*1000, type: 'slots_luck' },
@@ -890,7 +875,6 @@
     }
 
     function activateBuff(item) {
-      // суммирование времени/использований
       const existing = activeBuffs.find(b => b.id === item.id);
       if (existing) {
         if (item.type === 'sapper') {
@@ -913,7 +897,6 @@
       const now = Date.now();
       activeBuffs = activeBuffs.filter(buff => buff.endTime > now);
       
-      // Вахта
       const watchBuff = activeBuffs.find(b => b.type === 'watch');
       watchActive = !!watchBuff;
       if (watchActive) disableGameButtons();
@@ -946,7 +929,7 @@
         const minutes = Math.floor(remaining / 60000);
         const seconds = Math.floor((remaining % 60000) / 1000);
         html += `<div class="buff-item">
-          <div style="font-weight: 700; ${buff.id === 'cleanSlate' ? 'color: red;' : ''}">${buff.name}</div>
+          <div style="font-weight: 700;">${buff.name}</div>
           <div class="buff-timer">${minutes}:${seconds.toString().padStart(2, '0')}</div>
         </div>`;
       });
@@ -1050,7 +1033,6 @@
       localStorage.setItem('purchased10', JSON.stringify(purchasedItems));
       localStorage.setItem('buffs10', JSON.stringify(activeBuffs));
       localStorage.setItem('sapper10', sapperUsesLeft);
-      localStorage.setItem('watch10', watchActive);
       localStorage.setItem('shopItems10', JSON.stringify(shopItems));
     }
 
@@ -1091,6 +1073,7 @@
       balance += finalAmt;
       if (balance > bestWin) bestWin = balance;
       updateUI();
+      if (amt > 0) spawnConfetti();
     }
 
     function spend(amt) {
@@ -1132,7 +1115,6 @@
       [spin3Btn, spin5Btn, spin35Btn, betRedBtn, betBlackBtn, betWhiteBtn, rollDiceBtn, cashOutMinesBtn].forEach(b => { if(b) b.disabled = false; });
     }
 
-    // Work / Upgrade
     document.getElementById('workClickRight').onclick = () => { balance += getEffectiveClickPower(); updateUI(); };
     document.getElementById('upgradeClickRight').onclick = () => {
       if (freeUpgradesActive) { clickPower++; upgradeCost = Math.floor(upgradeCost * 2); updateUI(); return; }
@@ -1158,11 +1140,9 @@
       balance -= totalDue; loanAmount = 0; loanDeadline = 0; nextLoanAmount = Math.floor(nextLoanAmount * 2); loanCount++; updateUI();
     };
 
-    // Bet displays click to edit
     document.getElementById('rbBetDisplay').onclick = () => { if (!isSpinning) makeBetEditable('rbBetDisplay', 'rbBet', 10); };
     document.getElementById('diceBetDisplay').onclick = () => { if (!isSpinning) makeBetEditable('diceBetDisplay', 'diceBet', 10); };
 
-    // SLOTS 3
     function animateSlots3(callback) {
       const reels = document.querySelectorAll('#reels3 .slot-icon');
       if (isSpinning) return;
@@ -1197,13 +1177,15 @@
         const win = (final[0]===final[1] && final[1]===final[2]) ? (winTable[final[0]]||10) : 0;
         const msg = document.getElementById('msg3');
         if (win>0) {
-          document.querySelectorAll('#reels3 .slot-icon').forEach(el => el.classList.add('win-highlight'));
+          document.querySelectorAll('#reels3 .slot-icon').forEach(el => {
+            el.classList.add('win-highlight');
+            setTimeout(() => el.classList.remove('win-highlight'), 3000);
+          });
           addBalance(win); setMessageElement(msg, `+${winMultiplier5x?win*5:win} 💎`, 'win'); handleStreak('slots3', true);
         } else { setMessageElement(msg, 'Нет совпадений', 'loss'); handleStreak('slots3', false); }
       });
     };
 
-    // SLOTS 5
     function animateSlots5(callback) {
       const reels = document.querySelectorAll('#reels5 .slot-icon');
       if (isSpinning) return;
@@ -1237,19 +1219,23 @@
       animateSlots5(final => {
         let win = 0; const base = winTable[final[0]]||50;
         const reels = document.querySelectorAll('#reels5 .slot-icon');
-        if (final[0]===final[1]&&final[1]===final[2]&&final[2]===final[3]&&final[3]===final[4]) { win = Math.floor(base*1.5); reels.forEach(el=>el.classList.add('win-highlight')); }
-        else if ((final[0]===final[1]&&final[1]===final[2]&&final[2]===final[3])) { win = base; [0,1,2,3].forEach(i=>reels[i].classList.add('win-highlight')); }
-        else if ((final[1]===final[2]&&final[2]===final[3]&&final[3]===final[4])) { win = base; [1,2,3,4].forEach(i=>reels[i].classList.add('win-highlight')); }
-        else if (final[0]===final[1]&&final[1]===final[2]) { win = Math.floor(base*0.5); [0,1,2].forEach(i=>reels[i].classList.add('win-highlight')); }
-        else if (final[1]===final[2]&&final[2]===final[3]) { win = Math.floor(base*0.5); [1,2,3].forEach(i=>reels[i].classList.add('win-highlight')); }
-        else if (final[2]===final[3]&&final[3]===final[4]) { win = Math.floor(base*0.5); [2,3,4].forEach(i=>reels[i].classList.add('win-highlight')); }
+        const winIndices = [];
+        if (final[0]===final[1]&&final[1]===final[2]&&final[2]===final[3]&&final[3]===final[4]) { win = Math.floor(base*1.5); winIndices.push(0,1,2,3,4); }
+        else if ((final[0]===final[1]&&final[1]===final[2]&&final[2]===final[3])) { win = base; winIndices.push(0,1,2,3); }
+        else if ((final[1]===final[2]&&final[2]===final[3]&&final[3]===final[4])) { win = base; winIndices.push(1,2,3,4); }
+        else if (final[0]===final[1]&&final[1]===final[2]) { win = Math.floor(base*0.5); winIndices.push(0,1,2); }
+        else if (final[1]===final[2]&&final[2]===final[3]) { win = Math.floor(base*0.5); winIndices.push(1,2,3); }
+        else if (final[2]===final[3]&&final[3]===final[4]) { win = Math.floor(base*0.5); winIndices.push(2,3,4); }
+        winIndices.forEach(i => {
+          reels[i].classList.add('win-highlight');
+          setTimeout(() => reels[i].classList.remove('win-highlight'), 3000);
+        });
         const msg = document.getElementById('msg5');
         if (win>0) { addBalance(win); setMessageElement(msg, `+${winMultiplier5x?win*5:win} 💎`, 'win'); handleStreak('slots5', true); }
         else { setMessageElement(msg, 'Нет совпадений', 'loss'); handleStreak('slots5', false); }
       });
     };
 
-    // SLOTS 3x5
     function buildGrid35() {
       const grid = document.getElementById('reels35grid');
       grid.innerHTML = '';
@@ -1264,6 +1250,72 @@
       }
     }
 
+    function checkWin35Lines(grid) {
+      const winCells = new Set();
+      let totalWin = 0;
+      
+      for (let r = 0; r < 3; r++) {
+        if (grid[r][0] === grid[r][1] && grid[r][1] === grid[r][2] && grid[r][2] === grid[r][3] && grid[r][3] === grid[r][4]) {
+          totalWin += (winTable[grid[r][0]] || 20) * 2;
+          for (let c = 0; c < 5; c++) winCells.add(`slot35-${r}-${c}`);
+        }
+        else if (grid[r][0] === grid[r][1] && grid[r][1] === grid[r][2] && grid[r][2] === grid[r][3]) {
+          totalWin += (winTable[grid[r][0]] || 20) * 1.2;
+          winCells.add(`slot35-${r}-0`); winCells.add(`slot35-${r}-1`); winCells.add(`slot35-${r}-2`); winCells.add(`slot35-${r}-3`);
+        }
+        else if (grid[r][1] === grid[r][2] && grid[r][2] === grid[r][3] && grid[r][3] === grid[r][4]) {
+          totalWin += (winTable[grid[r][1]] || 20) * 1.2;
+          winCells.add(`slot35-${r}-1`); winCells.add(`slot35-${r}-2`); winCells.add(`slot35-${r}-3`); winCells.add(`slot35-${r}-4`);
+        }
+        else if (grid[r][0] === grid[r][1] && grid[r][1] === grid[r][2]) {
+          totalWin += (winTable[grid[r][0]] || 20) * 0.5;
+          winCells.add(`slot35-${r}-0`); winCells.add(`slot35-${r}-1`); winCells.add(`slot35-${r}-2`);
+        }
+        else if (grid[r][1] === grid[r][2] && grid[r][2] === grid[r][3]) {
+          totalWin += (winTable[grid[r][1]] || 20) * 0.5;
+          winCells.add(`slot35-${r}-1`); winCells.add(`slot35-${r}-2`); winCells.add(`slot35-${r}-3`);
+        }
+        else if (grid[r][2] === grid[r][3] && grid[r][3] === grid[r][4]) {
+          totalWin += (winTable[grid[r][2]] || 20) * 0.5;
+          winCells.add(`slot35-${r}-2`); winCells.add(`slot35-${r}-3`); winCells.add(`slot35-${r}-4`);
+        }
+      }
+      
+      for (let c = 0; c < 5; c++) {
+        if (grid[0][c] === grid[1][c] && grid[1][c] === grid[2][c]) {
+          totalWin += (winTable[grid[0][c]] || 20) * 1.5;
+          winCells.add(`slot35-0-${c}`); winCells.add(`slot35-1-${c}`); winCells.add(`slot35-2-${c}`);
+        }
+      }
+      
+      if (grid[0][0] === grid[1][1] && grid[1][1] === grid[2][2]) {
+        totalWin += (winTable[grid[0][0]] || 20) * 2;
+        winCells.add('slot35-0-0'); winCells.add('slot35-1-1'); winCells.add('slot35-2-2');
+      }
+      if (grid[0][1] === grid[1][2] && grid[1][2] === grid[2][3]) {
+        totalWin += (winTable[grid[0][1]] || 20) * 2;
+        winCells.add('slot35-0-1'); winCells.add('slot35-1-2'); winCells.add('slot35-2-3');
+      }
+      if (grid[0][2] === grid[1][3] && grid[1][3] === grid[2][4]) {
+        totalWin += (winTable[grid[0][2]] || 20) * 2;
+        winCells.add('slot35-0-2'); winCells.add('slot35-1-3'); winCells.add('slot35-2-4');
+      }
+      if (grid[0][4] === grid[1][3] && grid[1][3] === grid[2][2]) {
+        totalWin += (winTable[grid[0][4]] || 20) * 2;
+        winCells.add('slot35-0-4'); winCells.add('slot35-1-3'); winCells.add('slot35-2-2');
+      }
+      if (grid[0][3] === grid[1][2] && grid[1][2] === grid[2][1]) {
+        totalWin += (winTable[grid[0][3]] || 20) * 2;
+        winCells.add('slot35-0-3'); winCells.add('slot35-1-2'); winCells.add('slot35-2-1');
+      }
+      if (grid[0][2] === grid[1][1] && grid[1][1] === grid[2][0]) {
+        totalWin += (winTable[grid[0][2]] || 20) * 2;
+        winCells.add('slot35-0-2'); winCells.add('slot35-1-1'); winCells.add('slot35-2-0');
+      }
+      
+      return { totalWin, winCells };
+    }
+
     spin35Btn.onclick = () => {
       if (isSpinning) return;
       if (!hasBuff('free_slots')) { if (!spend(15)) { alert('Нужно 15$'); return; } }
@@ -1272,46 +1324,44 @@
       let finalGrid = [];
       if (hasSlotsLuck && Math.random() < 0.3) {
         const winIcon = icons5[Math.floor(Math.random()*icons5.length)];
-        for (let r=0; r<3; r++) { finalGrid[r] = []; for (let c=0; c<5; c++) finalGrid[r][c] = winIcon; }
+        for (let r = 0; r < 3; r++) { finalGrid[r] = []; for (let c = 0; c < 5; c++) finalGrid[r][c] = winIcon; }
       } else {
-        for (let r=0; r<3; r++) { finalGrid[r] = []; for (let c=0; c<5; c++) finalGrid[r][c] = icons5[Math.floor(Math.random()*icons5.length)]; }
+        for (let r = 0; r < 3; r++) { finalGrid[r] = []; for (let c = 0; c < 5; c++) finalGrid[r][c] = icons5[Math.floor(Math.random()*icons5.length)]; }
       }
       document.querySelectorAll('#reels35grid .slot-icon').forEach(icon => icon.classList.add('spinning'));
       [0,1,2,3,4].forEach((col, colIndex) => {
         setTimeout(() => {
-          for (let row=0; row<3; row++) {
+          for (let row = 0; row < 3; row++) {
             document.getElementById(`slot35-${row}-${col}`).textContent = finalGrid[row][col];
             document.getElementById(`slot35-${row}-${col}`).classList.remove('spinning');
           }
           if (colIndex === 4) {
             setTimeout(() => {
-              let totalWin = 0; const winCells = new Set();
-              for (let r=0; r<3; r++) {
-                if (finalGrid[r][0]===finalGrid[r][1] && finalGrid[r][1]===finalGrid[r][2] && finalGrid[r][2]===finalGrid[r][3] && finalGrid[r][3]===finalGrid[r][4]) {
-                  totalWin += (winTable[finalGrid[r][0]]||20)*2;
-                  for (let c=0; c<5; c++) winCells.add(`slot35-${r}-${c}`);
+              const { totalWin, winCells } = checkWin35Lines(finalGrid);
+              winCells.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                  el.classList.add('win-highlight');
+                  setTimeout(() => el.classList.remove('win-highlight'), 3000);
                 }
-              }
-              for (let c=0; c<5; c++) {
-                if (finalGrid[0][c]===finalGrid[1][c] && finalGrid[1][c]===finalGrid[2][c]) {
-                  totalWin += (winTable[finalGrid[0][c]]||20);
-                  for (let r=0; r<3; r++) winCells.add(`slot35-${r}-${c}`);
-                }
-              }
-              if (finalGrid[0][0]===finalGrid[1][1] && finalGrid[1][1]===finalGrid[2][2]) { totalWin += (winTable[finalGrid[0][0]]||20); winCells.add('slot35-0-0'); winCells.add('slot35-1-1'); winCells.add('slot35-2-2'); }
-              if (finalGrid[0][4]===finalGrid[1][3] && finalGrid[1][3]===finalGrid[2][2]) { totalWin += (winTable[finalGrid[0][4]]||20); winCells.add('slot35-0-4'); winCells.add('slot35-1-3'); winCells.add('slot35-2-2'); }
-              winCells.forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('win-highlight'); });
+              });
               const msg = document.getElementById('msg35');
-              if (totalWin > 0) { addBalance(totalWin); setMessageElement(msg, `+${winMultiplier5x?totalWin*5:totalWin} 💎`, 'win'); handleStreak('slots35', true); }
-              else { setMessageElement(msg, 'Нет совпадений', 'loss'); handleStreak('slots35', false); }
-              isSpinning = false; enableGameButtons();
+              if (totalWin > 0) {
+                addBalance(totalWin);
+                setMessageElement(msg, `+${winMultiplier5x ? totalWin * 5 : totalWin} 💎`, 'win');
+                handleStreak('slots35', true);
+              } else {
+                setMessageElement(msg, 'Нет совпадений', 'loss');
+                handleStreak('slots35', false);
+              }
+              isSpinning = false;
+              enableGameButtons();
             }, 200);
           }
         }, colIndex * 400);
       });
     };
 
-    // RED/BLACK + WHITE
     function updateRbDisplay() { document.getElementById('rbBetDisplay').textContent = rbBet + '$'; }
     rbMinusBtn.onclick = () => { if (!isSpinning && rbBet > 10) { rbBet = Math.max(10, rbBet - 5); updateRbDisplay(); } };
     rbPlusBtn.onclick = () => { if (!isSpinning && rbBet < balance) { rbBet += 5; updateRbDisplay(); } };
@@ -1330,23 +1380,19 @@
       const hasRbDiceLuck = hasBuff('rb_dice_luck');
       let winColor;
       if (hasRbDiceLuck) {
-        // 30% шанс угадать
         if (Math.random() < 0.3) {
           winColor = choice;
         } else {
-          // противник – случайный из двух других
           const others = choice === 'red' ? ['black','white'] : (choice === 'black' ? ['red','white'] : ['red','black']);
           winColor = others[Math.floor(Math.random() * others.length)];
         }
       } else {
-        // стандарт: белый 1/9, красный 4/9, черный 4/9
         const r = Math.random();
         if (r < 1/9) winColor = 'white';
         else if (r < 5/9) winColor = 'red';
         else winColor = 'black';
       }
 
-      // угол для стрелки: центры сегментов
       const centerAngles = { white: 20, red: [60,140,220,300], black: [100,180,260,340] };
       let angle;
       if (winColor === 'white') angle = 20;
@@ -1372,7 +1418,6 @@
       }, 1900);
     }
 
-    // DICE
     function updateDiceDisplay() { document.getElementById('diceBetDisplay').textContent = diceBet + '$'; }
     diceMinusBtn.onclick = () => { if (!isSpinning && diceBet > 10) { diceBet = Math.max(10, diceBet - 5); updateDiceDisplay(); } };
     dicePlusBtn.onclick = () => { if (!isSpinning && diceBet < balance) { diceBet += 5; updateDiceDisplay(); } };
@@ -1412,14 +1457,13 @@
       }, 2100);
     };
 
-    // MINES
     function generateMineBoard() {
       const mineCount = minesCleared >= 10 ? 2 : 1;
       const board = Array(3).fill('safe');
       let placed = 0;
       while (placed < mineCount) {
         const r = Math.floor(Math.random()*3);
-        if (board[r]==='safe') { board[r]='mine'; placed++; }
+        if (board[r]=='safe') { board[r]='mine'; placed++; }
       }
       return board;
     }
@@ -1437,7 +1481,7 @@
         const cc = document.createElement('div'); cc.className = 'mine-choices';
         currentMinesBoard.forEach((cell, idx) => {
           const btn = document.createElement('div'); btn.className = 'mine-choice-btn'; btn.textContent = '?';
-          if ((minesHintActive || sapperUsesLeft > 0) && cell==='safe') btn.classList.add('highlight');
+          if ((minesHintActive || sapperUsesLeft > 0) && cell=='safe') btn.classList.add('highlight');
           btn.onclick = () => revealMineCell(idx);
           cc.appendChild(btn);
         });
@@ -1448,7 +1492,7 @@
 
     function revealMineCell(idx) {
       if (!minesGameActive || isSpinning) return;
-      if (currentMinesBoard[idx]==='mine') {
+      if (currentMinesBoard[idx]=='mine') {
         minesHistory.push('mine'); minesGameActive = false;
         setMessageElement(document.getElementById('msgMines'), '💥 Взрыв!', 'loss'); handleStreak('mines', false);
       } else {
@@ -1467,8 +1511,10 @@
     cashOutMinesBtn.onclick = () => {
       if (isSpinning) return;
       if (minesGameActive) {
-        addBalance(minesPrize);
-        if (minesPrize > 0) handleStreak('mines', true);
+        if (minesPrize > 0) {
+          addBalance(minesPrize);
+          handleStreak('mines', true);
+        }
         minesGameActive = false; minesCleared = 0; minesPrize = 0; minesHistory = [];
         document.getElementById('minesCleared').textContent = '0'; document.getElementById('minesPrize').textContent = '0';
         renderMinesColumn();
@@ -1481,32 +1527,15 @@
       }
     };
 
-    // Tabs
     document.querySelectorAll('.panel-game-tab').forEach(tab => {
       tab.onclick = () => {
         document.querySelectorAll('.panel-game-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-        document.querySelectorAll('.game-tab').forEach(t => t.classList.remove('active'));
-        const matchingBottom = document.querySelector(`.game-tab[data-tab="${tab.dataset.tab}"]`);
-        if (matchingBottom) matchingBottom.classList.add('active');
         document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
         document.getElementById(tab.dataset.tab).classList.add('active');
       };
     });
 
-    document.querySelectorAll('.game-tab').forEach(tab => {
-      tab.onclick = () => {
-        document.querySelectorAll('.game-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        document.querySelectorAll('.panel-game-tab').forEach(t => t.classList.remove('active'));
-        const matchingPanel = document.querySelector(`.panel-game-tab[data-tab="${tab.dataset.tab}"]`);
-        if (matchingPanel) matchingPanel.classList.add('active');
-        document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
-        document.getElementById(tab.dataset.tab).classList.add('active');
-      };
-    });
-
-    // Debug activation
     function handleMinesTabClick() {
       minesTabClicks++;
       if (minesTabClicks >= 10 && !debugVisible) {
@@ -1515,7 +1544,6 @@
         minesTabClicks = 0;
       }
     }
-    document.getElementById('minesTab').addEventListener('click', handleMinesTabClick);
     document.getElementById('minesTabPanel').addEventListener('click', handleMinesTabClick);
     
     document.getElementById('bestWinBox').addEventListener('click', () => {
@@ -1562,9 +1590,7 @@
       }
     }
 
-    // Init
     if (!shopRefreshTime || shopRefreshTime < Date.now()) {
-      // не обновляем автоматически, только если первый запуск
       if (!shopItems.length) {
         shopItems = getAvailableShopItems();
         purchasedItems = [];
