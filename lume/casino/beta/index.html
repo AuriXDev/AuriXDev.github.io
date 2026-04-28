@@ -1155,6 +1155,17 @@
             cursor: pointer;
             color: #000;
         }
+        .loading-spinner {
+            text-align: center;
+            font-size: 40px;
+            padding: 32px;
+            animation: spin 1s linear infinite;
+            color: var(--text-primary);
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -1291,7 +1302,7 @@
             </div>
         </div>
 
-        <!-- Секция Настроек (ЛИДЕРБОРД + кнопки) -->
+        <!-- Секция Настроек (ЛИДЕРБОРД) -->
         <div class="content-section" id="settingsSection">
             <div class="section-scroll" style="display: flex; flex-direction: column; gap: 12px; padding: 12px;">
                 <!-- Лидерборд -->
@@ -2102,34 +2113,52 @@
         let playerName = localStorage.getItem('playerName') || '';
 
         async function updateLeaderboard() {
+            const container = document.getElementById('leaderboardList');
+            if (!container) return;
+
+            container.innerHTML = '<div class="loading-spinner">✦</div>';
+
             try {
                 const res = await fetch(LEADERBOARD_URL);
                 let data = await res.json();
                 if (!Array.isArray(data)) data = [];
-                data.sort((a,b) => b.money - a.money);
-                const container = document.getElementById('leaderboardList');
-                if (!container) return;
+
+                data.sort((a, b) => b.money - a.money);
+
                 container.innerHTML = '';
-                for (let i=0; i<Math.min(100, data.length); i++) {
-                    const row = document.createElement('div');
-                    row.className = 'leaderboard-row';
-                    if (playerName && data[i].name === playerName) row.classList.add('highlight');
-                    let medal = '';
-                    if (i === 0) medal = '🥇 ';
-                    else if (i === 1) medal = '🥈 ';
-                    else if (i === 2) medal = '🥉 ';
-                    row.innerHTML = `
-                        <div class="rank">${medal}${i+1}</div>
-                        <div class="name">${escapeHtml(data[i].name)}</div>
-                        <div class="money">${data[i].money} $</div>
-                    `;
-                    container.appendChild(row);
+
+                if (data.length === 0) {
+                    container.innerHTML = '<div style="text-align:center; padding: 20px; color: var(--text-muted);">Нет данных</div>';
+                } else {
+                    for (let i = 0; i < Math.min(100, data.length); i++) {
+                        const row = document.createElement('div');
+                        row.className = 'leaderboard-row';
+                        if (playerName && data[i].name === playerName) row.classList.add('highlight');
+
+                        let medal = '';
+                        if (i === 0) medal = '🥇 ';
+                        else if (i === 1) medal = '🥈 ';
+                        else if (i === 2) medal = '🥉 ';
+
+                        row.innerHTML = `
+                    <div class="rank">${medal}${i + 1}</div>
+                    <div class="name">${escapeHtml(data[i].name)}</div>
+                    <div class="money">${data[i].money} $</div>
+                `;
+                        container.appendChild(row);
+                    }
                 }
+
+                // Обновляем статистику текущего игрока
                 const myEntry = data.find(e => e.name === playerName);
-                document.getElementById('playerPlace').textContent = myEntry ? `#${data.indexOf(myEntry)+1}` : '—';
+                document.getElementById('playerPlace').textContent = myEntry ? `#${data.indexOf(myEntry) + 1}` : '—';
                 document.getElementById('playerNameDisplay').textContent = playerName || 'Гость';
                 document.getElementById('playerMoneyDisplay').textContent = (myEntry ? myEntry.money : balance) + ' $';
-            } catch(e) { console.warn('Leaderboard load error', e); }
+
+            } catch (e) {
+                console.warn('Leaderboard load error', e);
+                container.innerHTML = '<div style="text-align:center; padding: 20px; color: red;">Ошибка загрузки</div>';
+            }
         }
 
         async function sendMyScore() {
@@ -2183,7 +2212,6 @@
             });
         }
 
-        // Если секция настроек уже активна (редко)
         if (document.getElementById('settingsSection').classList.contains('active')) {
             initLeaderboardOnOpen();
         }
