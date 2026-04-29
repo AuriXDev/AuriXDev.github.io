@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Lume | Важная информация</title>
+    <style>
+        :root {
+            --toxic: #00ff64;
+            --toxic-dim: #00cc50;
+            --toxic-glow: rgba(0, 255, 100, 0.3);
+            --gold: #ffd700;
+            --gold-glow: rgba(255, 215, 0, 0.4);
+            --bg-primary: #050505;
+            --bg-secondary: #0f0f0f;
+            --bg-card: rgba(20, 20, 20, 0.8);
+            --bg-card-solid: #141414;
+            --bg-input: #1a1a1a;
+            --text-primary: var(--toxic);
+            --text-secondary: #00cc50;
+            --text-muted: #888;
+            --border-color: rgba(0, 255, 100, 0.15);
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --transition-speed: 0.3s;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f0f0f0;
+            --bg-secondary: #e8e8e8;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --bg-card-solid: #ffffff;
+            --bg-input: #e0e0e0;
+            --text-primary: #00b848;
+            --text-muted: #666;
+            --border-color: rgba(0, 180, 70, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-primary);
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            transition: background var(--transition-speed) ease;
+        }
+
+        .disclaimer-card {
+            max-width: 560px;
+            width: 100%;
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border-color);
+            border-radius: 48px;
+            padding: 32px 28px;
+            box-shadow: var(--shadow-card);
+            text-align: center;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--toxic);
+            text-shadow: 0 0 12px var(--toxic-glow);
+            margin-bottom: 16px;
+            letter-spacing: 4px;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+        }
+
+        .warning-icon {
+            font-size: 4rem;
+            margin-bottom: 16px;
+            display: inline-block;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.08); text-shadow: 0 0 12px var(--gold-glow); }
+        }
+
+        .text-block {
+            text-align: left;
+            background: var(--bg-input);
+            padding: 20px;
+            border-radius: 28px;
+            margin: 20px 0;
+            border-left: 4px solid var(--toxic);
+        }
+
+        .text-block p {
+            margin-bottom: 12px;
+            line-height: 1.45;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .text-block strong {
+            color: var(--gold);
+        }
+
+        .age-badge {
+            display: inline-block;
+            background: rgba(0, 255, 100, 0.15);
+            border: 1px solid var(--toxic);
+            border-radius: 60px;
+            padding: 6px 20px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin: 12px 0 8px;
+            color: var(--toxic);
+        }
+
+        .age-badge span {
+            font-size: 1.3rem;
+            margin-right: 6px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 28px 0 20px;
+            background: var(--bg-card-solid);
+            padding: 12px;
+            border-radius: 60px;
+            border: 1px solid var(--border-color);
+        }
+
+        .checkbox-container input {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: var(--toxic);
+        }
+
+        .checkbox-container label {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            background: transparent;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--toxic);
+            color: #000;
+            box-shadow: 0 0 8px var(--toxic-glow);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--toxic-glow);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--border-color);
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--toxic);
+            color: var(--toxic);
+        }
+
+        .btn-primary:disabled, .btn-outline:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .footer-note {
+            margin-top: 28px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            border-top: 1px dashed var(--border-color);
+            padding-top: 18px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--toxic);
+        }
+
+        @media (max-width: 500px) {
+            .disclaimer-card {
+                padding: 24px 20px;
+                border-radius: 32px;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            .text-block {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="disclaimer-card">
+    <div class="logo">LUME | CASINO</div>
+    <div class="warning-icon">♕</div>
+    <h1>Важная информация</h1>
+
+    <div class="age-badge">
+        <span>🔞</span> 18+
+    </div>
+
+    <div class="text-block">
+        <p>• Вся валюта в игре (<strong>монеты, кредиты, выигрыши</strong>) является <strong>исключительно игровой</strong> и не имеет реальной денежной ценности</p>
+        <p>• Lume Casino — это <strong>развлекательная игра</strong>, имитирующая механики казино. Вы не можете обменять игровую валюту на реальные деньги, товары или услуги</p>
+        <p>• Игра не является азартной, не проводит лотерей и не принимает реальные ставки. Все действия внутри игры направлены только на развлечение</p>
+        <p>• Администрация не несёт ответственности за возможные психологические последствия при чрезмерном увлечении игрой. Рекомендуется соблюдать меру и делать перерывы</p>
+        <p><strong>⚠️ Лицам младше 18 лет доступ к игре запрещён.</strong> Нажимая «Я подтверждаю», вы подтверждаете, что достигли совершеннолетия и согласны с правилами</p>
+    </div>
+
+    <div class="checkbox-container">
+        <input type="checkbox" id="agreeCheck">
+        <label for="agreeCheck">Я ознакомлен(а) и подтверждаю, что мне 18+ лет, а игровая валюта не является реальной</label>
+    </div>
+
+    <div class="buttons">
+        <button class="btn btn-primary" id="confirmBtn" disabled>Я подтверждаю</button>
+        <a href="https://aurixdev.github.io/lume/" class="btn btn-outline" target="_blank">На главную Lume</a>
+    </div>
+
+    <div class="footer-note">
+        © Lume | Только для развлечения. Не содержит реальных денег.
+    </div>
+</div>
+
+<button class="theme-toggle" id="themeToggle" title="Переключить тему">🌙</button>
+
+<script>
+    (function() {
+        const htmlEl = document.documentElement;
+        const themeBtn = document.getElementById('themeToggle');
+        let currentTheme = localStorage.getItem('ct10_disclaimer') || 'dark';
+
+        function applyTheme(theme) {
+            currentTheme = theme;
+            htmlEl.setAttribute('data-theme', theme);
+            themeBtn.textContent = theme === 'dark' ? '🌙' : '☀️';
+            localStorage.setItem('ct10_disclaimer', theme);
+        }
+        applyTheme(currentTheme);
+        themeBtn.onclick = () => applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+
+        const checkBox = document.getElementById('agreeCheck');
+        const confirmBtn = document.getElementById('confirmBtn');
+
+        function updateButtonState() {
+            confirmBtn.disabled = !checkBox.checked;
+        }
+
+        checkBox.addEventListener('change', updateButtonState);
+        updateButtonState();
+
+        confirmBtn.addEventListener('click', () => {
+            if (checkBox.checked) {
+                localStorage.setItem('lume_disclaimer_accepted', 'true');
+                window.location.href = 'https://aurixdev.github.io/lume/casino/';
+            }
+        });
+    })();
+</script>
+</body>
+</html>
