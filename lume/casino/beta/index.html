@@ -1166,6 +1166,14 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
+        @keyframes buffWarningPulse {
+            0%, 100% { color: var(--text-primary); box-shadow: none; }
+            50% { color: #ff0040; box-shadow: 0 0 18px rgba(255, 0, 64, 0.7); }
+        }
+        .nav-btn.buff-warning {
+            animation: buffWarningPulse 0.6s infinite;
+            border-radius: 16px;
+        }
     </style>
 </head>
 <body>
@@ -1521,16 +1529,16 @@
 
         const allShopItems = [
             { id:'stopCollectors', name:'СТОП КОЛЛЕКТОРЫ!!!', desc:'Добавление 20 минут к кредиту', cost:2000, duration:20*60*1000, type:'freeze_loan' },
-            { id:'luckSlots', name:'Везение (слоты)', desc:'Шанс джекпота 30% на 1 минуту', cost:500, duration:60*1000, type:'slots_luck' },
-            { id:'clover', name:'Клевер', desc:'Шанс в колесе/костях 30% на 1 минуту', cost:500, duration:60*1000, type:'rb_dice_luck' },
+            { id:'luckSlots', name:'Везение (слоты)', desc:шанс МЕГА джекпота 15% на 1 минуту', cost:1500, duration:60*1000, type:'slots_luck' },
+            { id:'clover', name:'Клевер', desc:'Шанс в колесе/костях 30% на 1 минуту', cost:1500, duration:60*1000, type:'rb_dice_luck' },
             { id:'sapper', name:'Сапер', desc:'Видит 5 правильных ходов в минах', cost:400, duration:Infinity, type:'sapper', uses:5 },
             { id:'cleanSlate', name:'С чистого листа', desc:'Сброс всего прогресса', cost:1000000, duration:0, type:'reset' },
             { id:'watch', name:'Вахта', desc:'+10 к силе клика, блокирует игры на 2 минуты', cost:1000, duration:2*60*1000, type:'watch' },
             { id:'mechaHand', name:'МЕХА-РУКА', desc:'+10 к автокликеру на минуту', cost:1500, duration:60*1000, type:'mecha_hand' },
-            { id:'goodFriend', name:'Хороший знакомый', desc:'Бесплатные депы в слотах на 3 минуты', cost:950, duration:3*60*1000, type:'free_slots' },
-            { id:'gift', name:'Подарок', desc:'Дает 10-10000 монет', cost:0, duration:0, type:'gift', special:true, chance:0.02 },
+            { id:'goodFriend', name:'Хороший знакомый', desc:'Бесплатные депы в слотах на 3 минуты', cost:1986, duration:3*60*1000, type:'free_slots' },
+            { id:'gift', name:'Подарок', desc:'Дает 10-10000 монет', cost:0, duration:0, type:'gift', special:true, chance:0.05 },
             { id:'forgive', name:'Понять и простить', desc:'Погашает кредит с 50% скидкой', cost:2000, duration:0, type:'forgive', special:true, chance:0.02 },
-            { id:'godHelp', name:'Божья помощь', desc:'+1-5 к силе клика', cost:0, duration:0, type:'god_help', special:true, chance:0.01 }
+            { id:'godHelp', name:'Божья помощь', desc:'+1-5 к силе клика', cost:0, duration:0, type:'god_help', special:true, chance:0.02 }
         ];
 
         let shopItems = JSON.parse(localStorage.getItem('shopItems10')) || [];
@@ -1855,7 +1863,7 @@
             isSpinning = true; disableGameButtons();
             const hasSlotsLuck = hasBuff('slots_luck');
             let finalSymbols;
-            if (hasSlotsLuck && Math.random() < 0.3) {
+            if (hasSlotsLuck && Math.random() < 0.15) {
                 const sym = REEL_SYMBOLS[Math.floor(Math.random()*SYMBOLS_COUNT)];
                 finalSymbols = [sym,sym,sym];
             } else {
@@ -1883,7 +1891,7 @@
             isSpinning = true; disableGameButtons();
             const hasSlotsLuck = hasBuff('slots_luck');
             let finalSymbols;
-            if (hasSlotsLuck && Math.random() < 0.3) {
+            if (hasSlotsLuck && Math.random() < 0.15) {
                 const sym = REEL_SYMBOLS[Math.floor(Math.random()*SYMBOLS_COUNT)];
                 finalSymbols = [sym,sym,sym,sym,sym];
             } else {
@@ -1949,7 +1957,7 @@
             isSpinning = true; disableGameButtons();
             const hasSlotsLuck = hasBuff('slots_luck');
             let finalGrid = [];
-            if (hasSlotsLuck && Math.random() < 0.3) {
+            if (hasSlotsLuck && Math.random() < 0.15) {
                 const winIcon = icons35[Math.floor(Math.random()*icons35.length)];
                 for (let r=0; r<3; r++) { finalGrid[r]=[]; for (let c=0; c<5; c++) finalGrid[r][c]=winIcon; }
             } else {
@@ -2105,6 +2113,29 @@
 
         if (!shopRefreshTime || shopRefreshTime < Date.now()) {
             if (!shopItems.length) { shopItems = getAvailableShopItems(); purchasedItems = []; shopRefreshTime = Date.now() + 60*60*1000; }
+        }
+
+        function updateBuffWarning() {
+        const btn = document.querySelector('.nav-btn[data-section="buffs"]');
+            if (!btn) return;
+    
+            const now = Date.now();
+            // Фильтруем уже истекшие баффы
+            const active = activeBuffs.filter(b => b.endTime > now);
+    
+            if (active.length === 0) {
+                 btn.classList.remove('buff-warning');
+                 return;
+            }
+    
+            // Находим минимальное оставшееся время
+            const minRemaining = Math.min(...active.map(b => b.endTime - now));
+    
+            if (minRemaining <= 10000) {
+                 btn.classList.add('buff-warning');
+            } else {
+                 btn.classList.remove('buff-warning');
+            }
         }
 
         initReels3(); initReels5(); buildGrid35(); renderMinesColumn();
