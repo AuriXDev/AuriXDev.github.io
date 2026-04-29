@@ -1532,13 +1532,13 @@
             { id:'luckSlots', name:'Везение (слоты)', desc:'Шанс МЕГА джекпота 15% на 1 минуту', cost:1500, duration:60*1000, type:'slots_luck' },
             { id:'clover', name:'Клевер', desc:'Шанс в колесе/костях 30% на 1 минуту', cost:1500, duration:60*1000, type:'rb_dice_luck' },
             { id:'sapper', name:'Сапер', desc:'Видит 5 правильных ходов в минах', cost:400, duration:Infinity, type:'sapper', uses:5 },
-            { id:'cleanSlate', name:'С чистого листа', desc:'Сброс всего прогресса', cost:1000000, duration:0, type:'reset' },
+            { id:'cleanSlate', name:'Перерождение', desc:'Сброс всего прогресса', cost:10000000, duration:0, type:'reset' },
             { id:'watch', name:'Вахта', desc:'+10 к силе клика, блокирует игры на 2 минуты', cost:1000, duration:2*60*1000, type:'watch' },
             { id:'mechaHand', name:'МЕХА-РУКА', desc:'+10 к автокликеру на минуту', cost:1500, duration:60*1000, type:'mecha_hand' },
             { id:'goodFriend', name:'Хороший знакомый', desc:'Бесплатные депы в слотах на 3 минуты', cost:1986, duration:3*60*1000, type:'free_slots' },
             { id:'gift', name:'Подарок', desc:'Дает 10-10000 монет', cost:0, duration:0, type:'gift', special:true, chance:0.05 },
-            { id:'forgive', name:'Понять и простить', desc:'Погашает кредит с 50% скидкой', cost:2000, duration:0, type:'forgive', special:true, chance:0.02 },
-            { id:'godHelp', name:'Божья помощь', desc:'+1-5 к силе клика', cost:0, duration:0, type:'god_help', special:true, chance:0.02 }
+            { id:'forgive', name:'Помощь малоимущим', desc:'Погашает кредит с 50% скидкой (убедитесь что хватает на погащение половины кредита)', cost:0, duration:0, type:'forgive', special:true, chance:0.02 },
+            { id:'godHelp', name:'Повышение', desc:'+ 1-5 к силе клика', cost:10000, duration:0, type:'god_help', special:true, chance:0.02 }
         ];
 
         let shopItems = JSON.parse(localStorage.getItem('shopItems10')) || [];
@@ -1558,7 +1558,7 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [items[i], items[j]] = [items[j], items[i]];
             }
-            return items.slice(0, 3);
+            return items.slice(0, 4);
         }
 
         function refreshShop(paid = false) {
