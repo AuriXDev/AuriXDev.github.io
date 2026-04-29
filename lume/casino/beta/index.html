@@ -1083,7 +1083,7 @@
         }
         .leaderboard-header {
             display: grid;
-            grid-template-columns: 70px 1fr 100px;
+            grid-template-columns: 42px 60px 1fr 100px;
             background: var(--bg-input);
             padding: 8px 12px;
             font-weight: 800;
@@ -1098,7 +1098,7 @@
         }
         .leaderboard-row {
             display: grid;
-            grid-template-columns: 70px 1fr 100px;
+            grid-template-columns: 42px 60px 1fr 100px;
             padding: 8px 12px;
             border-bottom: 1px solid var(--border-color);
         }
@@ -1120,6 +1120,12 @@
             text-align: right;
             font-family: 'JetBrains Mono', monospace;
             color: var(--gold);
+        }
+        .leaderboard-header span:nth-child(2),
+        .leaderboard-row .rebirths {
+            width: 60px;
+            text-align: center;
+            color: darkred;
         }
         .settings-buttons {
             display: flex;
@@ -1173,7 +1179,10 @@
         .nav-btn.buff-warning .buff-icon {
             animation: buffWarningPulse 0.6s infinite;
             display: inline-block;
-         }
+        }
+        #shopSection .right-section:first-child {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1326,6 +1335,7 @@
                     <div class="leaderboard-table-container">
                         <div class="leaderboard-header">
                             <span>Место</span>
+                            <span>Rebirth</span>
                             <span>Игрок</span>
                             <span>Деньги</span>
                         </div>
@@ -1337,11 +1347,11 @@
             <div class="settings-buttons">
                 <a href="https://aurixdev.github.io/lume/casino" class="home-btn-panel" title="Стабильная версия">β</a>
                 <a href="https://aurixdev.github.io/lume/" class="home-btn-panel" title="Lume">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-</a>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                </a>
                 <a href="https://github.com/AuriXDev/AuriXDev.github.io/tree/main/lume" class="home-btn-panel" title="Github">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-</a>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                </a>
                 <button class="theme-toggle-panel" id="themeToggle" title="Переключить тему">🌙</button>
             </div>
         </div>
@@ -1521,6 +1531,7 @@
         let isSpinning = false;
         let autoIncomeRate = parseInt(localStorage.getItem('cauto10B')) || 0;
         let autoIncomeCost = parseInt(localStorage.getItem('cautoCost10B')) || 100;
+        let rebirths = parseInt(localStorage.getItem('rebirths_beta')) || 0;
 
         let streaks = { slots3:0, slots5:0, slots35:0, redblack:0, dice:0, mines:0 };
 
@@ -1536,7 +1547,8 @@
             { id:'watch', name:'Вахта', desc:'+10 к силе клика, блокирует игры на 2 минуты', cost:1000, duration:2*60*1000, type:'watch' },
             { id:'mechaHand', name:'МЕХА-РУКА', desc:'+10 к автокликеру на минуту', cost:1500, duration:60*1000, type:'mecha_hand' },
             { id:'goodFriend', name:'Хороший знакомый', desc:'Бесплатные депы в слотах на 3 минуты', cost:1986, duration:3*60*1000, type:'free_slots' },
-            { id:'gift', name:'Подарок', desc:'Дает 10-10000 монет', cost:0, duration:0, type:'gift', special:true, chance:0.05 },
+            { id:'gift', name:'Подарок', desc:'Дает от 1000 до 1000000 монет', cost:0, duration:0, type:'gift', special:true, chance:0.05 },
+            { id:'gift-mini', name:'Лотерея', desc:'Дает от 10 до 1000 монет', cost:500, duration:0, type:'gift-mini' },
             { id:'forgive', name:'Помощь малоимущим', desc:'Погашает кредит с 50% скидкой (убедитесь что хватает на погащение половины кредита)', cost:0, duration:0, type:'forgive', special:true, chance:0.02 },
             { id:'godHelp', name:'Повышение', desc:'+ 1-5 к силе клика', cost:10000, duration:0, type:'god_help', special:true, chance:0.02 }
         ];
@@ -1608,11 +1620,12 @@
                 case 'slots_luck': activateBuff(item); break;
                 case 'rb_dice_luck': activateBuff(item); break;
                 case 'sapper': sapperUsesLeft += item.uses; break;
-                case 'reset': resetGame(); break;
+                case 'reset': rebirths++; resetGame(); break;
                 case 'watch': activateBuff(item); break;
                 case 'mecha_hand': activateBuff(item); break;
                 case 'free_slots': activateBuff(item); break;
-                case 'gift': balance += Math.floor(Math.random() * 9991) + 10; break;
+                case 'gift': balance += Math.floor(Math.random() * (1000000 - 1000 + 1)) + 1000; break;
+                case 'gift-mini': balance += Math.floor(Math.random() * (1000 - 10 + 1)) + 10; break;
                 case 'forgive':
                     if (loanAmount > 0) {
                         const halfDue = Math.floor(loanAmount * (1 + getLoanInterest()/100) * 0.5);
@@ -1741,6 +1754,7 @@
             localStorage.setItem('buffs10B', JSON.stringify(activeBuffs));
             localStorage.setItem('sapper10B', sapperUsesLeft);
             localStorage.setItem('shopItems10B', JSON.stringify(shopItems));
+            localStorage.setItem('rebirths_beta', rebirths);
         }
 
         function setMessageElement(el, text, type) {
@@ -2116,25 +2130,25 @@
         }
 
         function updateBuffWarning() {
-        const btn = document.querySelector('.nav-btn[data-section="buffs"]');
+            const btn = document.querySelector('.nav-btn[data-section="buffs"]');
             if (!btn) return;
-    
+
             const now = Date.now();
             // Фильтруем уже истекшие баффы
             const active = activeBuffs.filter(b => b.endTime > now);
-    
+
             if (active.length === 0) {
-                 btn.classList.remove('buff-warning');
-                 return;
+                btn.classList.remove('buff-warning');
+                return;
             }
-    
+
             // Находим минимальное оставшееся время
             const minRemaining = Math.min(...active.map(b => b.endTime - now));
-    
+
             if (minRemaining <= 10000) {
-                 btn.classList.add('buff-warning');
+                btn.classList.add('buff-warning');
             } else {
-                 btn.classList.remove('buff-warning');
+                btn.classList.remove('buff-warning');
             }
         }
 
@@ -2144,7 +2158,7 @@
         setInterval(() => { updateShopTimer(); renderBuffs(); applyBuffs(); updateLoanTimer(); updateBuffWarning(); }, 1000);
 
         // ========== ЛИДЕРБОРД (Google Sheets) ==========
-        const LEADERBOARD_URL = 'https://script.google.com/macros/s/AKfycbweFQ3q6zXZn0NXHAxoJEx2LH--sx20kqISsj7Np9OAxUyLsygvzcx1VnXjGsV1eM84gg/exec';
+        const LEADERBOARD_URL = 'https://script.google.com/macros/s/AKfycbw6lTm14Fbom7Cx8ut4Nt-cCEqQCuF3AjD0_jVTMzu1dE7yeNIQL_8bGFWggYEIMU2dvw/exec';
         let playerName = localStorage.getItem('playerName') || '';
 
         async function updateLeaderboard() {
@@ -2175,8 +2189,11 @@
                         else if (i === 1) medal = '🥈 ';
                         else if (i === 2) medal = '🥉 ';
 
+                        const rebirthValue = data[i].rebirths !== undefined ? data[i].rebirths : 0;
+
                         row.innerHTML = `
                     <div class="rank">${medal}${i + 1}</div>
+                    <div class="rebirths">${rebirthValue}</div>
                     <div class="name">${escapeHtml(data[i].name)}</div>
                     <div class="money">${data[i].money} $</div>
                 `;
@@ -2203,10 +2220,17 @@
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: playerName, money: Math.floor(balance) })
+                    body: JSON.stringify({
+                        name: playerName,
+                        money: Math.floor(balance),
+                        rebirths: rebirths
+                    })
                 });
-            } catch(e) { console.warn('Send score error', e); }
+            } catch(e) { console.warn(e); }
         }
+
+        window.devAddMoney = (amt) => { addBalance(amt); };
+        window.devSendScore = () => { if(typeof sendMyScore === 'function') sendMyScore(); };
 
         function showNameInput() {
             const container = document.getElementById('nameInputContainer');
