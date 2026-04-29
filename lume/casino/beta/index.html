@@ -2141,7 +2141,7 @@
         initReels3(); initReels5(); buildGrid35(); renderMinesColumn();
         updateUI(); updateRbDisplay(); updateDiceDisplay(); renderShop(); renderBuffs(); applyBuffs();
 
-        setInterval(() => { updateShopTimer(); renderBuffs(); applyBuffs(); updateLoanTimer(); }, 1000);
+        setInterval(() => { updateShopTimer(); renderBuffs(); applyBuffs(); updateLoanTimer(); updateBuffWarning(); }, 1000);
 
         // ========== ЛИДЕРБОРД (Google Sheets) ==========
         const LEADERBOARD_URL = 'https://script.google.com/macros/s/AKfycbweFQ3q6zXZn0NXHAxoJEx2LH--sx20kqISsj7Np9OAxUyLsygvzcx1VnXjGsV1eM84gg/exec';
