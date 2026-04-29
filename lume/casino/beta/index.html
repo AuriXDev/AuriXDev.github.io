@@ -1189,14 +1189,14 @@
                 <!-- Slots 5x -->
                 <div id="slots5" class="game-panel">
                     <div class="reels-row slots5-row" id="reels5container"></div>
-                    <button class="bet-btn" id="spin5">Крутить (10$)</button>
+                    <button class="bet-btn" id="spin5">Крутить (20$)</button>
                     <div class="message" id="msg5"></div>
                     <div id="streak5" style="text-align:center;"></div>
                 </div>
                 <!-- Slots 3x5 -->
                 <div id="slots35" class="game-panel">
                     <div id="reels35grid"></div>
-                    <button class="bet-btn" id="spin35">Крутить (15$)</button>
+                    <button class="bet-btn" id="spin35">Крутить (100$)</button>
                     <div class="message" id="msg35"></div>
                     <div id="streak35" style="text-align:center;"></div>
                 </div>
@@ -1244,7 +1244,7 @@
                 <div id="mines" class="game-panel">
                     <div class="mines-column" id="minesColumn"></div>
                     <div class="mines-info-bar">Пройдено: <span id="minesCleared">0</span> | Выигрыш: <span id="minesPrize">0</span>$</div>
-                    <button class="bet-btn" id="cashOutMines">Забрать выигрыш</button>
+                    <button class="bet-btn" id="cashOutMines">Старт/Забрать</button>
                     <div class="message" id="msgMines"></div>
                     <div id="streakMines" style="text-align:center;"></div>
                 </div>
@@ -1328,8 +1328,12 @@
             <!-- Кнопки снизу (без position:fixed) -->
             <div class="settings-buttons">
                 <a href="https://aurixdev.github.io/lume/casino" class="home-btn-panel" title="Стабильная версия">β</a>
-                <a href="https://aurixdev.github.io/lume/" class="home-btn-panel" title="Lume">L</a>
-                <a href="https://github.com/AuriXDev/AuriXDev.github.io/tree/main/lume" class="home-btn-panel" title="Github">G</a>
+                <a href="https://aurixdev.github.io/lume/" class="home-btn-panel" title="Lume">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+</a>
+                <a href="https://github.com/AuriXDev/AuriXDev.github.io/tree/main/lume" class="home-btn-panel" title="Github">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+</a>
                 <button class="theme-toggle-panel" id="themeToggle" title="Переключить тему">🌙</button>
             </div>
         </div>
@@ -1875,7 +1879,7 @@
         // Slots 5x
         document.getElementById('spin5').onclick = () => {
             if (isSpinning) return;
-            if (!hasBuff('free_slots')) { if (!spend(10)) { alert('Мало монет'); return; } }
+            if (!hasBuff('free_slots')) { if (!spend(20)) { alert('Мало монет'); return; } }
             isSpinning = true; disableGameButtons();
             const hasSlotsLuck = hasBuff('slots_luck');
             let finalSymbols;
@@ -1941,7 +1945,7 @@
 
         document.getElementById('spin35').onclick = () => {
             if (isSpinning) return;
-            if (!hasBuff('free_slots')) { if (!spend(15)) { alert('Нужно 15$'); return; } }
+            if (!hasBuff('free_slots')) { if (!spend(100)) { alert('Нужно 100$'); return; } }
             isSpinning = true; disableGameButtons();
             const hasSlotsLuck = hasBuff('slots_luck');
             let finalGrid = [];
