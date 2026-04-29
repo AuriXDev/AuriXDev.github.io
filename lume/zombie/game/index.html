@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>2D Terraria (улучшенная)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        body {
+            background: #000;
+            overflow: hidden;
+            position: fixed;
+            inset: 0;
+            touch-action: manipulation;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="game"></canvas>
+    <script>
+        (function() {
+            const canvas = document.getElementById('game');
+            const ctx = canvas.getContext('2d');
+
+            // ───────────────── НАСТРОЙКИ ─────────────────
+            const WORLD_WIDTH = 1000;
+            const WORLD_HEIGHT = 375;
+
+            const BLOCK_SIZE = 20;
+            const PLAYER_W = 1.7;
+            const PLAYER_H = 2.5;
+            const JUMP_HEIGHT_BLOCKS = 4.5;
+            const GRAVITY = 2100;
+            const PLAYER_SPEED = 12;
+            const DAY_DURATION = 100;
+            const NIGHT_DURATION = 150;
+            const FULL_DAY = DAY_DURATION + NIGHT_DURATION;
+            const MAX_ZOMBIES = 500;
+            const ZOMBIE_SPAWN_INTERVAL_MIN = 3;
+            const ZOMBIE_SPAWN_INTERVAL_MAX = 5;
+            const ZOMBIE_HP = 100;
+            const ZOMBIE_DAMAGE = 15;
+            const ZOMBIE_SPEED_NIGHT = 150;
+            const ZOMBIE_SPEED_DAY = 10;
+            const SWORD_DAMAGE = 25;
+            const SWORD_COOLDOWN = 0.3;
+            const SWORD_RANGE = BLOCK_SIZE * 4;
+            const PLAYER_MAX_HP = 200;
+            const HP_REGEN = 1;
+            const FOOD_HEAL = 10;
+            const RESPAWN_TIME = 5;
+
+            const BLOCK_AIR = 0;
+            const BLOCK_DIRT = 1;
+            const BLOCK_SAND = 2;
+            const BLOCK_STONE = 3;
+            const BLOCK_HARD_STONE = 4;
+            const BLOCK_BEDROCK = 5;
+
+            const blockColors = {
+                [BLOCK_DIRT]: '#8B5E3C',
+                [BLOCK_SAND]: '#E8D174',
+                [BLOCK_STONE]: '#7D7D7D',
+                [BLOCK_HARD_STONE]: '#4A4A4A',
+                [BLOCK_BEDROCK]: '#1E1A2E'
+            };
+            const blockNames = {
+                [BLOCK_DIRT]: 'Земля',
+                [BLOCK_SAND]: 'Песок',
+                [BLOCK_STONE]: 'Камень',
+                [BLOCK_HARD_STONE]: 'Тв.камень',
+                [BLOCK_BEDROCK]: 'Нерушимый'
+            };
+            const blockHardness = {
+                [BLOCK_DIRT]: 0.2,
+                [BLOCK_SAND]: 0.1,
+                [BLOCK_STONE]: 0.55,
+                [BLOCK_HARD_STONE]: 1.1,
+                [BLOCK_BEDROCK]: Infinity
+            };
+
+            // ──────── ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ─────────
+            let world = [];
+            let player = null;
+            let zombies = [];
+            let particles = [];
+            let floatingTexts = [];
+            let droppedItems = [];
+            let gameTime = 0;
+            let dayTime = 120;
+            let isNight = false;
+            let cameraX = 0, cameraY = 0;
+            let respawnTimer = 0;
+            let playerDead = false;
+
+            // Инвентарь (8 слотов)
+            let inventory = [
+                { id: 'sword', name: 'Меч', count: 1, type: 'sword', icon: '🗡️' },
+                { id: 'pickaxe', name: 'Кирка', count: 1, type: 'pickaxe', icon: '⛏️' },
+                { id: 'dirt', name: 'Земля', count: 40, type: 'block', blockId: BLOCK_DIRT, icon: '🟫' },
+                { id: 'sand', name: 'Песок', count: 15, type: 'block', blockId: BLOCK_SAND, icon: '🟨' },
+                { id: 'stone', name: 'Камень', count: 10, type: 'block', blockId: BLOCK_STONE, icon: '🪨' },
+                { id: 'hardstone', name: 'Тв.камень', count: 2, type: 'block', blockId: BLOCK_HARD_STONE, icon: '⬛' },
+                { id: 'empty1', name: 'Пусто', count: 0, type: 'block', blockId: BLOCK_DIRT, icon: '—' },
+                { id: 'food', name: 'Еда', count: 0, type: 'food', icon: '🍖' }
+            ];
+            let selectedSlot = 0;
+
+            // Копание
+            let miningTarget = null;
+            let miningProgress = 0;
+            let miningBlockX = -1, miningBlockY = -1;
+            let lastMineDir = { x: 0, y: 0 };
+
+            // Атака
+            let swordSwing = 0;
+            let swordDir = { x: 1, y: 0 };
+            let swordCooldownTimer = 0;
+
+            // Сенсорный ввод
+            let leftStickActive = false, leftStickId = null;
+            let leftStickBaseX = 0, leftStickBaseY = 0, leftStickCurX = 0, leftStickCurY = 0;
+            let leftStickDX = 0, leftStickDY = 0;
+            let rightStickActive = false, rightStickId = null;
+            let rightStickBaseX = 0, rightStickBaseY = 0, rightStickCurX = 0, rightStickCurY = 0;
+            let rightStickDX = 0, rightStickDY = 0;
+            let jumpPressed = false, jumpBtnActive = false, jumpBtnId = null;
+            let touchWorldActive = false, touchWorldId = null;
+            let touchWorldX = 0, touchWorldY = 0;
+
+            // ПК управление
+            let keys = {};
+            let mouseX = 0, mouseY = 0;
+            let mouseDown = false;
+            let mouseWorldX = 0, mouseWorldY = 0;
+
+            // Отображение сенсорного интерфейса
+            let showTouchUI = true;
+
+            // ───────── ГЕНЕРАЦИЯ МИРА ─────────
+            function generateWorld() {
+                world = [];
+                for (let y = 0; y < WORLD_HEIGHT; y++) {
+                    world[y] = new Array(WORLD_WIDTH).fill(BLOCK_AIR);
+                }
+                const surfaceY = [];
+                for (let x = 0; x < WORLD_WIDTH; x++) {
+                    let h = 190 + Math.sin(x * 0.02) * 12 + Math.sin(x * 0.07) * 7 + Math.sin(x * 0.13) * 15;
+                    h = Math.round(Math.max(150, Math.min(230, h)));
+                    surfaceY[x] = h;
+                }
+                for (let x = 0; x < WORLD_WIDTH; x++) {
+                    const sy = surfaceY[x];
+                    const dirtDepth = 15 + Math.floor(Math.random() * 8);
+                    for (let y = sy; y < sy + dirtDepth && y < WORLD_HEIGHT; y++) {
+                        world[y][x] = (Math.random() < 0.3 && y <= sy + 4) ? BLOCK_SAND : BLOCK_DIRT;
+                    }
+                    const stoneStart = sy + dirtDepth;
+                    const stoneDepth = 14 + Math.floor(Math.random() * 7);
+                    for (let y = stoneStart; y < stoneStart + stoneDepth && y < WORLD_HEIGHT; y++) {
+                        world[y][x] = BLOCK_STONE;
+                    }
+                    const hardStart = stoneStart + stoneDepth;
+                    const hardDepth = 10 + Math.floor(Math.random() * 5);
+                    for (let y = hardStart; y < hardStart + hardDepth && y < WORLD_HEIGHT; y++) {
+                        world[y][x] = BLOCK_HARD_STONE;
+                    }
+                    for (let y = hardStart + hardDepth; y < WORLD_HEIGHT; y++) {
+                        world[y][x] = BLOCK_BEDROCK;
+                    }
+                }
+                // Пещеры
+                for (let i = 0; i < 60; i++) {
+                    const cx = 20 + Math.floor(Math.random() * (WORLD_WIDTH - 40));
+                    const cy = surfaceY[cx] + 3 + Math.floor(Math.random() * 25);
+                    const r = 3 + Math.floor(Math.random() * 6);
+                    for (let dy = -r; dy <= r; dy++) {
+                        for (let dx = -r; dx <= r; dx++) {
+                            if (dx * dx + dy * dy <= r * r + 2) {
+                                const wx = cx + dx, wy = cy + dy;
+                                if (wx >= 0 && wx < WORLD_WIDTH && wy >= 0 && wy < WORLD_HEIGHT) {
+                                    if (world[wy][wx] !== BLOCK_BEDROCK && world[wy][wx] !== BLOCK_HARD_STONE) {
+                                        world[wy][wx] = BLOCK_AIR;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            function getSpawnPoint() {
+                const centerX = Math.floor(WORLD_WIDTH / 2);
+                for (let y = 0; y < WORLD_HEIGHT - 5; y++) {
+                    if (world[y][centerX] === BLOCK_AIR && world[y + 1][centerX] !== BLOCK_AIR) {
+                        let spawnY = y - PLAYER_H;
+                        let offset = Math.floor(Math.random() * 7) - 3;
+                        let candidateY = spawnY + offset;
+                        candidateY = Math.max(1, Math.min(WORLD_HEIGHT - PLAYER_H - 1, candidateY));
+                        let valid = true;
+                        for (let cy = candidateY; cy < candidateY + PLAYER_H; cy++) {
+                            if (world[Math.floor(cy)][centerX] !== BLOCK_AIR) { valid = false; break; }
+                        }
+                        if (valid && world[Math.floor(candidateY + PLAYER_H)][centerX] !== BLOCK_AIR) valid = false;
+                        if (valid) return { x: centerX * BLOCK_SIZE + BLOCK_SIZE / 2, y: candidateY * BLOCK_SIZE };
+                    }
+                }
+                return { x: centerX * BLOCK_SIZE, y: 180 * BLOCK_SIZE };
+            }
+
+            // ─────── КЛАССЫ ─────────
+            class Player {
+                constructor(x, y) {
+                    this.x = x; this.y = y;
+                    this.vx = 0; this.vy = 0;
+                    this.width = PLAYER_W * BLOCK_SIZE;
+                    this.height = PLAYER_H * BLOCK_SIZE;
+                    this.onGround = false;
+                    this.hp = PLAYER_MAX_HP; this.maxHp = PLAYER_MAX_HP;
+                    this.facingRight = true;
+                    this.animTimer = 0;
+                }
+                getCenterX() { return this.x + this.width / 2; }
+                getCenterY() { return this.y + this.height / 2; }
+            }
+            class Zombie {
+                constructor(x, y) {
+                    this.x = x; this.y = y;
+                    this.vx = 0; this.vy = 0;
+                    this.width = BLOCK_SIZE * 1.7;
+                    this.height = BLOCK_SIZE * 2.6;
+                    this.hp = ZOMBIE_HP; this.maxHp = ZOMBIE_HP;
+                    this.onGround = false;
+                    this.facingRight = true;
+                    this.aiTimer = 0;
+                    this.jumpCooldown = 0;
+                    this.prevX = x;
+                    this.isDaytime = false;
+                }
+                getCenterX() { return this.x + this.width / 2; }
+                getCenterY() { return this.y + this.height / 2; }
+            }
+            class Particle {
+                constructor(x, y, vx, vy, life, color, size) {
+                    this.x = x; this.y = y; this.vx = vx; this.vy = vy;
+                    this.life = life; this.maxLife = life; this.color = color; this.size = size || 3;
+                }
+            }
+            class FloatingText {
+                constructor(x, y, text, color, life) {
+                    this.x = x; this.y = y; this.text = text; this.color = color;
+                    this.life = life; this.maxLife = life;
+                }
+            }
+            class DroppedItem {
+                constructor(x, y, type, blockId) {
+                    this.x = x; this.y = y; this.type = type; this.blockId = blockId;
+                    this.width = BLOCK_SIZE * 0.7; this.height = BLOCK_SIZE * 0.7;
+                    this.vy = -120; this.onGround = false;
+                    this.life = 70; this.glowTimer = 0;
+                }
+            }
+
+            // ─────── КОЛЛИЗИИ ─────────
+            function isSolid(px, py) {
+                const bx = Math.floor(px / BLOCK_SIZE), by = Math.floor(py / BLOCK_SIZE);
+                if (bx < 0 || bx >= WORLD_WIDTH || by < 0 || by >= WORLD_HEIGHT) return true;
+                return world[by][bx] !== BLOCK_AIR;
+            }
+            function checkCollisionRect(rx, ry, rw, rh) {
+                const left = Math.floor(rx / BLOCK_SIZE), right = Math.floor((rx + rw - 0.01) / BLOCK_SIZE);
+                const top = Math.floor(ry / BLOCK_SIZE), bottom = Math.floor((ry + rh - 0.01) / BLOCK_SIZE);
+                for (let by = top; by <= bottom; by++) {
+                    for (let bx = left; bx <= right; bx++) {
+                        if (bx >= 0 && bx < WORLD_WIDTH && by >= 0 && by < WORLD_HEIGHT) {
+                            if (world[by][bx] !== BLOCK_AIR) return true;
+                        } else return true;
+                    }
+                }
+                return false;
+            }
+            function resolveHorizontal(entity, dt) {
+                const newX = entity.x + entity.vx * dt;
+                if (entity.vx > 0) {
+                    if (checkCollisionRect(newX, entity.y, entity.width, entity.height))
+                        entity.x = Math.floor((newX + entity.width - 0.01) / BLOCK_SIZE) * BLOCK_SIZE - entity.width, entity.vx = 0;
+                    else entity.x = newX;
+                } else if (entity.vx < 0) {
+                    if (checkCollisionRect(newX, entity.y, entity.width, entity.height))
+                        entity.x = (Math.floor(newX / BLOCK_SIZE) + 1) * BLOCK_SIZE, entity.vx = 0;
+                    else entity.x = newX;
+                }
+            }
+            function resolveVertical(entity, dt) {
+                const newY = entity.y + entity.vy * dt;
+                entity.onGround = false;
+                if (entity.vy > 0) {
+                    if (checkCollisionRect(entity.x, newY, entity.width, entity.height))
+                        entity.y = Math.floor((newY + entity.height - 0.01) / BLOCK_SIZE) * BLOCK_SIZE - entity.height, entity.vy = 0, entity.onGround = true;
+                    else entity.y = newY;
+                } else if (entity.vy < 0) {
+                    if (checkCollisionRect(entity.x, newY, entity.width, entity.height))
+                        entity.y = (Math.floor(newY / BLOCK_SIZE) + 1) * BLOCK_SIZE, entity.vy = 0;
+                    else entity.y = newY;
+                }
+            }
+
+            // ─────── ИНВЕНТАРЬ ─────────
+            function addToInventory(blockId) {
+                for (let i = 2; i <= 6; i++) {
+                    if (inventory[i].type === 'block' && inventory[i].blockId === blockId && inventory[i].count > 0) {
+                        inventory[i].count++; return;
+                    }
+                }
+                for (let i = 2; i <= 6; i++) {
+                    if (inventory[i].type === 'block' && inventory[i].count === 0) {
+                        inventory[i].blockId = blockId;
+                        inventory[i].name = blockNames[blockId] || 'Блок';
+                        inventory[i].count = 1;
+                        inventory[i].icon = getBlockIcon(blockId);
+                        return;
+                    }
+                }
+            }
+            function getBlockIcon(blockId) {
+                return { [BLOCK_DIRT]: '🟫', [BLOCK_SAND]: '🟨', [BLOCK_STONE]: '🪨', [BLOCK_HARD_STONE]: '⬛', [BLOCK_BEDROCK]: '🔳' }[blockId] || '🧱';
+            }
+
+            // ─────── ВСПОМОГАТЕЛЬНЫЕ ─────────
+            function findBlockInDirection(startX, startY, dirX, dirY, maxDist) {
+                let cx = startX, cy = startY;
+                const step = BLOCK_SIZE * 0.25, steps = Math.floor(maxDist / step);
+                for (let i = 0; i < steps; i++) {
+                    cx += dirX * step; cy += dirY * step;
+                    const bx = Math.floor(cx / BLOCK_SIZE), by = Math.floor(cy / BLOCK_SIZE);
+                    if (bx >= 0 && bx < WORLD_WIDTH && by >= 0 && by < WORLD_HEIGHT) {
+                        if (world[by][bx] !== BLOCK_AIR) return { bx, by, bedrock: world[by][bx] === BLOCK_BEDROCK };
+                    }
+                }
+                return null;
+            }
+
+            function dropFood(x, y) { droppedItems.push(new DroppedItem(x - 10, y - 10, 'food', null)); }
+            function spawnBlockParticles(x, y, blockId) {
+                const color = blockColors[blockId] || '#888';
+                for (let i = 0; i < 8; i++) particles.push(new Particle(x, y, (Math.random() - 0.5) * 350, -Math.random() * 500 - 100, 0.5 + Math.random() * 0.6, color, 2 + Math.random() * 4));
+            }
+            function spawnHitParticles(x, y) { for (let i = 0; i < 6; i++) particles.push(new Particle(x, y, (Math.random() - 0.5) * 250, -Math.random() * 300 - 50, 0.4, '#ff6666', 2 + Math.random() * 2)); }
+            function killPlayer() {
+                if (playerDead) return;
+                playerDead = true; respawnTimer = RESPAWN_TIME;
+                floatingTexts.push(new FloatingText(player.getCenterX(), player.getCenterY(), 'Смерть...', '#ff0000', 2));
+                droppedItems = [];
+            }
+
+            // ─────── СБРОС ─────────
+            function resetGame() {
+                generateWorld();
+                const sp = getSpawnPoint();
+                player = new Player(sp.x, sp.y);
+                zombies = []; particles = []; floatingTexts = []; droppedItems = [];
+                gameTime = 0; dayTime = 120; isNight = false; respawnTimer = 0; playerDead = false;
+                miningProgress = 0; miningBlockX = -1; miningBlockY = -1;
+                swordSwing = 0; swordCooldownTimer = 0;
+                inventory[0].count = 1; inventory[1].count = 1;
+                inventory[2].count = 40; inventory[3].count = 15; inventory[4].count = 10; inventory[5].count = 2; inventory[6].count = 0; inventory[7].count = 0;
+                selectedSlot = 0;
+                zombieSpawnTimer = 3;
+            }
+
+            let zombieSpawnTimer = 3;
+            let lastTime = performance.now();
+
+            // ─────── ОБНОВЛЕНИЕ ─────────
+            function update(dt) {
+                gameTime += dt;
+                dayTime += dt;
+                if (dayTime >= FULL_DAY) dayTime -= FULL_DAY;
+                isNight = dayTime >= DAY_DURATION;
+
+                if (playerDead) {
+                    respawnTimer -= dt;
+                    if (respawnTimer <= 0) {
+                        const sp = getSpawnPoint();
+                        player = new Player(sp.x, sp.y);
+                        playerDead = false; zombies = []; droppedItems = [];
+                    }
+                    updateDroppedItems(dt);
+                    return;
+                }
+
+                // Движение
+                let moveX = leftStickActive ? leftStickDX : 0;
+                if (keys['KeyA']) moveX = -1;
+                if (keys['KeyD']) moveX = 1;
+                if (keys['KeyA'] && keys['KeyD']) moveX = 0;
+                if (Math.abs(moveX) > 0.15) {
+                    player.vx = Math.sign(moveX) * PLAYER_SPEED * BLOCK_SIZE;
+                    player.facingRight = moveX > 0;
+                } else {
+                    player.vx *= 0.85;
+                    if (Math.abs(player.vx) < 15) player.vx = 0;
+                }
+
+                if ((jumpPressed || keys['Space']) && player.onGround) {
+                    player.vy = -Math.sqrt(2 * GRAVITY * JUMP_HEIGHT_BLOCKS * BLOCK_SIZE);
+                    player.onGround = false; jumpPressed = false; keys['Space'] = false;
+                }
+                if (!player.onGround) player.vy += GRAVITY * dt;
+                player.vy = Math.min(player.vy, 2500);
+                resolveHorizontal(player, dt);
+                resolveVertical(player, dt);
+
+                if (Math.abs(player.vx) > 20 && player.onGround) player.animTimer += dt * 8;
+                else if (player.onGround) player.animTimer *= 0.9;
+
+                mouseWorldX = mouseX + cameraX;
+                mouseWorldY = mouseY + cameraY;
+                let mouseDirX = 1, mouseDirY = 0;
+                const dxM = mouseWorldX - player.getCenterX(), dyM = mouseWorldY - (player.getCenterY() - BLOCK_SIZE * 0.5);
+                const distM = Math.sqrt(dxM * dxM + dyM * dyM);
+                if (distM > 1) { mouseDirX = dxM / distM; mouseDirY = dyM / distM; }
+
+                let actionActive = rightStickActive || mouseDown;
+                let actionDirX = rightStickActive ? (rightStickDX || 0) : mouseDirX;
+                let actionDirY = rightStickActive ? (rightStickDY || 0) : mouseDirY;
+                if (rightStickActive && Math.sqrt(rightStickDX * rightStickDX + rightStickDY * rightStickDY) < 0.2) actionActive = false;
+
+                const selectedItem = inventory[selectedSlot];
+                if (actionActive) {
+                    if (selectedItem.type === 'pickaxe') {
+                        const mag = Math.sqrt(actionDirX * actionDirX + actionDirY * actionDirY);
+                        if (mag > 0.1) {
+                            lastMineDir = { x: actionDirX / mag, y: actionDirY / mag };
+                            const result = findBlockInDirection(player.getCenterX(), player.getCenterY() - BLOCK_SIZE * 0.5, lastMineDir.x, lastMineDir.y, BLOCK_SIZE * 5);
+                            if (result && !result.bedrock) {
+                                if (miningBlockX === result.bx && miningBlockY === result.by) {
+                                    miningProgress += dt / (blockHardness[world[result.by][result.bx]] || 0.5);
+                                    if (miningProgress >= 1) {
+                                        const brokenId = world[result.by][result.bx];
+                                        world[result.by][result.bx] = BLOCK_AIR;
+                                        addToInventory(brokenId);
+                                        spawnBlockParticles(result.bx * BLOCK_SIZE + BLOCK_SIZE / 2, result.by * BLOCK_SIZE + BLOCK_SIZE / 2, brokenId);
+                                        floatingTexts.push(new FloatingText(result.bx * BLOCK_SIZE + BLOCK_SIZE / 2, result.by * BLOCK_SIZE, blockNames[brokenId] || '+1', '#fff', 1.2));
+                                        miningProgress = 0; miningBlockX = -1; miningBlockY = -1;
+                                    }
+                                } else { miningBlockX = result.bx; miningBlockY = result.by; miningProgress = 0; }
+                            } else { miningBlockX = -1; miningBlockY = -1; miningProgress = Math.max(0, miningProgress - dt * 1.5); }
+                        }
+                    } else if (selectedItem.type === 'sword' && swordCooldownTimer <= 0) {
+                        swordDir = { x: actionDirX, y: actionDirY };
+                        swordSwing = 0.25; swordCooldownTimer = SWORD_COOLDOWN;
+                        player.facingRight = swordDir.x >= 0;
+                        const sx = player.getCenterX(), sy = player.getCenterY() - BLOCK_SIZE * 0.3;
+                        for (const z of zombies) {
+                            if (z.hp <= 0) continue;
+                            const adx = z.getCenterX() - sx, ady = z.getCenterY() - sy;
+                            const adist = Math.sqrt(adx * adx + ady * ady);
+                            if (adist < SWORD_RANGE && (adx * swordDir.x + ady * swordDir.y) / Math.max(adist, 1) > 0.35) {
+                                z.hp -= SWORD_DAMAGE;
+                                floatingTexts.push(new FloatingText(z.getCenterX(), z.getCenterY() - 10, '-' + SWORD_DAMAGE, '#ff4444', 0.8));
+                                spawnHitParticles(z.getCenterX(), z.getCenterY());
+                                if (z.hp <= 0) { dropFood(z.x, z.y); floatingTexts.push(new FloatingText(z.getCenterX(), z.getCenterY(), 'Убит!', '#ffaa00', 1.5)); }
+                            }
+                        }
+                    }
+                } else if (!actionActive && selectedItem.type === 'pickaxe' && miningProgress > 0) {
+                    miningProgress -= dt * 1.8;
+                    if (miningProgress <= 0) { miningBlockX = -1; miningBlockY = -1; miningProgress = 0; }
+                }
+
+                if ((touchWorldActive || (mouseDown && !keys['ShiftLeft'])) && selectedItem.type === 'block' && selectedItem.count > 0) {
+                    let wx = touchWorldActive ? touchWorldX : mouseWorldX;
+                    let wy = touchWorldActive ? touchWorldY : mouseWorldY;
+                    const bx = Math.floor(wx / BLOCK_SIZE), by = Math.floor(wy / BLOCK_SIZE);
+                    if (bx >= 0 && bx < WORLD_WIDTH && by >= 0 && by < WORLD_HEIGHT && world[by][bx] === BLOCK_AIR) {
+                        if (Math.hypot(player.getCenterX() - (bx * BLOCK_SIZE + BLOCK_SIZE / 2), player.getCenterY() - (by * BLOCK_SIZE + BLOCK_SIZE / 2)) < BLOCK_SIZE * 6) {
+                            world[by][bx] = selectedItem.blockId;
+                            selectedItem.count--;
+                            spawnBlockParticles(bx * BLOCK_SIZE + BLOCK_SIZE / 2, by * BLOCK_SIZE + BLOCK_SIZE / 2, selectedItem.blockId);
+                        }
+                    }
+                    touchWorldActive = false; mouseDown = false;
+                }
+
+                if (player.y > WORLD_HEIGHT * BLOCK_SIZE + 400) killPlayer();
+
+                // Зомби
+                for (const z of zombies) {
+                    if (z.hp <= 0) continue;
+                    const dxP = player.getCenterX() - z.getCenterX();
+                    const distToPlayer = Math.hypot(dxP, player.getCenterY() - z.getCenterY());
+                    if (isNight && distToPlayer < BLOCK_SIZE * 25) {
+                        z.isDaytime = false;
+                        const dir = dxP > 0 ? 1 : -1;
+                        z.facingRight = dir > 0;
+                        z.vx = dir * ZOMBIE_SPEED_NIGHT;
+                        if (z.onGround && z.jumpCooldown <= 0) {
+                            if (isSolid(z.x + (dir > 0 ? z.width : -2), z.y + z.height - 5)) { z.vy = -800; z.onGround = false; z.jumpCooldown = 0.6; }
+                            else if (!isSolid(z.getCenterX() + dir * BLOCK_SIZE * 1.5, z.y + z.height + 5)) { z.vy = -650; z.onGround = false; z.jumpCooldown = 0.4; }
+                        }
+                    } else if (!isNight) {
+                        z.isDaytime = true; z.facingRight = true; z.vx = ZOMBIE_SPEED_DAY;
+                        if (z.onGround && z.jumpCooldown <= 0 && (isSolid(z.x + z.width + 2, z.y + z.height - 5) || !isSolid(z.getCenterX() + BLOCK_SIZE * 1.5, z.y + z.height + 5)))
+                        { z.vy = -750; z.onGround = false; z.jumpCooldown = 0.5; }
+                        if (z.x > WORLD_WIDTH * BLOCK_SIZE + 300) z.hp = -1;
+                    } else { z.vx *= 0.9; if (Math.abs(z.vx) < 0.5) z.vx = (Math.random() - 0.5) * 15; }
+                    if (!z.onGround) z.vy += GRAVITY * dt;
+                    z.vy = Math.min(z.vy, 2200);
+                    resolveHorizontal(z, dt); resolveVertical(z, dt);
+                    z.jumpCooldown -= dt;
+                    if (z.onGround && Math.abs(z.x - z.prevX) < 0.3 && z.jumpCooldown <= 0) { z.vy = -750; z.onGround = false; z.jumpCooldown = 0.5; }
+                    z.prevX = z.x;
+                    if (!playerDead && !z.isDaytime && distToPlayer < BLOCK_SIZE * 2) {
+                        player.hp -= ZOMBIE_DAMAGE * dt;
+                        if (player.hp <= 0) killPlayer();
+                    }
+                    if (z.y > WORLD_HEIGHT * BLOCK_SIZE + 300) z.hp = -1;
+                }
+                zombies = zombies.filter(z => z.hp > 0);
+
+                if (isNight) {
+                    zombieSpawnTimer -= dt;
+                    if (zombieSpawnTimer <= 0 && zombies.length < MAX_ZOMBIES) {
+                        const side = Math.random() < 0.5 ? -1 : 1;
+                        const sx = player.getCenterX() + side * (35 + Math.random() * 30) * BLOCK_SIZE;
+                        let sy = player.y;
+                        for (let cy = Math.floor(sy / BLOCK_SIZE); cy < WORLD_HEIGHT - 5; cy++) {
+                            if (world[cy]?.[Math.floor(sx / BLOCK_SIZE)] !== BLOCK_AIR && world[cy - 1]?.[Math.floor(sx / BLOCK_SIZE)] === BLOCK_AIR)
+                            { sy = (cy - 2.6) * BLOCK_SIZE; break; }
+                        }
+                        zombies.push(new Zombie(sx, Math.max(10 * BLOCK_SIZE, sy)));
+                        zombieSpawnTimer = ZOMBIE_SPAWN_INTERVAL_MIN + Math.random() * (ZOMBIE_SPAWN_INTERVAL_MAX - ZOMBIE_SPAWN_INTERVAL_MIN);
+                    }
+                }
+
+                player.hp = Math.min(player.maxHp, player.hp + HP_REGEN * dt);
+
+                const targetCX = player.getCenterX(), targetCY = player.getCenterY();
+                cameraX += (targetCX - canvas.width / 2 - cameraX) * 8 * dt;
+                cameraY += (targetCY - canvas.height / 2 - cameraY) * 8 * dt;
+                cameraX = Math.max(0, Math.min(WORLD_WIDTH * BLOCK_SIZE - canvas.width, cameraX));
+                cameraY = Math.max(0, Math.min(WORLD_HEIGHT * BLOCK_SIZE - canvas.height, cameraY));
+
+                if (swordCooldownTimer > 0) swordCooldownTimer -= dt;
+                if (swordSwing > 0) swordSwing -= dt;
+                updateParticles(dt); updateFloatingTexts(dt); updateDroppedItems(dt);
+            }
+
+            function updateParticles(dt) {
+                for (const p of particles) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 400 * dt; p.life -= dt; }
+                particles = particles.filter(p => p.life > 0);
+            }
+            function updateFloatingTexts(dt) {
+                for (const ft of floatingTexts) { ft.y -= 40 * dt; ft.life -= dt; }
+                floatingTexts = floatingTexts.filter(ft => ft.life > 0);
+            }
+            function updateDroppedItems(dt) {
+                for (const di of droppedItems) {
+                    if (!di.onGround) { di.vy += GRAVITY * dt; di.y += di.vy * dt; if (isSolid(di.x + di.width / 2, di.y + di.height)) { di.y = Math.floor((di.y + di.height) / BLOCK_SIZE) * BLOCK_SIZE - di.height; di.vy = 0; di.onGround = true; } }
+                    di.life -= dt;
+                    if (!playerDead && Math.abs(player.getCenterX() - di.x - di.width / 2) < BLOCK_SIZE * 1.5 && Math.abs(player.getCenterY() - di.y - di.height / 2) < BLOCK_SIZE * 2) {
+                        if (di.type === 'food') { player.hp = Math.min(player.maxHp, player.hp + FOOD_HEAL); inventory[7].count++; }
+                        else if (di.type === 'block') addToInventory(di.blockId);
+                        di.life = -1;
+                    }
+                }
+                droppedItems = droppedItems.filter(di => di.life > 0);
+            }
+
+            // ─────── ОТРИСОВКА ─────────
+            function render() {
+                canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                grad.addColorStop(0, isNight ? '#0a0a2e' : '#4a90d9');
+                grad.addColorStop(0.6, isNight ? '#1a1a3e' : '#87CEEB');
+                grad.addColorStop(1, isNight ? '#0a0a1e' : '#b8d4e8');
+                ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const cycle = dayTime / FULL_DAY;
+                const celestialX = canvas.width * 0.15 + cycle * canvas.width * 0.7;
+                const celestialY = canvas.height * 0.2 + Math.sin(cycle * Math.PI) * canvas.height * 0.5;
+                if (!isNight) { ctx.fillStyle = '#FFD700'; ctx.beginPath(); ctx.arc(celestialX, celestialY, 24, 0, Math.PI * 2); ctx.fill(); }
+                else { ctx.fillStyle = '#E8E8E8'; ctx.beginPath(); ctx.arc(celestialX, celestialY, 20, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#0a0a2e'; ctx.beginPath(); ctx.arc(celestialX + 5, celestialY - 3, 16, 0, Math.PI * 2); ctx.fill(); }
+
+                if (isNight) {
+                    if (!window._stars) window._stars = Array.from({ length: 80 }, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height * 0.7, r: 0.5 + Math.random() * 1.5, p: Math.random() * Math.PI * 2 }));
+                    for (const s of window._stars) { const a = 0.4 + 0.6 * Math.sin(gameTime * 3 + s.p); ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 2 * Math.PI); ctx.fill(); }
+                }
+
+                const startBX = Math.max(0, Math.floor(cameraX / BLOCK_SIZE) - 1), endBX = Math.min(WORLD_WIDTH - 1, Math.floor((cameraX + canvas.width) / BLOCK_SIZE) + 1);
+                const startBY = Math.max(0, Math.floor(cameraY / BLOCK_SIZE) - 1), endBY = Math.min(WORLD_HEIGHT - 1, Math.floor((cameraY + canvas.height) / BLOCK_SIZE) + 1);
+                for (let by = startBY; by <= endBY; by++) {
+                    for (let bx = startBX; bx <= endBX; bx++) {
+                        if (world[by][bx] === BLOCK_AIR) continue;
+                        const sx = bx * BLOCK_SIZE - cameraX, sy = by * BLOCK_SIZE - cameraY;
+                        ctx.fillStyle = blockColors[world[by][bx]]; ctx.fillRect(sx, sy, BLOCK_SIZE, BLOCK_SIZE);
+                    }
+                }
+
+                if (miningBlockX >= 0 && miningProgress > 0) {
+                    const sx = miningBlockX * BLOCK_SIZE - cameraX, sy = miningBlockY * BLOCK_SIZE - cameraY;
+                    ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(sx, sy, BLOCK_SIZE, BLOCK_SIZE);
+                    ctx.fillStyle = '#ffdd00'; ctx.fillRect(sx + 4, sy - 6, (BLOCK_SIZE - 8) * miningProgress, 4);
+                }
+
+                for (const di of droppedItems) {
+                    const sx = di.x - cameraX, sy = di.y - cameraY;
+                    if (di.type === 'food') { ctx.fillStyle = '#d44'; ctx.fillRect(sx, sy, di.width, di.height); ctx.fillStyle = '#fff'; ctx.font = `${BLOCK_SIZE*0.5}px sans-serif`; ctx.fillText('🍖', sx - 2, sy + di.height * 0.7); }
+                    else { ctx.fillStyle = blockColors[di.blockId] || '#888'; ctx.fillRect(sx, sy, di.width, di.height); }
+                }
+
+                for (const z of zombies) {
+                    const sx = z.x - cameraX, sy = z.y - cameraY;
+                    ctx.fillStyle = '#5a7a4a'; ctx.fillRect(sx, sy, z.width, z.height);
+                    ctx.fillStyle = '#6a8a5a'; ctx.fillRect(sx - 2, sy - BLOCK_SIZE * 0.7, z.width + 4, BLOCK_SIZE * 0.8);
+                    ctx.fillStyle = '#ff3333'; ctx.fillRect(z.facingRight ? sx + z.width * 0.55 : sx + z.width * 0.25, sy - BLOCK_SIZE * 0.5, 4, 4);
+                    ctx.fillStyle = '#333'; ctx.fillRect(sx, sy - 9, z.width, 3);
+                    ctx.fillStyle = '#ff3333'; ctx.fillRect(sx, sy - 9, z.width * (z.hp / z.maxHp), 3);
+                }
+
+                if (!playerDead) {
+                    const sx = player.x - cameraX, sy = player.y - cameraY;
+                    ctx.fillStyle = '#4a90d9'; ctx.fillRect(sx, sy + BLOCK_SIZE * 0.6, player.width, player.height - BLOCK_SIZE * 0.6);
+                    ctx.fillStyle = '#f4c78e'; ctx.fillRect(sx + 2, sy, player.width - 4, BLOCK_SIZE * 0.9);
+                    ctx.fillStyle = '#5a3a1a'; ctx.fillRect(sx + 1, sy - 2, player.width - 2, BLOCK_SIZE * 0.45);
+                    ctx.fillStyle = '#fff'; ctx.fillRect(player.facingRight ? sx + player.width * 0.6 : sx + player.width * 0.25, sy + BLOCK_SIZE * 0.25, 5, 5);
+                    ctx.fillStyle = '#000'; ctx.fillRect(player.facingRight ? sx + player.width * 0.6 + 1 : sx + player.width * 0.25 + 1, sy + BLOCK_SIZE * 0.27, 2.5, 2.5);
+                    if (swordSwing > 0) {
+                        const progress = 1 - swordSwing / 0.25, angle = Math.atan2(swordDir.y, swordDir.x) + (progress - 0.5) * 2.5;
+                        const len = SWORD_RANGE, cx = player.getCenterX() - cameraX, cy = player.getCenterY() - cameraY;
+                        ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(angle) * len, cy + Math.sin(angle) * len); ctx.stroke();
+                    }
+                }
+
+                for (const p of particles) { ctx.globalAlpha = p.life / p.maxLife; ctx.fillStyle = p.color; ctx.fillRect(p.x - cameraX, p.y - cameraY, p.size, p.size); }
+                ctx.globalAlpha = 1;
+                for (const ft of floatingTexts) { ctx.fillStyle = ft.color; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(ft.text, ft.x - cameraX, ft.y - cameraY); }
+                ctx.textAlign = 'start';
+
+                // ─── UI ───
+                const hpX = 15, hpY = 15, hpW = canvas.width * 0.22, hpH = 16;
+                ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(hpX - 2, hpY - 2, hpW + 4, hpH + 4);
+                ctx.fillStyle = '#400'; ctx.fillRect(hpX, hpY, hpW, hpH);
+                ctx.fillStyle = '#f44'; ctx.fillRect(hpX, hpY, hpW * (playerDead ? 0 : player.hp / player.maxHp), hpH);
+                ctx.fillStyle = '#fff'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+                ctx.fillText(`HP: ${Math.ceil(playerDead ? 0 : player.hp)}`, hpX + hpW / 2, hpY + hpH * 0.75); ctx.textAlign = 'start';
+
+                const clockCX = hpX + hpW + 45, clockCY = hpY + hpH / 2 + 5, clockR = 22;
+                ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.beginPath(); ctx.arc(clockCX, clockCY, clockR + 3, 0, 2 * Math.PI); ctx.fill();
+                ctx.fillStyle = isNight ? '#1a1a4e' : '#87CEEB'; ctx.beginPath(); ctx.arc(clockCX, clockCY, clockR, 0, 2 * Math.PI); ctx.fill();
+                const halfDay = dayTime < DAY_DURATION ? dayTime / DAY_DURATION : (dayTime - DAY_DURATION) / NIGHT_DURATION;
+                const angle = halfDay * 2 * Math.PI - Math.PI / 2;
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(clockCX, clockCY); ctx.lineTo(clockCX + Math.cos(angle) * clockR * 0.75, clockCY + Math.sin(angle) * clockR * 0.75); ctx.stroke();
+                ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(clockCX, clockCY, 3, 0, 2 * Math.PI); ctx.fill();
+                ctx.fillStyle = '#fff'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(isNight ? '🌙' : '☀️', clockCX, clockCY - clockR - 8); ctx.textAlign = 'start';
+
+                // Инвентарь
+                const slotW = Math.min(BLOCK_SIZE + 6, canvas.width / 10), totalW = 8 * slotW + 7 * 4;
+                const invX = (canvas.width - totalW) / 2, invY = canvas.height - slotW - 18;
+                ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(invX - 6, invY - 6, totalW + 12, slotW + 12);
+                for (let i = 0; i < 8; i++) {
+                    const sx = invX + i * (slotW + 4);
+                    ctx.fillStyle = i === selectedSlot ? 'rgba(255,255,200,0.7)' : 'rgba(80,80,80,0.6)'; ctx.fillRect(sx, invY, slotW, slotW);
+                    ctx.strokeStyle = i === selectedSlot ? '#fff' : '#aaa'; ctx.lineWidth = i === selectedSlot ? 2.5 : 1; ctx.strokeRect(sx, invY, slotW, slotW);
+                    ctx.fillStyle = '#fff'; ctx.font = `${slotW*0.45}px sans-serif`; ctx.textAlign = 'center'; ctx.fillText(inventory[i].icon, sx + slotW / 2, invY + slotW * 0.55);
+                    if (inventory[i].count > 0) { ctx.font = `bold ${slotW*0.3}px sans-serif`; ctx.textAlign = 'right'; ctx.fillText(inventory[i].count, sx + slotW - 3, invY + slotW - 3); }
+                    ctx.textAlign = 'start';
+                }
+
+                // Сенсорное управление (только если showTouchUI == true)
+                if (showTouchUI) {
+                    const lsCX = canvas.width * 0.17, lsCY = canvas.height * 0.72, lsR = Math.min(canvas.width * 0.12, 55);
+                    ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.beginPath(); ctx.arc(lsCX, lsCY, lsR, 0, 2 * Math.PI); ctx.fill();
+                    ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.stroke();
+                    ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.beginPath(); ctx.arc(lsCX + (leftStickActive ? leftStickDX * lsR * 0.7 : 0), lsCY + (leftStickActive ? leftStickDY * lsR * 0.7 : 0), lsR * 0.4, 0, 2 * Math.PI); ctx.fill();
+
+                    const rsCX = canvas.width * 0.83, rsCY = canvas.height * 0.72, rsR = Math.min(canvas.width * 0.1, 48);
+                    ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.beginPath(); ctx.arc(rsCX, rsCY, rsR, 0, 2 * Math.PI); ctx.fill();
+                    ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.stroke();
+                    ctx.fillStyle = 'rgba(255,200,100,0.5)'; ctx.beginPath(); ctx.arc(rsCX + (rightStickActive ? rightStickDX * rsR * 0.7 : 0), rsCY + (rightStickActive ? rightStickDY * rsR * 0.7 : 0), rsR * 0.4, 0, 2 * Math.PI); ctx.fill();
+
+                    const jCX = rsCX, jCY = rsCY - rsR - 40, jR = Math.min(canvas.width * 0.07, 35);
+                    ctx.fillStyle = jumpBtnActive ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.2)'; ctx.beginPath(); ctx.arc(jCX, jCY, jR, 0, 2 * Math.PI); ctx.fill();
+                    ctx.strokeStyle = '#fff'; ctx.stroke();
+                    ctx.fillStyle = '#fff'; ctx.font = `bold ${jR*0.7}px sans-serif`; ctx.textAlign = 'center'; ctx.fillText('↑', jCX, jCY + jR * 0.25); ctx.textAlign = 'start';
+                }
+
+                if (isNight) { ctx.fillStyle = 'rgba(5,5,20,0.2)'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+                if (playerDead) { ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, canvas.height / 2 - 30, canvas.width, 60); ctx.fillStyle = '#ff4444'; ctx.font = '20px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(`Возрождение через ${Math.ceil(respawnTimer)}...`, canvas.width / 2, canvas.height / 2 + 8); ctx.textAlign = 'start'; }
+            }
+
+            // ─────── ЦИКЛ ─────────
+            function gameLoop(ts) {
+                let dt = (ts - lastTime) / 1000;
+                if (dt <= 0) dt = 0.016; if (dt > 0.15) dt = 0.15;
+                lastTime = ts;
+                update(dt); render();
+                requestAnimationFrame(gameLoop);
+            }
+
+            // ─────── ОБРАБОТЧИКИ ─────────
+            function getTouchPos(t) { const r = canvas.getBoundingClientRect(); return { x: t.clientX - r.left, y: t.clientY - r.top, wx: t.clientX - r.left + cameraX, wy: t.clientY - r.top + cameraY }; }
+            function isInCircle(px, py, cx, cy, r) { return (px - cx) ** 2 + (py - cy) ** 2 <= r ** 2; }
+            function getInvSlot(px, py) {
+                const slotW = Math.min(BLOCK_SIZE + 6, canvas.width / 10), totalW = 8 * slotW + 7 * 4;
+                const invX = (canvas.width - totalW) / 2, invY = canvas.height - slotW - 18;
+                if (py >= invY && py <= invY + slotW && px >= invX && px <= invX + totalW) return Math.floor((px - invX) / (slotW + 4));
+                return -1;
+            }
+
+            canvas.addEventListener('touchstart', e => {
+                e.preventDefault();
+                for (const t of e.changedTouches) {
+                    const { x, y, wx, wy } = getTouchPos(t);
+                    const slot = getInvSlot(x, y);
+                    if (slot >= 0) { selectedSlot = slot; miningProgress = 0; miningBlockX = -1; continue; }
+                    if (showTouchUI && isInCircle(x, y, canvas.width * 0.83, canvas.height * 0.72 - Math.min(canvas.width * 0.1, 48) - 40, Math.min(canvas.width * 0.07, 35) + 8) && x > canvas.width * 0.5) { jumpBtnActive = true; jumpBtnId = t.identifier; jumpPressed = true; continue; }
+                    if (showTouchUI && x > canvas.width * 0.55 && isInCircle(x, y, canvas.width * 0.83, canvas.height * 0.72, Math.min(canvas.width * 0.1, 48) + 15)) { rightStickActive = true; rightStickId = t.identifier; rightStickBaseX = x; rightStickBaseY = y; rightStickCurX = x; rightStickCurY = y; continue; }
+                    if (showTouchUI && x < canvas.width * 0.45 && isInCircle(x, y, canvas.width * 0.17, canvas.height * 0.72, Math.min(canvas.width * 0.12, 55) + 15)) { leftStickActive = true; leftStickId = t.identifier; leftStickBaseX = x; leftStickBaseY = y; leftStickCurX = x; leftStickCurY = y; continue; }
+                    touchWorldActive = true; touchWorldId = t.identifier; touchWorldX = wx; touchWorldY = wy;
+                }
+            }, { passive: false });
+
+            canvas.addEventListener('touchmove', e => {
+                e.preventDefault();
+                for (const t of e.changedTouches) {
+                    const { x, y } = getTouchPos(t);
+                    if (leftStickActive && t.identifier === leftStickId) { leftStickCurX = x; leftStickCurY = y; leftStickDX = (x - leftStickBaseX) / (Math.min(canvas.width * 0.12, 55)); leftStickDY = (y - leftStickBaseY) / (Math.min(canvas.width * 0.12, 55)); const m = Math.hypot(leftStickDX, leftStickDY); if (m > 1) { leftStickDX /= m; leftStickDY /= m; } }
+                    if (rightStickActive && t.identifier === rightStickId) { rightStickCurX = x; rightStickCurY = y; rightStickDX = (x - rightStickBaseX) / (Math.min(canvas.width * 0.1, 48)); rightStickDY = (y - rightStickBaseY) / (Math.min(canvas.width * 0.1, 48)); const m = Math.hypot(rightStickDX, rightStickDY); if (m > 1) { rightStickDX /= m; rightStickDY /= m; } }
+                }
+            }, { passive: false });
+
+            canvas.addEventListener('touchend', e => {
+                e.preventDefault();
+                for (const t of e.changedTouches) {
+                    if (leftStickActive && t.identifier === leftStickId) { leftStickActive = false; leftStickDX = 0; leftStickDY = 0; }
+                    if (rightStickActive && t.identifier === rightStickId) { rightStickActive = false; rightStickDX = 0; rightStickDY = 0; }
+                    if (jumpBtnActive && t.identifier === jumpBtnId) { jumpBtnActive = false; }
+                    if (touchWorldActive && t.identifier === touchWorldId) { touchWorldActive = false; }
+                }
+            }, { passive: false });
+
+            window.addEventListener('keydown', e => {
+                keys[e.code] = true;
+                if (e.code >= 'Digit1' && e.code <= 'Digit8') selectedSlot = parseInt(e.code[5]) - 1;
+                if (e.code === 'KeyE') { showTouchUI = !showTouchUI; e.preventDefault(); }
+                e.preventDefault();
+            });
+            window.addEventListener('keyup', e => { keys[e.code] = false; e.preventDefault(); });
+            canvas.addEventListener('mousemove', e => { const r = canvas.getBoundingClientRect(); mouseX = e.clientX - r.left; mouseY = e.clientY - r.top; });
+            canvas.addEventListener('mousedown', e => { mouseDown = true; mouseX = e.clientX - canvas.getBoundingClientRect().left; mouseY = e.clientY - canvas.getBoundingClientRect().top; mouseWorldX = mouseX + cameraX; mouseWorldY = mouseY + cameraY; const slot = getInvSlot(mouseX, mouseY); if (slot >= 0) selectedSlot = slot; e.preventDefault(); });
+            canvas.addEventListener('mouseup', () => { mouseDown = false; });
+            canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+            function init() {
+                canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+                window._stars = null;
+                resetGame();
+                lastTime = performance.now();
+                requestAnimationFrame(gameLoop);
+            }
+            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; window._stars = null; });
+            init();
+            console.log('🎮 E – скрыть/показать сенсорное управление. Размер мира: WORLD_WIDTH и WORLD_HEIGHT в начале скрипта.');
+        })();
+    </script>
+</body>
+</html>
