@@ -9,129 +9,64 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; user-select: none;
         }
         body {
-            background: #000;
-            overflow: hidden;
-            position: fixed;
-            inset: 0;
-            touch-action: manipulation;
-            font-family: 'Segoe UI', sans-serif;
+            background: #000; overflow: hidden; position: fixed; inset: 0;
+            touch-action: manipulation; font-family: 'Segoe UI', sans-serif;
         }
         canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
+            display: block; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0;
         }
-        /* Интерфейсные оверлеи */
         .overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgba(0,0,0,0.7);
-            z-index: 10;
-            flex-direction: column;
-            color: white;
-            pointer-events: auto;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.7); z-index: 10; flex-direction: column;
+            color: white; pointer-events: auto;
         }
-        .overlay.hidden {
-            display: none;
-        }
+        .overlay.hidden { display: none; }
         .menu-box {
-            background: #1e1e2e;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            max-width: 90%;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            background: #1e1e2e; padding: 20px; border-radius: 15px;
+            text-align: center; max-width: 90%; box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
         .menu-box button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            font-size: 18px;
-            border: none;
-            border-radius: 8px;
-            background: #3a6ea5;
-            color: white;
-            cursor: pointer;
+            display: block; width: 100%; padding: 12px; margin: 8px 0;
+            font-size: 18px; border: none; border-radius: 8px;
+            background: #3a6ea5; color: white; cursor: pointer;
         }
         .menu-box button:hover { background: #4e8acb; }
         .menu-box input {
-            padding: 10px;
-            font-size: 16px;
-            width: 100%;
-            margin: 8px 0;
-            border-radius: 8px;
-            border: 1px solid #555;
-            background: #2a2a3a;
-            color: white;
+            padding: 10px; font-size: 16px; width: 100%; margin: 8px 0;
+            border-radius: 8px; border: 1px solid #555;
+            background: #2a2a3a; color: white;
         }
-        .status-text {
-            margin: 10px 0;
-            font-size: 14px;
-            color: #aaa;
-        }
-        .qr-container {
-            margin: 10px auto;
-        }
+        .status-text { margin: 10px 0; font-size: 14px; color: #aaa; }
+        .qr-container { margin: 10px auto; }
         .pause-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 20;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid white;
-            color: white;
-            font-size: 24px;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute; top: 10px; right: 10px; z-index: 20;
+            background: rgba(0,0,0,0.5); border: 1px solid white;
+            color: white; font-size: 24px; width: 44px; height: 44px;
+            border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
         .save-slots {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin: 10px 0;
+            display: flex; flex-wrap: wrap; gap: 10px;
+            justify-content: center; margin: 10px 0;
         }
         .save-slot {
-            background: #2a2a3a;
-            border: 1px solid #555;
-            border-radius: 10px;
-            padding: 10px;
-            width: 45%;
-            min-width: 120px;
+            background: #2a2a3a; border: 1px solid #555;
+            border-radius: 10px; padding: 10px; width: 45%; min-width: 120px;
         }
-        .save-slot button {
-            font-size: 14px;
-            margin: 4px 0;
-            padding: 6px;
-        }
+        .save-slot button { font-size: 14px; margin: 4px 0; padding: 6px; }
     </style>
 </head>
 <body>
     <canvas id="game"></canvas>
 
-    <!-- Кнопка паузы -->
     <div id="pauseButton" class="pause-btn hidden">⏸️</div>
 
-    <!-- Стартовое меню -->
     <div id="startMenu" class="overlay">
         <div class="menu-box">
             <h2>Выберите режим</h2>
@@ -152,7 +87,6 @@
         </div>
     </div>
 
-    <!-- Меню паузы -->
     <div id="pauseMenu" class="overlay hidden">
         <div class="menu-box">
             <h2>Пауза</h2>
@@ -198,7 +132,7 @@
             const HP_REGEN = 1;
             const FOOD_HEAL = 10;
             const RESPAWN_TIME = 5;
-            const ZOMBIE_DIG_SPEED = 0.1; // множитель копания моба (в 10 раз медленнее игрока)
+            const ZOMBIE_DIG_SPEED = 0.1; // в 10 раз медленнее игрока
 
             const BLOCK_AIR = 0;
             const BLOCK_DIRT = 1;
@@ -231,8 +165,8 @@
 
             // ──────── ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ─────────
             let world = [];
-            let players = {};            // peerId -> объект Player (включая локального)
-            let localPlayerId = null;    // ID локального игрока
+            let players = {};
+            let localPlayerId = 'local';   // значение по умолчанию для одиночки
             let zombies = [];
             let particles = [];
             let floatingTexts = [];
@@ -244,7 +178,6 @@
             let respawnTimer = 0;
             let playerDead = false;
 
-            // Инвентарь (8 слотов) — локальный
             let inventory = [
                 { id: 'sword', name: 'Меч', count: 1, type: 'sword', icon: '🗡️' },
                 { id: 'pickaxe', name: 'Кирка', count: 1, type: 'pickaxe', icon: '⛏️' },
@@ -257,17 +190,14 @@
             ];
             let selectedSlot = 0;
 
-            // Копание
             let miningProgress = 0;
             let miningBlockX = -1, miningBlockY = -1;
             let lastMineDir = { x: 0, y: 0 };
 
-            // Атака
             let swordSwing = 0;
             let swordDir = { x: 1, y: 0 };
             let swordCooldownTimer = 0;
 
-            // Сенсорный ввод
             let leftStickActive = false, leftStickId = null;
             let leftStickBaseX = 0, leftStickBaseY = 0, leftStickCurX = 0, leftStickCurY = 0;
             let leftStickDX = 0, leftStickDY = 0;
@@ -278,7 +208,6 @@
             let touchWorldActive = false, touchWorldId = null;
             let touchWorldX = 0, touchWorldY = 0;
 
-            // ПК управление
             let keys = {};
             let mouseX = 0, mouseY = 0;
             let mouseDown = false;
@@ -287,7 +216,7 @@
             let showTouchUI = true;
             let isPaused = false;
 
-            // ───────── СЕТЕВЫЕ ПЕРЕМЕННЫЕ ─────────
+            // Сеть
             let peer = null;
             let conn = null;
             let isHost = false;
@@ -296,7 +225,7 @@
             let lastSendTime = 0;
             const SEND_INTERVAL = 0.05;
 
-            // ───────── ЭЛЕМЕНТЫ UI ─────────
+            // UI элементы
             const pauseButton = document.getElementById('pauseButton');
             const startMenu = document.getElementById('startMenu');
             const pauseMenu = document.getElementById('pauseMenu');
@@ -309,7 +238,7 @@
             const savesSubmenu = document.getElementById('savesSubmenu');
             const saveSlotsContainer = document.getElementById('saveSlotsContainer');
 
-            // ───────── ГЕНЕРАЦИЯ МИРА ─────────
+            // ─────── ГЕНЕРАЦИЯ МИРА ─────────
             function generateWorld() {
                 world = [];
                 for (let y = 0; y < WORLD_HEIGHT; y++) {
@@ -351,7 +280,8 @@
                             if (dx * dx + dy * dy <= r * r + 2) {
                                 const wx = cx + dx, wy = cy + dy;
                                 if (wx >= 0 && wx < WORLD_WIDTH && wy >= 0 && wy < WORLD_HEIGHT) {
-                                    if (world[wy][wx] !== BLOCK_BEDROCK && world[wy][wx] !== BLOCK_HARD_STONE) {
+                                    const block = world[wy][wx];
+                                    if (block !== BLOCK_BEDROCK && block !== BLOCK_HARD_STONE) {
                                         world[wy][wx] = BLOCK_AIR;
                                     }
                                 }
@@ -361,13 +291,12 @@
                 }
             }
 
-            function getSpawnPoint(avoidPlayers = false) {
+            function getSpawnPoint() {
                 const centerX = Math.floor(WORLD_WIDTH / 2);
                 for (let y = 0; y < WORLD_HEIGHT - 5; y++) {
                     if (world[y][centerX] === BLOCK_AIR && world[y + 1][centerX] !== BLOCK_AIR) {
                         let spawnY = y - PLAYER_H;
-                        let offset = Math.floor(Math.random() * 7) - 3;
-                        let candidateY = spawnY + offset;
+                        let candidateY = spawnY + Math.floor(Math.random() * 7) - 3;
                         candidateY = Math.max(1, Math.min(WORLD_HEIGHT - PLAYER_H - 1, candidateY));
                         let valid = true;
                         for (let cy = candidateY; cy < candidateY + PLAYER_H; cy++) {
@@ -410,8 +339,7 @@
                     this.jumpCooldown = 0;
                     this.prevX = x;
                     this.isDaytime = false;
-                    // механика разрушения блоков
-                    this.digTarget = null; // {bx, by}
+                    this.digTarget = null;
                     this.digProgress = 0;
                 }
                 getCenterX() { return this.x + this.width / 2; }
@@ -525,19 +453,18 @@
             function killPlayer() {
                 if (playerDead) return;
                 playerDead = true; respawnTimer = RESPAWN_TIME;
-                const localPlayer = players[localPlayerId];
-                if (localPlayer) floatingTexts.push(new FloatingText(localPlayer.getCenterX(), localPlayer.getCenterY(), 'Смерть...', '#ff0000', 2));
+                const lp = players[localPlayerId];
+                if (lp) floatingTexts.push(new FloatingText(lp.getCenterX(), lp.getCenterY(), 'Смерть...', '#ff0000', 2));
                 droppedItems = [];
             }
 
-            // ─────── СБРОС ИГРЫ ─────────
+            // Сброс состояния игры
             function resetGame(keepWorld = false) {
                 if (!keepWorld) generateWorld();
-                const sp = getSpawnPoint(false);
-                const id = localPlayerId || 'local';
+                const sp = getSpawnPoint();
                 players = {};
-                const player = new Player(sp.x, sp.y, id);
-                players[id] = player;
+                const p = new Player(sp.x, sp.y, localPlayerId);
+                players[localPlayerId] = p;
                 zombies = []; particles = []; floatingTexts = []; droppedItems = [];
                 gameTime = 0; dayTime = 120; isNight = false; respawnTimer = 0; playerDead = false;
                 miningProgress = 0; miningBlockX = -1; miningBlockY = -1;
@@ -579,7 +506,6 @@
                 else if (player.onGround) player.animTimer *= 0.9;
             }
 
-            // ─────── ДЕЙСТВИЯ ИГРОКА (копание, атака, размещение) ─────────
             function processPlayerActions(dt, player) {
                 if (playerDead) return;
                 const selectedItem = inventory[selectedSlot];
@@ -654,18 +580,18 @@
                 }
             }
 
-            // ─────── ЛОГИКА ЗОМБИ (только на хосте или в одиночке) ─────────
+            // Логика зомби (только хост или одиночка)
             function updateZombies(dt) {
                 if (playerDead) return;
-                const localPlayer = players[localPlayerId];
-                if (!localPlayer) return;
+                const lp = players[localPlayerId];
+                if (!lp) return;
                 for (const z of zombies) {
                     if (z.hp <= 0) continue;
-                    const dxP = localPlayer.getCenterX() - z.getCenterX();
-                    const distToPlayer = Math.hypot(dxP, localPlayer.getCenterY() - z.getCenterY());
-                    const canReach = canReachPlayer(z, localPlayer);
+                    const dxP = lp.getCenterX() - z.getCenterX();
+                    const dist = Math.hypot(dxP, lp.getCenterY() - z.getCenterY());
+                    const canReach = canReachPlayer(z, lp);
 
-                    if (isNight && distToPlayer < BLOCK_SIZE * 25) {
+                    if (isNight && dist < BLOCK_SIZE * 25) {
                         z.isDaytime = false;
                         if (canReach) {
                             const dir = dxP > 0 ? 1 : -1;
@@ -676,14 +602,10 @@
                                 else if (!isSolid(z.getCenterX() + dir*BLOCK_SIZE*1.5, z.y+z.height+5)) { z.vy = -650; z.onGround = false; z.jumpCooldown = 0.4; }
                             }
                         } else {
-                            // Не может дойти – начинает копать блок перед собой
                             z.vx *= 0.9;
                             if (z.onGround && z.jumpCooldown <= 0 && z.digTarget === null) {
-                                const targetBlock = findBlockInPath(z, localPlayer);
-                                if (targetBlock) {
-                                    z.digTarget = targetBlock;
-                                    z.digProgress = 0;
-                                }
+                                const tb = findBlockInPath(z, lp);
+                                if (tb) { z.digTarget = tb; z.digProgress = 0; }
                             }
                             if (z.digTarget) {
                                 const block = world[z.digTarget.by]?.[z.digTarget.bx];
@@ -694,9 +616,7 @@
                                         if (isHost) sendBlockChange(z.digTarget.bx, z.digTarget.by, BLOCK_AIR);
                                         z.digTarget = null;
                                     }
-                                } else {
-                                    z.digTarget = null;
-                                }
+                                } else z.digTarget = null;
                             }
                         }
                     } else if (!isNight) {
@@ -714,9 +634,9 @@
                     z.jumpCooldown -= dt;
                     if (z.onGround && Math.abs(z.x - z.prevX) < 0.3 && z.jumpCooldown <= 0) { z.vy = -750; z.onGround = false; z.jumpCooldown = 0.5; }
                     z.prevX = z.x;
-                    if (!playerDead && !z.isDaytime && distToPlayer < BLOCK_SIZE*2) {
-                        localPlayer.hp -= ZOMBIE_DAMAGE * dt;
-                        if (localPlayer.hp <= 0) killPlayer();
+                    if (!playerDead && !z.isDaytime && dist < BLOCK_SIZE*2) {
+                        lp.hp -= ZOMBIE_DAMAGE * dt;
+                        if (lp.hp <= 0) killPlayer();
                     }
                     if (z.y > WORLD_HEIGHT*BLOCK_SIZE+300) z.hp = -1;
                 }
@@ -726,46 +646,42 @@
                     zombieSpawnTimer -= dt;
                     if (zombieSpawnTimer <= 0 && zombies.length < MAX_ZOMBIES) {
                         const side = Math.random() < 0.5 ? -1 : 1;
-                        const sx = localPlayer.getCenterX() + side * (35 + Math.random() * 30) * BLOCK_SIZE;
-                        let sy = localPlayer.y;
+                        const sx = lp.getCenterX() + side * (35 + Math.random() * 30) * BLOCK_SIZE;
+                        let sy = lp.y;
                         for (let cy = Math.floor(sy/BLOCK_SIZE); cy < WORLD_HEIGHT-5; cy++) {
                             if (world[cy]?.[Math.floor(sx/BLOCK_SIZE)] !== BLOCK_AIR && world[cy-1]?.[Math.floor(sx/BLOCK_SIZE)] === BLOCK_AIR) {
                                 sy = (cy - 2.6) * BLOCK_SIZE; break;
                             }
                         }
-                        const newZombie = new Zombie(sx, Math.max(10*BLOCK_SIZE, sy));
-                        zombies.push(newZombie);
+                        zombies.push(new Zombie(sx, Math.max(10*BLOCK_SIZE, sy)));
                         zombieSpawnTimer = ZOMBIE_SPAWN_INTERVAL_MIN + Math.random() * (ZOMBIE_SPAWN_INTERVAL_MAX - ZOMBIE_SPAWN_INTERVAL_MIN);
                     }
                 }
             }
 
-            function canReachPlayer(zombie, player) {
-                const startX = zombie.getCenterX();
-                const targetX = player.getCenterX();
+            function canReachPlayer(z, player) {
+                const startX = z.getCenterX(), targetX = player.getCenterX();
                 const stepX = (targetX > startX ? BLOCK_SIZE : -BLOCK_SIZE);
                 let checkX = startX;
                 while (Math.abs(checkX - targetX) > BLOCK_SIZE/2) {
                     checkX += stepX;
                     const bx = Math.floor(checkX/BLOCK_SIZE);
-                    const by = Math.floor((zombie.y + zombie.height - 2)/BLOCK_SIZE);
-                    if (bx >= 0 && bx < WORLD_WIDTH && by >= 0 && by < WORLD_HEIGHT) {
+                    const by = Math.floor((z.y + z.height - 2)/BLOCK_SIZE);
+                    if (bx>=0 && bx<WORLD_WIDTH && by>=0 && by<WORLD_HEIGHT) {
                         if (world[by][bx] !== BLOCK_AIR) return false;
                     }
                 }
                 return true;
             }
-
-            function findBlockInPath(zombie, player) {
-                const startX = zombie.getCenterX();
-                const targetX = player.getCenterX();
+            function findBlockInPath(z, player) {
+                const startX = z.getCenterX(), targetX = player.getCenterX();
                 const stepX = (targetX > startX ? BLOCK_SIZE : -BLOCK_SIZE);
                 let checkX = startX;
                 while (Math.abs(checkX - targetX) > BLOCK_SIZE/2) {
                     checkX += stepX;
                     const bx = Math.floor(checkX/BLOCK_SIZE);
-                    const by = Math.floor((zombie.y + zombie.height - 2)/BLOCK_SIZE);
-                    if (bx >= 0 && bx < WORLD_WIDTH && by >= 0 && by < WORLD_HEIGHT) {
+                    const by = Math.floor((z.y + z.height - 2)/BLOCK_SIZE);
+                    if (bx>=0 && bx<WORLD_WIDTH && by>=0 && by<WORLD_HEIGHT) {
                         if (world[by][bx] !== BLOCK_AIR) return {bx, by};
                     }
                 }
@@ -784,8 +700,9 @@
                 for (const di of droppedItems) {
                     if (!di.onGround) { di.vy += GRAVITY*dt; di.y += di.vy*dt; if (isSolid(di.x+di.width/2, di.y+di.height)) { di.y = Math.floor((di.y+di.height)/BLOCK_SIZE)*BLOCK_SIZE - di.height; di.vy = 0; di.onGround = true; } }
                     di.life -= dt;
-                    if (!playerDead && players[localPlayerId] && Math.abs(players[localPlayerId].getCenterX() - di.x - di.width/2) < BLOCK_SIZE*1.5 && Math.abs(players[localPlayerId].getCenterY() - di.y - di.height/2) < BLOCK_SIZE*2) {
-                        if (di.type === 'food') { players[localPlayerId].hp = Math.min(players[localPlayerId].maxHp, players[localPlayerId].hp + FOOD_HEAL); inventory[7].count++; }
+                    const lp = players[localPlayerId];
+                    if (!playerDead && lp && Math.abs(lp.getCenterX() - di.x - di.width/2) < BLOCK_SIZE*1.5 && Math.abs(lp.getCenterY() - di.y - di.height/2) < BLOCK_SIZE*2) {
+                        if (di.type === 'food') { lp.hp = Math.min(lp.maxHp, lp.hp + FOOD_HEAL); inventory[7].count++; }
                         else if (di.type === 'block') addToInventory(di.blockId);
                         di.life = -1;
                     }
@@ -806,50 +723,43 @@
                 if (dayTime >= FULL_DAY) dayTime -= FULL_DAY;
                 isNight = dayTime >= DAY_DURATION;
 
-                // Локальный игрок (не в мультиплеере или хост)
+                // Локальный игрок (одиночка или хост) или клиент (действия)
                 if (!isMultiplayer || isHost) {
-                    const localPlayer = players[localPlayerId];
-                    if (localPlayer && !playerDead) {
-                        updateLocalPlayer(dt, localPlayer);
-                        processPlayerActions(dt, localPlayer);
+                    const lp = players[localPlayerId];
+                    if (lp && !playerDead) {
+                        updateLocalPlayer(dt, lp);
+                        processPlayerActions(dt, lp);
                     }
-                    // Хост также обрабатывает зомби
                     updateZombies(dt);
-                    // Регенерация HP
-                    if (localPlayer && !playerDead) {
-                        localPlayer.hp = Math.min(localPlayer.maxHp, localPlayer.hp + HP_REGEN * dt);
-                    }
+                    if (lp && !playerDead) lp.hp = Math.min(lp.maxHp, lp.hp + HP_REGEN * dt);
                 } else if (isClient) {
-                    // Клиент просто ждёт обновлений от хоста, но может выполнять визуальные действия
-                    const localPlayer = players[localPlayerId];
-                    if (localPlayer && !playerDead) {
-                        processPlayerActions(dt, localPlayer);
-                    }
+                    const lp = players[localPlayerId];
+                    if (lp && !playerDead) processPlayerActions(dt, lp);
                 }
 
-                // Смерть и респавн (вне сети или на хосте)
                 if (playerDead) {
                     respawnTimer -= dt;
                     if (respawnTimer <= 0) {
                         const sp = getSpawnPoint();
-                        const localPlayer = players[localPlayerId];
-                        if (localPlayer) {
-                            localPlayer.x = sp.x; localPlayer.y = sp.y;
-                            localPlayer.hp = PLAYER_MAX_HP;
+                        const lp = players[localPlayerId];
+                        if (lp) {
+                            lp.x = sp.x; lp.y = sp.y;
+                            lp.hp = PLAYER_MAX_HP;
                             playerDead = false;
                             zombies = [];
+                            if (isHost) sendHostState(); // сообщить клиенту новый спавн
                         }
                     }
                 }
 
                 // Камера
-                const localPlayer = players[localPlayerId];
-                if (localPlayer) {
-                    const targetCX = localPlayer.getCenterX(), targetCY = localPlayer.getCenterY();
-                    cameraX += (targetCX - canvas.width/2 - cameraX) * 8 * dt;
-                    cameraY += (targetCY - canvas.height/2 - cameraY) * 8 * dt;
-                    cameraX = Math.max(0, Math.min(WORLD_WIDTH * BLOCK_SIZE - canvas.width, cameraX));
-                    cameraY = Math.max(0, Math.min(WORLD_HEIGHT * BLOCK_SIZE - canvas.height, cameraY));
+                const lp = players[localPlayerId];
+                if (lp) {
+                    const tx = lp.getCenterX(), ty = lp.getCenterY();
+                    cameraX += (tx - canvas.width/2 - cameraX) * 8 * dt;
+                    cameraY += (ty - canvas.height/2 - cameraY) * 8 * dt;
+                    cameraX = Math.max(0, Math.min(WORLD_WIDTH*BLOCK_SIZE - canvas.width, cameraX));
+                    cameraY = Math.max(0, Math.min(WORLD_HEIGHT*BLOCK_SIZE - canvas.height, cameraY));
                 }
 
                 if (swordCooldownTimer > 0) swordCooldownTimer -= dt;
@@ -860,12 +770,13 @@
 
                 // Сетевая отправка
                 if (isMultiplayer && conn && conn.open) {
-                    if (isHost && performance.now() - lastSendTime > SEND_INTERVAL * 1000) {
+                    const now = performance.now();
+                    if (isHost && now - lastSendTime > SEND_INTERVAL*1000) {
                         sendHostState();
-                        lastSendTime = performance.now();
-                    } else if (isClient && performance.now() - lastSendTime > SEND_INTERVAL * 1000) {
+                        lastSendTime = now;
+                    } else if (isClient && now - lastSendTime > SEND_INTERVAL*1000) {
                         sendClientInput();
-                        lastSendTime = performance.now();
+                        lastSendTime = now;
                     }
                 }
             }
@@ -878,9 +789,20 @@
                     localPlayerId = id;
                     peerIdDisplay.textContent = id;
                     hostInfo.classList.remove('hidden');
+                    // Даём размеры контейнеру для QR
+                    const qrDiv = document.getElementById('qrCode');
+                    qrDiv.innerHTML = '';
+                    qrDiv.style.width = '128px';
+                    qrDiv.style.height = '128px';
                     const url = `${window.location.origin}${window.location.pathname}?room=${id}`;
-                    new QRCode(document.getElementById('qrCode'), { text: url, width: 128, height: 128 });
+                    try {
+                        new QRCode(qrDiv, { text: url, width: 128, height: 128 });
+                    } catch (e) { console.warn('QR-код не удалось создать:', e); }
                     statusText.textContent = 'Ожидание подключения...';
+
+                    // Только теперь создаём мир и начинаем игру
+                    resetGame();
+                    pauseButton.classList.remove('hidden');
                 });
                 peer.on('connection', (connection) => {
                     conn = connection;
@@ -896,20 +818,17 @@
                 peer = new Peer();
                 peer.on('open', (id) => {
                     localPlayerId = id;
-                    console.log('Клиент подключился к сигнальному серверу, ID:', id);
                     conn = peer.connect(roomId, { reliable: true });
                     setupConnection();
+                    pauseButton.classList.remove('hidden');
                 });
                 peer.on('error', (err) => console.error('Ошибка Peer:', err));
             }
 
             function setupConnection() {
                 conn.on('open', () => {
-                    console.log('Соединение установлено!');
                     connectionStatus.textContent = 'Подключено!';
-                    if (isClient) {
-                        sendData({ type: 'request_world' });
-                    }
+                    if (isClient) sendData({ type: 'request_world' });
                 });
                 conn.on('data', (data) => onReceiveData(data));
                 conn.on('close', () => {
@@ -919,9 +838,7 @@
                 conn.on('error', (err) => console.error('Ошибка соединения:', err));
             }
 
-            function sendData(data) {
-                if (conn && conn.open) conn.send(data);
-            }
+            function sendData(data) { if (conn && conn.open) conn.send(data); }
 
             function onReceiveData(data) {
                 if (!data || !data.type) return;
@@ -941,43 +858,39 @@
                         break;
                     case 'zombie_update':
                         zombies = data.zombies.map(z => {
-                            const existing = zombies.find(ez => ez.id === z.id);
-                            if (existing) Object.assign(existing, z);
-                            else return new Zombie(z.x, z.y, z.id);
-                            return existing;
+                            const old = zombies.find(oz => oz.id === z.id);
+                            if (old) Object.assign(old, z); else return new Zombie(z.x, z.y, z.id);
+                            return old;
                         }).filter(z => z.hp > 0);
+                        break;
+                    case 'player_update':
+                        if (data.id !== localPlayerId) {
+                            let p = players[data.id];
+                            if (!p) p = players[data.id] = new Player(data.x, data.y, data.id);
+                            Object.assign(p, { x: data.x, y: data.y, vx: data.vx, vy: data.vy, hp: data.hp, facingRight: data.facingRight, onGround: data.onGround });
+                        }
                         break;
                     case 'local_player_update':
                         if (players[localPlayerId]) {
                             Object.assign(players[localPlayerId], { x: data.x, y: data.y, vx: data.vx, vy: data.vy, hp: data.hp, facingRight: data.facingRight, onGround: data.onGround });
                         }
                         break;
-                    case 'player_update':
-                        if (data.id !== localPlayerId) {
-                            if (!players[data.id]) players[data.id] = new Player(data.x, data.y, data.id);
-                            Object.assign(players[data.id], { x: data.x, y: data.y, vx: data.vx, vy: data.vy, hp: data.hp, facingRight: data.facingRight, onGround: data.onGround });
-                        }
-                        break;
                     case 'sword_swing':
-                        if (data.id !== localPlayerId && players[data.id]) {
-                            players[data.id].facingRight = data.dirX >= 0;
-                        }
+                        if (data.id !== localPlayerId && players[data.id]) players[data.id].facingRight = data.dirX >= 0;
                         break;
-                    default: break;
                 }
             }
 
             function startGameAfterConnection() {
+                const lp = players[localPlayerId];
                 sendData({
                     type: 'full_world',
                     worldData: serializeWorld(),
                     hostId: localPlayerId,
-                    hostX: players[localPlayerId].x,
-                    hostY: players[localPlayerId].y,
+                    hostX: lp.x, hostY: lp.y,
                     clientSpawn: getSpawnPoint(),
                     zombies: zombies.map(z => ({ x: z.x, y: z.y, id: z.id })),
-                    gameTime,
-                    dayTime
+                    gameTime, dayTime
                 });
             }
 
@@ -987,19 +900,18 @@
                     type: 'zombie_update',
                     zombies: zombies.map(z => ({ id: z.id, x: z.x, y: z.y, vx: z.vx, vy: z.vy, hp: z.hp, facingRight: z.facingRight, onGround: z.onGround, digTarget: z.digTarget, digProgress: z.digProgress }))
                 });
-                const hostPlayer = players[localPlayerId];
-                if (hostPlayer) {
+                const lp = players[localPlayerId];
+                if (lp) {
                     sendData({
                         type: 'player_update',
                         id: localPlayerId,
-                        x: hostPlayer.x, y: hostPlayer.y, vx: hostPlayer.vx, vy: hostPlayer.vy, hp: hostPlayer.hp, facingRight: hostPlayer.facingRight, onGround: hostPlayer.onGround
+                        x: lp.x, y: lp.y, vx: lp.vx, vy: lp.vy, hp: lp.hp, facingRight: lp.facingRight, onGround: lp.onGround
                     });
                 }
             }
-
             function sendClientInput() {
-                const localPlayer = players[localPlayerId];
-                if (!localPlayer) return;
+                const lp = players[localPlayerId];
+                if (!lp) return;
                 sendData({
                     type: 'client_input',
                     moveX: leftStickActive ? leftStickDX : (keys['KeyA'] ? -1 : (keys['KeyD'] ? 1 : 0)),
@@ -1007,46 +919,31 @@
                     action: rightStickActive || mouseDown,
                     actionDirX: rightStickActive ? rightStickDX : 0,
                     actionDirY: rightStickActive ? rightStickDY : 0,
-                    selectedSlot: selectedSlot,
+                    selectedSlot,
                     touchWorld: touchWorldActive ? { x: touchWorldX, y: touchWorldY } : null,
                     mouseWorld: mouseDown ? { x: mouseWorldX, y: mouseWorldY } : null
                 });
             }
+            function sendBlockChange(bx, by, blockId) { if (conn && conn.open) sendData({ type: 'block_change', bx, by, blockId }); }
+            function sendSwordSwing(dirX, dirY) { if (conn && conn.open) sendData({ type: 'sword_swing', id: localPlayerId, dirX, dirY }); }
+            function sendZombieUpdate(z) {} // заглушка
 
-            function sendBlockChange(bx, by, blockId) {
-                if (!isMultiplayer || !conn || !conn.open) return;
-                sendData({ type: 'block_change', bx, by, blockId });
-            }
-            function sendSwordSwing(dirX, dirY) {
-                if (!isMultiplayer || !conn || !conn.open) return;
-                sendData({ type: 'sword_swing', id: localPlayerId, dirX, dirY });
-            }
-            function sendZombieUpdate(z) {}
-
-            function parseWorld(dataStr) {
-                const rows = dataStr.split('|');
-                const newWorld = [];
+            function parseWorld(str) {
+                const rows = str.split('|');
+                const w = [];
                 for (let y = 0; y < WORLD_HEIGHT; y++) {
-                    newWorld[y] = new Array(WORLD_WIDTH).fill(BLOCK_AIR);
-                    if (y < rows.length) {
-                        const rowStr = rows[y];
-                        for (let x = 0; x < WORLD_WIDTH; x++) {
-                            newWorld[y][x] = parseInt(rowStr[x] || '0', 10);
-                        }
-                    }
+                    w[y] = new Array(WORLD_WIDTH).fill(BLOCK_AIR);
+                    if (y < rows.length) for (let x = 0; x < WORLD_WIDTH; x++) w[y][x] = parseInt(rows[y][x] || '0', 10);
                 }
-                return newWorld;
+                return w;
             }
-
             function serializeWorld() {
-                let str = '';
+                let s = '';
                 for (let y = 0; y < WORLD_HEIGHT; y++) {
-                    for (let x = 0; x < WORLD_WIDTH; x++) {
-                        str += world[y][x].toString();
-                    }
-                    if (y < WORLD_HEIGHT-1) str += '|';
+                    for (let x = 0; x < WORLD_WIDTH; x++) s += world[y][x];
+                    if (y < WORLD_HEIGHT-1) s += '|';
                 }
-                return str;
+                return s;
             }
 
             // ─────── UI И СОХРАНЕНИЯ ─────────
@@ -1055,105 +952,110 @@
                 for (let i = 1; i <= 4; i++) {
                     const key = `terraria_save_${i}`;
                     const data = localStorage.getItem(key);
-                    const slotDiv = document.createElement('div');
-                    slotDiv.className = 'save-slot';
-                    slotDiv.innerHTML = `<strong>Слот ${i}</strong><br>${data ? 'Сохранение есть' : 'Пусто'}`;
+                    const div = document.createElement('div');
+                    div.className = 'save-slot';
+                    div.innerHTML = `<strong>Слот ${i}</strong><br>${data ? 'Сохранение есть' : 'Пусто'}`;
                     const btnSave = document.createElement('button');
                     btnSave.textContent = 'Сохранить';
-                    btnSave.addEventListener('click', () => saveToSlot(i));
-                    slotDiv.appendChild(btnSave);
+                    btnSave.onclick = () => saveToSlot(i);
+                    div.appendChild(btnSave);
                     if (data) {
                         const btnLoad = document.createElement('button');
                         btnLoad.textContent = 'Загрузить';
-                        btnLoad.addEventListener('click', () => loadFromSlot(i));
-                        slotDiv.appendChild(btnLoad);
+                        btnLoad.onclick = () => loadFromSlot(i);
+                        div.appendChild(btnLoad);
                         const btnDelete = document.createElement('button');
                         btnDelete.textContent = 'Удалить';
-                        btnDelete.addEventListener('click', () => { localStorage.removeItem(key); renderSaveSlots(); });
-                        slotDiv.appendChild(btnDelete);
+                        btnDelete.onclick = () => { localStorage.removeItem(key); renderSaveSlots(); };
+                        div.appendChild(btnDelete);
                     }
-                    saveSlotsContainer.appendChild(slotDiv);
+                    saveSlotsContainer.appendChild(div);
                 }
             }
-
             function saveToSlot(slot) {
-                const saveData = {
+                const lp = players[localPlayerId];
+                const save = {
                     world: serializeWorld(),
-                    inventory: inventory.map(item => ({ id: item.id, count: item.count, type: item.type, blockId: item.blockId })),
-                    playerX: players[localPlayerId]?.x || 0,
-                    playerY: players[localPlayerId]?.y || 0,
-                    gameTime,
-                    dayTime
+                    inventory: inventory.map(it => ({ id: it.id, count: it.count, type: it.type, blockId: it.blockId })),
+                    playerX: lp ? lp.x : 0, playerY: lp ? lp.y : 0,
+                    gameTime, dayTime
                 };
-                localStorage.setItem(`terraria_save_${slot}`, JSON.stringify(saveData));
+                localStorage.setItem(`terraria_save_${slot}`, JSON.stringify(save));
                 renderSaveSlots();
             }
-
             function loadFromSlot(slot) {
-                const saveStr = localStorage.getItem(`terraria_save_${slot}`);
-                if (!saveStr) return;
-                const saveData = JSON.parse(saveStr);
-                world = parseWorld(saveData.world);
+                const raw = localStorage.getItem(`terraria_save_${slot}`);
+                if (!raw) return;
+                const save = JSON.parse(raw);
+                world = parseWorld(save.world);
                 resetGame(true);
-                inventory = saveData.inventory.map(item => ({
-                    ...item,
-                    name: item.name || blockNames[item.blockId] || item.id,
-                    icon: item.type === 'block' ? getBlockIcon(item.blockId) : item.icon
+                inventory = save.inventory.map(it => ({
+                    ...it,
+                    name: it.name || blockNames[it.blockId] || it.id,
+                    icon: it.type === 'block' ? getBlockIcon(it.blockId) : it.icon
                 }));
-                const localPlayer = players[localPlayerId];
-                if (localPlayer) {
-                    localPlayer.x = saveData.playerX;
-                    localPlayer.y = saveData.playerY;
-                }
-                gameTime = saveData.gameTime;
-                dayTime = saveData.dayTime;
+                const lp = players[localPlayerId];
+                if (lp) { lp.x = save.playerX; lp.y = save.playerY; }
+                gameTime = save.gameTime; dayTime = save.dayTime;
                 isPaused = false;
                 pauseMenu.classList.add('hidden');
                 savesSubmenu.classList.add('hidden');
             }
 
-            // Обработчики UI
-            document.getElementById('btnCreate').onclick = () => {
+            // ─────── ОБРАБОТЧИКИ UI (чистая версия без дублирования) ─────────
+            document.getElementById('btnCreate').addEventListener('click', () => {
                 startMenu.classList.add('hidden');
                 setupHost();
-                resetGame();
-                pauseButton.classList.remove('hidden');
-            };
-            document.getElementById('btnJoin').onclick = () => { joinControls.classList.remove('hidden'); hostInfo.classList.add('hidden'); };
-            document.getElementById('btnSingle').onclick = () => {
+            });
+            document.getElementById('btnJoin').addEventListener('click', () => {
+                joinControls.classList.remove('hidden');
+                hostInfo.classList.add('hidden');
+            });
+            document.getElementById('btnSingle').addEventListener('click', () => {
                 startMenu.classList.add('hidden');
                 isMultiplayer = false;
                 localPlayerId = 'local';
                 resetGame();
                 pauseButton.classList.remove('hidden');
-            };
-            document.getElementById('btnConnect').onclick = () => {
+            });
+            document.getElementById('btnConnect').addEventListener('click', () => {
                 const id = roomIdInput.value.trim();
                 if (id) {
                     startMenu.classList.add('hidden');
                     setupClient(id);
                 }
-            };
-            pauseButton.onclick = () => { isPaused = true; pauseMenu.classList.remove('hidden'); };
-            document.getElementById('btnContinue').onclick = () => { isPaused = false; pauseMenu.classList.add('hidden'); savesSubmenu.classList.add('hidden'); };
-            document.getElementById('btnRespawn').onclick = () => {
-                const localPlayer = players[localPlayerId];
-                if (localPlayer) {
+            });
+            pauseButton.addEventListener('click', () => {
+                isPaused = true;
+                pauseMenu.classList.remove('hidden');
+            });
+            document.getElementById('btnContinue').addEventListener('click', () => {
+                isPaused = false;
+                pauseMenu.classList.add('hidden');
+                savesSubmenu.classList.add('hidden');
+            });
+            document.getElementById('btnRespawn').addEventListener('click', () => {
+                const lp = players[localPlayerId];
+                if (lp) {
                     const sp = getSpawnPoint();
-                    localPlayer.x = sp.x; localPlayer.y = sp.y;
-                    localPlayer.hp = PLAYER_MAX_HP;
+                    lp.x = sp.x; lp.y = sp.y; lp.hp = PLAYER_MAX_HP;
                     playerDead = false; respawnTimer = 0;
                 }
                 isPaused = false; pauseMenu.classList.add('hidden');
-            };
-            document.getElementById('btnNewWorld').onclick = () => {
+            });
+            document.getElementById('btnNewWorld').addEventListener('click', () => {
                 generateWorld();
                 resetGame(true);
                 if (isMultiplayer && isHost) startGameAfterConnection();
                 isPaused = false; pauseMenu.classList.add('hidden');
-            };
-            document.getElementById('btnSaves').onclick = () => { savesSubmenu.classList.remove('hidden'); renderSaveSlots(); };
-            document.getElementById('btnBackToPause').onclick = () => { savesSubmenu.classList.add('hidden'); };
+            });
+            document.getElementById('btnSaves').addEventListener('click', () => {
+                savesSubmenu.classList.remove('hidden');
+                renderSaveSlots();
+            });
+            document.getElementById('btnBackToPause').addEventListener('click', () => {
+                savesSubmenu.classList.add('hidden');
+            });
 
             // Автоподключение по URL
             const urlParams = new URLSearchParams(window.location.search);
@@ -1163,44 +1065,58 @@
                 setupClient(roomParam);
             }
 
-            // Сенсорные события и клавиатура (идентично оригиналу, но с учётом паузы)
+            // ─────── СЕНСОРНЫЙ ВВОД И КЛАВИАТУРА ─────────
+            function getInvSlot(px, py) {
+                const sw = Math.min(BLOCK_SIZE+6, canvas.width/10), tw = 8*sw + 7*4;
+                const ix = (canvas.width - tw)/2, iy = canvas.height - sw - 18;
+                if (py >= iy && py <= iy+sw && px >= ix && px <= ix+tw) return Math.floor((px-ix)/(sw+4));
+                return -1;
+            }
+            function isInCircle(px, py, cx, cy, r) { return (px-cx)**2 + (py-cy)**2 <= r**2; }
+
             canvas.addEventListener('touchstart', e => {
                 e.preventDefault();
                 if (isPaused) return;
                 for (const t of e.changedTouches) {
-                    const rect = canvas.getBoundingClientRect();
-                    const x = t.clientX - rect.left, y = t.clientY - rect.top;
-                    const wx = x + cameraX, wy = y + cameraY;
+                    const r = canvas.getBoundingClientRect();
+                    const x = t.clientX - r.left, y = t.clientY - r.top;
                     const slot = getInvSlot(x, y);
                     if (slot >= 0) { selectedSlot = slot; continue; }
-                    if (showTouchUI && isInCircle(x, y, canvas.width * 0.83, canvas.height * 0.72 - Math.min(canvas.width*0.1,48)-40, Math.min(canvas.width*0.07,35)+8) && x > canvas.width*0.5) {
-                        jumpBtnActive = true; jumpBtnId = t.identifier; jumpPressed = true; continue;
+                    if (showTouchUI) {
+                        const lsR = Math.min(canvas.width*0.12, 55), rsR = Math.min(canvas.width*0.1, 48);
+                        const jCX = canvas.width*0.83, jCY = canvas.height*0.72 - rsR - 40, jR = Math.min(canvas.width*0.07, 35);
+                        if (isInCircle(x, y, jCX, jCY, jR+8) && x > canvas.width*0.5) {
+                            jumpBtnActive = true; jumpBtnId = t.identifier; jumpPressed = true; continue;
+                        }
+                        if (x > canvas.width*0.55 && isInCircle(x, y, canvas.width*0.83, canvas.height*0.72, rsR+15)) {
+                            rightStickActive = true; rightStickId = t.identifier;
+                            rightStickBaseX = x; rightStickBaseY = y; rightStickCurX = x; rightStickCurY = y; continue;
+                        }
+                        if (x < canvas.width*0.45 && isInCircle(x, y, canvas.width*0.17, canvas.height*0.72, lsR+15)) {
+                            leftStickActive = true; leftStickId = t.identifier;
+                            leftStickBaseX = x; leftStickBaseY = y; leftStickCurX = x; leftStickCurY = y; continue;
+                        }
                     }
-                    if (showTouchUI && x > canvas.width*0.55 && isInCircle(x, y, canvas.width*0.83, canvas.height*0.72, Math.min(canvas.width*0.1,48)+15)) {
-                        rightStickActive = true; rightStickId = t.identifier; rightStickBaseX = x; rightStickBaseY = y; rightStickCurX = x; rightStickCurY = y; continue;
-                    }
-                    if (showTouchUI && x < canvas.width*0.45 && isInCircle(x, y, canvas.width*0.17, canvas.height*0.72, Math.min(canvas.width*0.12,55)+15)) {
-                        leftStickActive = true; leftStickId = t.identifier; leftStickBaseX = x; leftStickBaseY = y; leftStickCurX = x; leftStickCurY = y; continue;
-                    }
-                    touchWorldActive = true; touchWorldId = t.identifier; touchWorldX = wx; touchWorldY = wy;
+                    touchWorldActive = true; touchWorldId = t.identifier;
+                    touchWorldX = x + cameraX; touchWorldY = y + cameraY;
                 }
             }, { passive: false });
             canvas.addEventListener('touchmove', e => {
                 e.preventDefault();
                 for (const t of e.changedTouches) {
-                    const rect = canvas.getBoundingClientRect();
-                    const x = t.clientX - rect.left, y = t.clientY - rect.top;
+                    const r = canvas.getBoundingClientRect();
+                    const x = t.clientX - r.left, y = t.clientY - r.top;
                     if (leftStickActive && t.identifier === leftStickId) {
                         leftStickCurX = x; leftStickCurY = y;
                         leftStickDX = (x - leftStickBaseX) / (Math.min(canvas.width*0.12,55));
                         leftStickDY = (y - leftStickBaseY) / (Math.min(canvas.width*0.12,55));
-                        const mag = Math.hypot(leftStickDX, leftStickDY); if (mag > 1) { leftStickDX /= mag; leftStickDY /= mag; }
+                        const m = Math.hypot(leftStickDX, leftStickDY); if (m > 1) { leftStickDX /= m; leftStickDY /= m; }
                     }
                     if (rightStickActive && t.identifier === rightStickId) {
                         rightStickCurX = x; rightStickCurY = y;
                         rightStickDX = (x - rightStickBaseX) / (Math.min(canvas.width*0.1,48));
                         rightStickDY = (y - rightStickBaseY) / (Math.min(canvas.width*0.1,48));
-                        const mag = Math.hypot(rightStickDX, rightStickDY); if (mag > 1) { rightStickDX /= mag; rightStickDY /= mag; }
+                        const m = Math.hypot(rightStickDX, rightStickDY); if (m > 1) { rightStickDX /= m; rightStickDY /= m; }
                     }
                 }
             }, { passive: false });
@@ -1221,23 +1137,25 @@
             });
             window.addEventListener('keyup', e => { keys[e.code] = false; e.preventDefault(); });
             canvas.addEventListener('mousemove', e => { const r = canvas.getBoundingClientRect(); mouseX = e.clientX - r.left; mouseY = e.clientY - r.top; });
-            canvas.addEventListener('mousedown', e => { if (isPaused) return; mouseDown = true; const r = canvas.getBoundingClientRect(); mouseX = e.clientX - r.left; mouseY = e.clientY - r.top; mouseWorldX = mouseX + cameraX; mouseWorldY = mouseY + cameraY; const slot = getInvSlot(mouseX, mouseY); if (slot >= 0) selectedSlot = slot; e.preventDefault(); });
+            canvas.addEventListener('mousedown', e => {
+                if (isPaused) return;
+                mouseDown = true;
+                const r = canvas.getBoundingClientRect();
+                mouseX = e.clientX - r.left; mouseY = e.clientY - r.top;
+                mouseWorldX = mouseX + cameraX; mouseWorldY = mouseY + cameraY;
+                const slot = getInvSlot(mouseX, mouseY);
+                if (slot >= 0) selectedSlot = slot;
+                e.preventDefault();
+            });
             canvas.addEventListener('mouseup', () => { mouseDown = false; });
             canvas.addEventListener('contextmenu', e => e.preventDefault());
-
-            function getInvSlot(px, py) {
-                const slotW = Math.min(BLOCK_SIZE + 6, canvas.width / 10), totalW = 8 * slotW + 7 * 4;
-                const invX = (canvas.width - totalW) / 2, invY = canvas.height - slotW - 18;
-                if (py >= invY && py <= invY + slotW && px >= invX && px <= invX + totalW) return Math.floor((px - invX) / (slotW + 4));
-                return -1;
-            }
-            function isInCircle(px, py, cx, cy, r) { return (px - cx) ** 2 + (py - cy) ** 2 <= r ** 2; }
 
             // ─────── ОТРИСОВКА ─────────
             function render() {
                 canvas.width = window.innerWidth; canvas.height = window.innerHeight;
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+                // Фон и небо
                 const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
                 grad.addColorStop(0, isNight ? '#0a0a2e' : '#4a90d9');
                 grad.addColorStop(0.6, isNight ? '#1a1a3e' : '#87CEEB');
@@ -1245,52 +1163,72 @@
                 ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 const cycle = dayTime / FULL_DAY;
-                const celestialX = canvas.width * 0.15 + cycle * canvas.width * 0.7;
-                const celestialY = canvas.height * 0.2 + Math.sin(cycle * Math.PI) * canvas.height * 0.5;
-                if (!isNight) { ctx.fillStyle = '#FFD700'; ctx.beginPath(); ctx.arc(celestialX, celestialY, 24, 0, Math.PI*2); ctx.fill(); }
-                else { ctx.fillStyle = '#E8E8E8'; ctx.beginPath(); ctx.arc(celestialX, celestialY, 20, 0, Math.PI*2); ctx.fill(); ctx.fillStyle = '#0a0a2e'; ctx.beginPath(); ctx.arc(celestialX+5, celestialY-3, 16, 0, Math.PI*2); ctx.fill(); }
-                if (isNight && window._stars) {
-                    for (const s of window._stars) { const a = 0.4 + 0.6 * Math.sin(gameTime*3 + s.p); ctx.fillStyle = `rgba(255,255,255,${a})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 2*Math.PI); ctx.fill(); }
+                const cX = canvas.width * 0.15 + cycle * canvas.width * 0.7;
+                const cY = canvas.height * 0.2 + Math.sin(cycle * Math.PI) * canvas.height * 0.5;
+                if (!isNight) {
+                    ctx.fillStyle = '#FFD700'; ctx.beginPath(); ctx.arc(cX, cY, 24, 0, Math.PI*2); ctx.fill();
+                } else {
+                    ctx.fillStyle = '#E8E8E8'; ctx.beginPath(); ctx.arc(cX, cY, 20, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#0a0a2e'; ctx.beginPath(); ctx.arc(cX+5, cY-3, 16, 0, Math.PI*2); ctx.fill();
                 }
-
-                const startBX = Math.max(0, Math.floor(cameraX / BLOCK_SIZE) - 1), endBX = Math.min(WORLD_WIDTH-1, Math.floor((cameraX+canvas.width)/BLOCK_SIZE)+1);
-                const startBY = Math.max(0, Math.floor(cameraY / BLOCK_SIZE) - 1), endBY = Math.min(WORLD_HEIGHT-1, Math.floor((cameraY+canvas.height)/BLOCK_SIZE)+1);
-                for (let by = startBY; by <= endBY; by++) {
-                    for (let bx = startBX; bx <= endBX; bx++) {
-                        if (world[by][bx] === BLOCK_AIR) continue;
-                        const sx = bx * BLOCK_SIZE - cameraX, sy = by * BLOCK_SIZE - cameraY;
-                        ctx.fillStyle = blockColors[world[by][bx]]; ctx.fillRect(sx, sy, BLOCK_SIZE, BLOCK_SIZE);
+                if (isNight && window._stars) {
+                    for (const s of window._stars) {
+                        const a = 0.4 + 0.6 * Math.sin(gameTime*3 + s.p);
+                        ctx.fillStyle = `rgba(255,255,255,${a})`;
+                        ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 2*Math.PI); ctx.fill();
                     }
                 }
 
-                if (miningBlockX >= 0 && miningProgress > 0) {
-                    const sx = miningBlockX * BLOCK_SIZE - cameraX, sy = miningBlockY * BLOCK_SIZE - cameraY;
-                    ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(sx, sy, BLOCK_SIZE, BLOCK_SIZE);
-                    ctx.fillStyle = '#ffdd00'; ctx.fillRect(sx + 4, sy - 6, (BLOCK_SIZE-8) * miningProgress, 4);
+                // Мир (блоки)
+                const sBX = Math.max(0, Math.floor(cameraX/BLOCK_SIZE)-1), eBX = Math.min(WORLD_WIDTH-1, Math.floor((cameraX+canvas.width)/BLOCK_SIZE)+1);
+                const sBY = Math.max(0, Math.floor(cameraY/BLOCK_SIZE)-1), eBY = Math.min(WORLD_HEIGHT-1, Math.floor((cameraY+canvas.height)/BLOCK_SIZE)+1);
+                for (let by = sBY; by <= eBY; by++) {
+                    for (let bx = sBX; bx <= eBX; bx++) {
+                        if (world[by][bx] === BLOCK_AIR) continue;
+                        const sx = bx*BLOCK_SIZE - cameraX, sy = by*BLOCK_SIZE - cameraY;
+                        ctx.fillStyle = blockColors[world[by][bx]];
+                        ctx.fillRect(sx, sy, BLOCK_SIZE, BLOCK_SIZE);
+                    }
                 }
 
+                // Индикатор копания
+                if (miningBlockX >= 0 && miningProgress > 0) {
+                    const sx = miningBlockX*BLOCK_SIZE - cameraX, sy = miningBlockY*BLOCK_SIZE - cameraY;
+                    ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(sx, sy, BLOCK_SIZE, BLOCK_SIZE);
+                    ctx.fillStyle = '#ffdd00'; ctx.fillRect(sx+4, sy-6, (BLOCK_SIZE-8)*miningProgress, 4);
+                }
+
+                // Выпавшие предметы
                 for (const di of droppedItems) {
                     const sx = di.x - cameraX, sy = di.y - cameraY;
-                    if (di.type === 'food') { ctx.fillStyle = '#d44'; ctx.fillRect(sx, sy, di.width, di.height); ctx.fillStyle = '#fff'; ctx.font = `${BLOCK_SIZE*0.5}px sans-serif`; ctx.fillText('🍖', sx-2, sy+di.height*0.7); }
-                    else { ctx.fillStyle = blockColors[di.blockId]||'#888'; ctx.fillRect(sx, sy, di.width, di.height); }
+                    if (di.type === 'food') {
+                        ctx.fillStyle = '#d44'; ctx.fillRect(sx, sy, di.width, di.height);
+                        ctx.fillStyle = '#fff'; ctx.font = `${BLOCK_SIZE*0.5}px sans-serif`;
+                        ctx.fillText('🍖', sx-2, sy+di.height*0.7);
+                    } else {
+                        ctx.fillStyle = blockColors[di.blockId] || '#888';
+                        ctx.fillRect(sx, sy, di.width, di.height);
+                    }
                 }
 
-                // Отрисовка всех игроков
+                // Игроки
                 for (const pid in players) {
                     const p = players[pid];
                     const sx = p.x - cameraX, sy = p.y - cameraY;
                     ctx.fillStyle = '#4a90d9'; ctx.fillRect(sx, sy + BLOCK_SIZE*0.6, p.width, p.height - BLOCK_SIZE*0.6);
-                    ctx.fillStyle = '#f4c78e'; ctx.fillRect(sx + 2, sy, p.width-4, BLOCK_SIZE*0.9);
-                    ctx.fillStyle = '#5a3a1a'; ctx.fillRect(sx + 1, sy - 2, p.width-2, BLOCK_SIZE*0.45);
-                    ctx.fillStyle = '#fff'; ctx.fillRect(p.facingRight ? sx + p.width*0.6 : sx + p.width*0.25, sy + BLOCK_SIZE*0.25, 5, 5);
-                    ctx.fillStyle = '#000'; ctx.fillRect(p.facingRight ? sx + p.width*0.6 + 1 : sx + p.width*0.25 + 1, sy + BLOCK_SIZE*0.27, 2.5, 2.5);
+                    ctx.fillStyle = '#f4c78e'; ctx.fillRect(sx+2, sy, p.width-4, BLOCK_SIZE*0.9);
+                    ctx.fillStyle = '#5a3a1a'; ctx.fillRect(sx+1, sy-2, p.width-2, BLOCK_SIZE*0.45);
+                    ctx.fillStyle = '#fff'; ctx.fillRect(p.facingRight ? sx+p.width*0.6 : sx+p.width*0.25, sy+BLOCK_SIZE*0.25, 5, 5);
+                    ctx.fillStyle = '#000'; ctx.fillRect(p.facingRight ? sx+p.width*0.6+1 : sx+p.width*0.25+1, sy+BLOCK_SIZE*0.27, 2.5, 2.5);
                     if (swordSwing > 0 && pid === localPlayerId) {
-                        const progress = 1 - swordSwing / 0.25, angle = Math.atan2(swordDir.y, swordDir.x) + (progress-0.5)*2.5;
+                        const progress = 1 - swordSwing/0.25, angle = Math.atan2(swordDir.y, swordDir.x) + (progress-0.5)*2.5;
                         const len = SWORD_RANGE, cx = p.getCenterX() - cameraX, cy = p.getCenterY() - cameraY;
-                        ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(angle)*len, cy + Math.sin(angle)*len); ctx.stroke();
+                        ctx.strokeStyle = '#fff'; ctx.lineWidth = 3;
+                        ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx + Math.cos(angle)*len, cy + Math.sin(angle)*len); ctx.stroke();
                     }
                 }
 
+                // Зомби
                 for (const z of zombies) {
                     const sx = z.x - cameraX, sy = z.y - cameraY;
                     ctx.fillStyle = '#5a7a4a'; ctx.fillRect(sx, sy, z.width, z.height);
@@ -1300,44 +1238,48 @@
                     ctx.fillStyle = '#ff3333'; ctx.fillRect(sx, sy-9, z.width * (z.hp/z.maxHp), 3);
                 }
 
+                // Частицы и текст
                 for (const p of particles) { ctx.globalAlpha = p.life/p.maxLife; ctx.fillStyle = p.color; ctx.fillRect(p.x - cameraX, p.y - cameraY, p.size, p.size); }
                 ctx.globalAlpha = 1;
                 for (const ft of floatingTexts) { ctx.fillStyle = ft.color; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(ft.text, ft.x - cameraX, ft.y - cameraY); }
                 ctx.textAlign = 'start';
 
-                // UI: здоровье
-                const hpX = 15, hpY = 15, hpW = canvas.width * 0.22, hpH = 16;
+                // Полоска здоровья
+                const hpX = 15, hpY = 15, hpW = canvas.width*0.22, hpH = 16;
                 ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(hpX-2, hpY-2, hpW+4, hpH+4);
                 ctx.fillStyle = '#400'; ctx.fillRect(hpX, hpY, hpW, hpH);
-                const localPlayer = players[localPlayerId];
-                const hpRatio = localPlayer ? localPlayer.hp / localPlayer.maxHp : 0;
+                const lp = players[localPlayerId];
+                const hpRatio = lp ? lp.hp / lp.maxHp : 0;
                 ctx.fillStyle = '#f44'; ctx.fillRect(hpX, hpY, hpW * hpRatio, hpH);
                 ctx.fillStyle = '#fff'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
-                ctx.fillText(`HP: ${Math.ceil(localPlayer?localPlayer.hp:0)}`, hpX+hpW/2, hpY+hpH*0.75); ctx.textAlign = 'start';
+                ctx.fillText(`HP: ${Math.ceil(lp ? lp.hp : 0)}`, hpX+hpW/2, hpY+hpH*0.75);
+                ctx.textAlign = 'start';
 
                 // Часы
                 const clockCX = hpX + hpW + 45, clockCY = hpY + hpH/2 + 5, clockR = 22;
                 ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.beginPath(); ctx.arc(clockCX, clockCY, clockR+3, 0, 2*Math.PI); ctx.fill();
                 ctx.fillStyle = isNight ? '#1a1a4e' : '#87CEEB'; ctx.beginPath(); ctx.arc(clockCX, clockCY, clockR, 0, 2*Math.PI); ctx.fill();
                 const halfDay = dayTime < DAY_DURATION ? dayTime/DAY_DURATION : (dayTime-DAY_DURATION)/NIGHT_DURATION;
-                const angle = halfDay * 2 * Math.PI - Math.PI/2;
+                const angle = halfDay * 2*Math.PI - Math.PI/2;
                 ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(clockCX, clockCY); ctx.lineTo(clockCX+Math.cos(angle)*clockR*0.75, clockCY+Math.sin(angle)*clockR*0.75); ctx.stroke();
                 ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(clockCX, clockCY, 3, 0, 2*Math.PI); ctx.fill();
-                ctx.fillStyle = '#fff'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(isNight?'🌙':'☀️', clockCX, clockCY-clockR-8); ctx.textAlign = 'start';
+                ctx.fillStyle = '#fff'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+                ctx.fillText(isNight ? '🌙' : '☀️', clockCX, clockCY-clockR-8);
+                ctx.textAlign = 'start';
 
                 // Инвентарь
-                const slotW = Math.min(BLOCK_SIZE+6, canvas.width/10), totalW = 8 * slotW + 7 * 4;
-                const invX = (canvas.width - totalW)/2, invY = canvas.height - slotW - 18;
-                ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(invX-6, invY-6, totalW+12, slotW+12);
+                const sw = Math.min(BLOCK_SIZE+6, canvas.width/10), totalW = 8*sw + 7*4;
+                const ix = (canvas.width - totalW)/2, iy = canvas.height - sw - 18;
+                ctx.fillStyle = 'rgba(0,0,0,0.5)'; ctx.fillRect(ix-6, iy-6, totalW+12, sw+12);
                 for (let i = 0; i < 8; i++) {
-                    const sx = invX + i * (slotW + 4);
+                    const sx = ix + i*(sw+4);
                     ctx.fillStyle = i === selectedSlot ? 'rgba(255,255,200,0.7)' : 'rgba(80,80,80,0.6)';
-                    ctx.fillRect(sx, invY, slotW, slotW);
+                    ctx.fillRect(sx, iy, sw, sw);
                     ctx.strokeStyle = i === selectedSlot ? '#fff' : '#aaa'; ctx.lineWidth = i === selectedSlot ? 2.5 : 1;
-                    ctx.strokeRect(sx, invY, slotW, slotW);
-                    ctx.fillStyle = '#fff'; ctx.font = `${slotW*0.45}px sans-serif`; ctx.textAlign = 'center';
-                    ctx.fillText(inventory[i].icon, sx + slotW/2, invY + slotW*0.55);
-                    if (inventory[i].count > 0) { ctx.font = `bold ${slotW*0.3}px sans-serif`; ctx.textAlign = 'right'; ctx.fillText(inventory[i].count, sx+slotW-3, invY+slotW-3); }
+                    ctx.strokeRect(sx, iy, sw, sw);
+                    ctx.fillStyle = '#fff'; ctx.font = `${sw*0.45}px sans-serif`; ctx.textAlign = 'center';
+                    ctx.fillText(inventory[i].icon, sx+sw/2, iy+sw*0.55);
+                    if (inventory[i].count > 0) { ctx.font = `bold ${sw*0.3}px sans-serif`; ctx.textAlign = 'right'; ctx.fillText(inventory[i].count, sx+sw-3, iy+sw-3); }
                     ctx.textAlign = 'start';
                 }
 
@@ -1346,12 +1288,12 @@
                     const lsCX = canvas.width*0.17, lsCY = canvas.height*0.72, lsR = Math.min(canvas.width*0.12, 55);
                     ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.beginPath(); ctx.arc(lsCX, lsCY, lsR, 0, 2*Math.PI); ctx.fill();
                     ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.stroke();
-                    ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.beginPath(); ctx.arc(lsCX + (leftStickActive?leftStickDX*lsR*0.7:0), lsCY + (leftStickActive?leftStickDY*lsR*0.7:0), lsR*0.4, 0, 2*Math.PI); ctx.fill();
+                    ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.beginPath(); ctx.arc(lsCX+(leftStickActive?leftStickDX*lsR*0.7:0), lsCY+(leftStickActive?leftStickDY*lsR*0.7:0), lsR*0.4, 0, 2*Math.PI); ctx.fill();
 
                     const rsCX = canvas.width*0.83, rsCY = canvas.height*0.72, rsR = Math.min(canvas.width*0.1, 48);
                     ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.beginPath(); ctx.arc(rsCX, rsCY, rsR, 0, 2*Math.PI); ctx.fill();
                     ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.stroke();
-                    ctx.fillStyle = 'rgba(255,200,100,0.5)'; ctx.beginPath(); ctx.arc(rsCX + (rightStickActive?rightStickDX*rsR*0.7:0), rsCY + (rightStickActive?rightStickDY*rsR*0.7:0), rsR*0.4, 0, 2*Math.PI); ctx.fill();
+                    ctx.fillStyle = 'rgba(255,200,100,0.5)'; ctx.beginPath(); ctx.arc(rsCX+(rightStickActive?rightStickDX*rsR*0.7:0), rsCY+(rightStickActive?rightStickDY*rsR*0.7:0), rsR*0.4, 0, 2*Math.PI); ctx.fill();
 
                     const jCX = rsCX, jCY = rsCY - rsR - 40, jR = Math.min(canvas.width*0.07, 35);
                     ctx.fillStyle = jumpBtnActive ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,0.2)'; ctx.beginPath(); ctx.arc(jCX, jCY, jR, 0, 2*Math.PI); ctx.fill();
@@ -1359,13 +1301,14 @@
                     ctx.fillStyle = '#fff'; ctx.font = `bold ${jR*0.7}px sans-serif`; ctx.textAlign = 'center'; ctx.fillText('↑', jCX, jCY+jR*0.25); ctx.textAlign = 'start';
                 }
 
-                if (isNight) { ctx.fillStyle = 'rgba(5,5,20,0.2)'; ctx.fillRect(0,0,canvas.width,canvas.height); }
+                if (isNight) { ctx.fillStyle = 'rgba(5,5,20,0.2)'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
                 if (playerDead) { ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, canvas.height/2-30, canvas.width, 60); ctx.fillStyle = '#ff4444'; ctx.font = '20px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(`Возрождение через ${Math.ceil(respawnTimer)}...`, canvas.width/2, canvas.height/2+8); ctx.textAlign = 'start'; }
             }
 
-            // Звёздное небо
-            window._stars = Array.from({length: 80}, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height*0.7, r: 0.5+Math.random()*1.5, p: Math.random()*Math.PI*2 }));
+            // Звёзды
+            window._stars = Array.from({length:80}, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height*0.7, r: 0.5+Math.random()*1.5, p: Math.random()*Math.PI*2 }));
 
+            // Игровой цикл
             function gameLoop(ts) {
                 update();
                 render();
@@ -1375,20 +1318,17 @@
             // Инициализация
             function init() {
                 canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-                if (!roomParam) {
-                    // Если в URL нет комнаты, показываем меню, но мир уже можно сгенерировать
-                    generateWorld();
-                }
+                // Если не задано автоматическое подключение, генерируем мир для меню (чисто визуально)
+                generateWorld();
                 lastTime = performance.now();
                 requestAnimationFrame(gameLoop);
             }
             window.addEventListener('resize', () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-                window._stars = Array.from({length: 80}, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height*0.7, r: 0.5+Math.random()*1.5, p: Math.random()*Math.PI*2 }));
+                canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+                window._stars = Array.from({length:80}, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height*0.7, r: 0.5+Math.random()*1.5, p: Math.random()*Math.PI*2 }));
             });
             init();
-            console.log('🎮 Игра готова. E – сенсорное управление. Мультиплеер через QR / PeerJS.');
+            console.log('🎮 Готово. E – сенсорное управление.');
         })();
     </script>
 </body>
