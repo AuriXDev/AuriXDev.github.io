@@ -5,7 +5,7 @@ let starsDimmed = false;
 let lastUserMessage = '';
 let modelSelectionLocked = false;
 
-const VPS_URL = "https://mortgages-examining-girlfriend-settled.trycloudflare.com/api/groq";
+const VPS_URL = "https://picture-jews-gourmet-ticket.trycloudflare.com/api/groq";
 const API_KEY = "CUBIK54J2VV3884RI7YOF1KQME71RC98ZLO";
 
 const starsCanvas = document.getElementById('starsCanvas');
