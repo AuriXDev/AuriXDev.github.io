@@ -103,10 +103,9 @@
             font-size: 14px;
         }
 
-        /* Выпадающее меню поисковиков - теперь появляется сверху */
         .engine-dropdown {
             position: absolute;
-            bottom: calc(100% + 8px); /* Изменено с top на bottom */
+            bottom: calc(100% + 8px);
             right: 0;
             background: rgba(10, 10, 15, 0.95);
             backdrop-filter: blur(20px);
@@ -116,12 +115,12 @@
             min-width: 200px;
             display: none;
             z-index: 300;
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5); /* Тень теперь сверху */
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
         }
 
         .engine-dropdown.active {
             display: block;
-            animation: slideUp 0.2s ease; /* Анимация появления сверху */
+            animation: slideUp 0.2s ease;
         }
 
         @keyframes slideUp {
@@ -447,7 +446,6 @@
             color: #ddd;
         }
 
-        /* Casino Slot Machine */
         .casino-game {
             position: fixed;
             bottom: 20px;
@@ -630,33 +628,6 @@
                     </div>
                 </div>
                 <button class="search-btn" id="search-btn">Search</button>
-            </div>
-        </div>
-
-        <div class="bookmarks">
-            <div class="bookmark-item" data-url="https://aurixdev.github.io/projects/magmaluncher.html">
-                <div class="bookmark-square">
-                    <img src="https://www.google.com/s2/favicons?domain=aurixdev.github.io&sz=64" alt="Magma" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌋</text></svg>'">
-                </div>
-                <div class="bookmark-label">Magma</div>
-            </div>
-            <div class="bookmark-item" data-url="https://github.com/AuriXDev">
-                <div class="bookmark-square">
-                    <img src="https://www.google.com/s2/favicons?domain=github.com&sz=64" alt="GitHub" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐙</text></svg>'">
-                </div>
-                <div class="bookmark-label">GitHub</div>
-            </div>
-            <div class="bookmark-item" data-url="https://youtube.com">
-                <div class="bookmark-square">
-                    <img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=64" alt="Youtube" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>▶️</text></svg>'">
-                </div>
-                <div class="bookmark-label">Youtube</div>
-            </div>
-            <div class="bookmark-item" data-url="https://qwen.ai">
-                <div class="bookmark-square">
-                    <img src="https://www.google.com/s2/favicons?domain=qwen.ai&sz=64" alt="Qwen" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>'">
-                </div>
-                <div class="bookmark-label">Qwen</div>
             </div>
         </div>
     </div>
