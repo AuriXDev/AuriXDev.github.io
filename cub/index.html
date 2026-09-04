@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CubikAI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+</head>
+<body>
+    <canvas id="starsCanvas"></canvas>
+    
+    <div class="app-container">
+        <div class="top-bar">
+            <div class="model-dropdown-wrapper">
+                <button id="modelDropdownBtn" class="model-dropdown-btn">
+                    <img src="icon.png" class="icon-img-small" alt="icon">
+                    <span id="currentModelName">CubikAI 1.7</span>
+                    <span>▾</span>
+                </button>
+                <div id="modelDropdown" class="model-dropdown hidden">
+                    <div class="model-option" data-model="mini">
+                        <div class="model-name">CubikAI 1.1.3</div>
+                        <div class="model-desc">Одна из самых первых моделей, идеально для простого общения</div>
+                    </div>
+                    <div class="model-option" data-model="coder">
+                        <div class="model-name">CubikAI 1.4-Coder</div>
+                        <div class="model-desc">Самая лучшая модель в сфере IT на данный момент</div>
+                    </div>
+                    <div class="model-option active" data-model="fast">
+                        <div class="model-name">CubikAI 1.7</div>
+                        <div class="model-desc">Высокопроизводительная модель версий 1.0+ для повседневных задач. Считается эталоном CubikAI</div>
+                    </div>
+                    <div class="model-option" data-model="think">
+                        <div class="model-name">CubikAI 2.0-Think</div>
+                        <div class="model-desc">Языковая модель с функцией раздумия, по некоторым задачам превосходит модели 2.6</div>
+                    </div>
+                    <div class="model-option" data-model="master">
+                        <div class="model-name">CubikAI 2.6-Ultra</div>
+                        <div class="model-desc">Последняя крупная языковая модель на текущее время, отлична в сложных задачах</div>
+                    </div>
+                </div>
+            </div>
+            <button id="menuBtn" class="menu-btn">☰</button>
+        </div>
+
+        <div id="dynamicContainer" class="dynamic-container center-mode">
+            <div class="welcome-block">
+                <div class="logo-center">
+                    <img src="icon.png" class="icon-img" alt="CubikAI Logo">
+                    <div class="logo-text">CubikAI</div>
+                </div>
+                <div id="welcomeInputWrapper" class="input-wrapper welcome-input-wrapper">
+                    <div class="char-counter" style="text-align:right; width:100%; padding:0 4px 4px 0; font-size:11px; color:#555;">0 / 1000</div>
+                    <textarea id="messageInputWelcome" placeholder="Чем я могу помочь вам сегодня?" rows="1"></textarea>
+                    <div class="file-attachments-area" id="fileAttachmentsWelcome"></div>
+                    <button id="attachBtnWelcome" class="attach-btn" title="Прикрепить файл"><img src="file.png" class="file-img" alt="CubikAI Logo"></button>
+                    <button id="sendBtnWelcome" class="send-btn-icon">➔</button>
+                </div>
+            </div>
+
+            <div id="chatWindow" class="chat-window"></div>
+
+            <div id="chatInputWrapper" class="chat-input-wrapper hidden">
+                <div class="input-wrapper">
+                    <div class="char-counter" style="text-align:right; width:100%; padding:0 4px 4px 0; font-size:11px; color:#555;">0 / 1000</div>
+                    <textarea id="messageInput" placeholder="Сообщение..." rows="1"></textarea>
+                    <div class="file-attachments-area" id="fileAttachmentsChat"></div>
+                    <button id="attachBtnChat" class="attach-btn" title="Прикрепить файл"><img src="file.png" class="file-img" alt="CubikAI Logo"></button>
+                    <button id="sendBtn" class="send-btn-icon">➔</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h3>Диалоги</h3>
+            <button id="sidebarMenuBtn" class="sidebar-menu-btn">›</button>
+        </div>
+        <div id="sidebarMenu" class="sidebar-menu hidden">
+            <button id="menuNewChat">Новый чат</button>
+            <button id="menuPolicy">Политика</button>
+            <button id="menuModelList">Список моделей</button>
+            <button id="menuDeleteAll" class="danger-btn">Удалить чаты</button>
+        </div>
+        <div id="chatList" class="chat-list"></div>
+        <div class="sidebar-new-chat">
+            <button id="sidebarNewChatBtn" class="sidebar-new-chat-btn">+ Новый чат</button>
+        </div>
+        <div class="sidebar-footer">
+            <button id="accountBtn" class="account-btn" title="Профиль">
+                <span id="accountBtnLabel">?</span>
+            </button>
+            <button id="tokenCounterBtn" class="token-counter-btn">
+                <div class="token-progress-fill" id="tokenProgressFill" style="width:100%"></div>
+                <span class="token-counter-label">TOKENS</span>
+                <span id="tokenCounterText">1000/1000</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="accountOverlay" class="account-overlay hidden">
+        <div class="account-panel">
+            <div class="account-panel-header">
+                <button id="accountCloseBtn" class="account-close-btn">✕</button>
+            </div>
+            <div id="authForm" class="auth-form">
+                <h2 class="auth-title">Войти в аккаунт</h2>
+                <div class="auth-field">
+                    <label>Почта</label>
+                    <input type="email" id="authEmail" placeholder="example@mail.com">
+                </div>
+                <div class="auth-field">
+                    <label>Никнейм</label>
+                    <input type="text" id="authNickname" placeholder="username">
+                </div>
+                <div class="auth-field">
+                    <label>Пароль</label>
+                    <input type="password" id="authPassword" placeholder="••••••••">
+                </div>
+                <button id="authSubmitBtn" class="auth-submit-btn">Войти / Зарегистрироваться</button>
+            </div>
+            <div id="accountSettings" class="account-settings hidden">
+                <div class="settings-section-label">Аккаунт</div>
+                <div class="settings-profile-row">
+                    <div class="settings-avatar-wrap">
+                        <img id="settingsAvatarImg" class="settings-avatar hidden" src="" alt="avatar">
+                        <div id="settingsAvatarLetter" class="settings-avatar-letter"></div>
+                    </div>
+                    <div class="settings-profile-info">
+                        <div id="settingsNick" class="settings-nick"></div>
+                        <div id="settingsEmail" class="settings-email"></div>
+                    </div>
+                </div>
+                <button class="settings-row-btn" id="setPhotoBtn">Установить фото</button>
+                <input type="file" id="avatarFileInput" accept="image/*" style="display:none">
+                <button class="settings-row-btn" id="setNameBtn">Установить новое имя</button>
+                <button class="settings-row-btn gold-btn" id="upgradeBtn">Upgrade to GOLD</button>
+
+                <div class="settings-section-label" style="margin-top:24px;">Чаты</div>
+                <div class="settings-row-select">
+                    <span class="settings-row-label">Модель для новых чатов</span>
+                    <select id="defaultModelSelect" class="settings-select">
+                        <option value="mini">CubikAI 1.1.3</option>
+                        <option value="coder">CubikAI 1.4-Coder</option>
+                        <option value="fast" selected>CubikAI 1.7</option>
+                        <option value="think">CubikAI 2.0-Think</option>
+                        <option value="master">CubikAI 2.6-Ultra</option>
+                    </select>
+                </div>
+                <button class="settings-row-btn" id="incognitoBtn">Создать инкогнито чат</button>
+                <button class="settings-row-btn danger-text-btn" id="deleteAllChatsBtn">Удалить все чаты</button>
+
+                <button class="settings-logout-btn" id="logoutBtn">Выйти</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="dotMenu" class="dot-menu hidden">
+        <button id="rename">Переименовать</button>
+        <button id="convertJsonBtn">Конвертировать в JSON</button>
+        <button id="pinChatBtn">Закрепить</button>
+        <button id="deleteChatBtn" class="danger-btn">Удалить</button>
+    </div>
+
+    <div id="notification" class="notification hidden"></div>
+
+    <div id="modalOverlay" class="modal-overlay hidden">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="modalTitle">Заголовок</h3>
+                <button id="modalCloseBtn" class="modal-close-btn">✕</button>
+            </div>
+            <div id="modalContent" class="modal-content"></div>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" multiple accept=".txt,.js,.html,.css,.json,.md,.py,.c,.cpp,.java" style="display:none">
+
+    <div id="subOverlay" class="account-overlay hidden">
+        <div class="account-panel sub-panel">
+            <div class="account-panel-header">
+                <button id="subCloseBtn" class="account-close-btn">✕</button>
+            </div>
+            <div class="sub-title">Выберите план</div>
+            <div class="sub-cards">
+                <div class="sub-card sub-free">
+                    <div class="sub-plan-name">FREE</div>
+                    <div class="sub-price">0 ₽ <span class="sub-period">/ навсегда</span></div>
+                    <ul class="sub-features">
+                        <li>1 000 токенов в день</li>
+                        <li>Модели до CubikAI 1.7</li>
+                        <li>До 1 прикреплённого файла</li>
+                        <li>История чатов</li>
+                        <li class="sub-no">CubikAI 2.0-Think / 2.6-Ultra</li>
+                        <li class="sub-no">Приоритетная очередь</li>
+                        <li class="sub-no">Расширенный лимит сообщений</li>
+                    </ul>
+                    <button class="sub-btn sub-btn-free" disabled>Текущий план</button>
+                </div>
+                <div class="sub-card sub-gold">
+                    <div class="sub-badge">Популярный</div>
+                    <div class="sub-plan-name gold-text">GOLD</div>
+                    <div class="sub-price">- ₽ <span class="sub-period">/ навсегда</span></div>
+                    <ul class="sub-features">
+                        <li>10 000 токенов в день</li>
+                        <li>Все модели включая 2.6-Ultra</li>
+                        <li>До 3 прикреплённых файлов</li>
+                        <li>История чатов</li>
+                        <li>CubikAI 2.0-Think / 2.6-Ultra</li>
+                        <li>Приоритетная очередь</li>
+                        <li>Расширенный лимит сообщений</li>
+                    </ul>
+                    <button class="sub-btn sub-btn-gold" id="subBuyBtn">Оформить GOLD</button>
+                </div>
+            </div>
+            <div class="sub-note">Оплата безопасна. Отмена в любое время.</div>
+        </div>
+    </div>
+
+    <script src="modules/formatting.js"></script>
+    <script src="modules/ui.js"></script>
+    <script src="modules/account.js"></script>
+    <script src="modules/core.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
