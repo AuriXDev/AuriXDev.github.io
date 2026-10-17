@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Утилиты — Magma Launcher</title>
+  <meta name="description" content="Полезные утилиты для майнкрафтеров: координаты Незера, стаки, чанки, MOTD, offline UUID и круги для строительства.">
+  <meta name="theme-color" content="#0b0d0c">
+  <link rel="icon" type="image/svg+xml" href="../assets/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Silkscreen&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="nav is-scrolled">
+  <a class="brand" href="../" aria-label="Magma Launcher">
+    <img class="brand-mark" src="../assets/logo.svg" alt="">
+    <span class="brand-name">Magma</span>
+  </a>
+  <nav class="nav-links">
+    <a href="../#features">Возможности</a>
+    <a href="../#look">Внешний вид</a>
+    <a href="../#inside">Под капотом</a>
+    <a href="./" class="is-current">Утилиты</a>
+    <a href="../plugins/">Плагины</a>
+    <a href="../help/">Поддержка</a>
+  </nav>
+  <div class="nav-actions">
+    <a class="btn btn-sm" href="../#download">Скачать</a>
+  </div>
+</header>
+
+<main class="page">
+  <span class="sh sh-glow" aria-hidden="true"></span>
+  <div class="wrap">
+    <p class="eyebrow"><span class="px">UTILS</span> Для майнкрафтеров</p>
+    <h1>Утилиты.</h1>
+    <p class="lead">Маленькие инструменты, которые нужны каждый день. Всё считается прямо в браузере, ничего никуда не отправляется.</p>
+
+    <div class="tools">
+
+      <!-- Nether -->
+      <section class="tool">
+        <span class="glyph" data-seed="nether"></span>
+        <h2>Незер ↔ Обычный мир</h2>
+        <p>В Незере 1 блок равен 8 блокам в обычном мире. Введи координаты в любое поле.</p>
+        <div class="row">
+          <label class="field"><span>Обычный мир · X</span><input id="ow-x" type="number" inputmode="decimal" placeholder="0"></label>
+          <label class="field"><span>Обычный мир · Z</span><input id="ow-z" type="number" inputmode="decimal" placeholder="0"></label>
+        </div>
+        <div class="row">
+          <label class="field"><span>Незер · X</span><input id="ne-x" type="number" inputmode="decimal" placeholder="0"></label>
+          <label class="field"><span>Незер · Z</span><input id="ne-z" type="number" inputmode="decimal" placeholder="0"></label>
+        </div>
+      </section>
+
+      <!-- Stacks -->
+      <section class="tool">
+        <span class="glyph" data-seed="stacks"></span>
+        <h2>Стаки и шалкеры</h2>
+        <p>Сколько стаков, шалкеров и двойных сундуков нужно под нужное число предметов.</p>
+        <div class="row">
+          <label class="field"><span>Предметов</span><input id="st-count" type="number" min="0" inputmode="numeric" placeholder="1000"></label>
+          <label class="field"><span>Размер стака</span>
+            <select id="st-size"><option value="64">64 (блоки, большинство)</option><option value="16">16 (яйца, снежки, таблички)</option><option value="1">1 (инструменты, броня)</option></select>
+          </label>
+        </div>
+        <div class="out" id="st-out">Введи количество предметов</div>
+      </section>
+
+      <!-- Chunks -->
+      <section class="tool">
+        <span class="glyph" data-seed="chunks"></span>
+        <h2>Чанки и регионы</h2>
+        <p>По координатам узнай номер чанка, позицию внутри него и файл региона.</p>
+        <div class="row">
+          <label class="field"><span>X</span><input id="ch-x" type="number" inputmode="numeric" placeholder="0"></label>
+          <label class="field"><span>Z</span><input id="ch-z" type="number" inputmode="numeric" placeholder="0"></label>
+        </div>
+        <div class="out" id="ch-out">Введи координаты</div>
+      </section>
+
+      <!-- UUID -->
+      <section class="tool">
+        <span class="glyph" data-seed="uuid"></span>
+        <h2>Offline UUID</h2>
+        <p>UUID игрока на сервере с <code>online-mode=false</code>. Нужен для whitelist, прав и переноса инвентаря.</p>
+        <label class="field"><span>Ник</span><input id="uu-name" type="text" maxlength="16" placeholder="Steve" autocomplete="off" spellcheck="false"></label>
+        <div class="out" id="uu-out">Введи ник</div>
+        <button class="mini" data-copy="uu-out" type="button">Скопировать</button>
+      </section>
+
+      <!-- MOTD -->
+      <section class="tool wide">
+        <span class="glyph" data-seed="motd"></span>
+        <h2>Цветной текст (MOTD, таблички, чат)</h2>
+        <p>Пиши с символом <code>&amp;</code>: <code>&amp;a</code> зелёный, <code>&amp;l</code> жирный, <code>&amp;r</code> сброс. Справа превью, ниже готовый код.</p>
+        <div class="swatches" id="mo-swatches"></div>
+        <div class="row">
+          <label class="field"><span>Текст</span><textarea id="mo-in" spellcheck="false">&amp;aMagma &amp;lServer &amp;r&amp;7— &amp;6добро пожаловать!</textarea></label>
+          <div><span class="field"><span>Превью</span></span><div class="motd" id="mo-prev"></div></div>
+        </div>
+        <div class="out" id="mo-out"></div>
+        <button class="mini" data-copy="mo-out" type="button">Скопировать с §</button>
+      </section>
+
+      <!-- Circle -->
+      <section class="tool wide">
+        <span class="glyph" data-seed="circle"></span>
+        <h2>Круги для стройки</h2>
+        <p>Пиксельный круг заданного диаметра: рисуй по схеме на земле. Показывает и число блоков.</p>
+        <div class="row">
+          <label class="field"><span>Диаметр (блоков)</span><input id="ci-d" type="number" min="3" max="128" value="15" inputmode="numeric"></label>
+          <label class="field"><span>Тип</span><select id="ci-mode"><option value="ring">Контур</option><option value="fill">Закрашенный</option></select></label>
+        </div>
+        <div class="out" id="ci-out"></div>
+        <div class="circle-wrap"><canvas id="ci-cv" aria-label="Схема круга"></canvas></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <span class="brand"><img class="brand-mark" src="../assets/logo.svg" alt=""><span class="brand-name">Magma Launcher</span></span>
+    <p>Не является официальным продуктом Minecraft. Не одобрено и не связано с Mojang или Microsoft.</p>
+  </div>
+</footer>
+
+<script src="../glyphs.js"></script>
+<script src="utils.js"></script>
+</body>
+</html>
